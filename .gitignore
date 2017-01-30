@@ -31,3 +31,9 @@
 # Debug files
 *.dSYM/
 *.su
+
+*.ini
+
+LAB/*/Debug/*
+
+LAB/*/.vs/*
