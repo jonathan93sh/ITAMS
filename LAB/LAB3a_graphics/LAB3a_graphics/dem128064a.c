@@ -18,6 +18,7 @@
 #define RW   2
 #define E    1
 #define RS   0
+#define BUSY 7
 
 #define LEFT  0
 #define RIGHT 1
@@ -25,7 +26,68 @@
 #define CONTROL 0
 #define DATA    1
 
+#define INPUT 0x00
+#define OUTPUT 0xFF
 // LOCAL FUNCTIONS /////////////////////////////////////////////////////////////
+
+#define _NOP8 do{_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP()}while(0)
+
+void E_HIGH();
+void E_LOW();
+void waitBusy();
+
+void E_HIGH()
+{
+	CONTROL_PORT |= (1<<E);
+	_NOP8;
+}
+
+void E_LOW()
+{
+	CONTROL_PORT &= ~(1<<E);
+	
+	_NOP8;
+}
+
+void waitBusy()
+{
+	DATA_DDR = INPUT;
+	CONTROL_PORT = (0<<RS)|(1<<RW);
+	
+	uint8_t Busy;
+	
+	do 
+	{
+		E_LOW();
+		E_HIGH();
+		
+		Busy = !!(DATA_IN>>BUSY);
+		E_LOW();
+		E_HIGH();
+	} while (Busy);
+	
+	E_LOW();
+	DATA_DDR = OUTPUT;
+}
+
+void sendInstruction(unsigned char Chip, unsigned char data )
+{
+	//waitBusy();
+	
+	CONTROL_PORT = (0<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
+	DATA_OUT = (data);
+	E_HIGH();
+	E_LOW();
+}
+
+void sendData(unsigned char Chip, unsigned char data )
+{
+	//waitBusy();
+	CONTROL_PORT = (1<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
+	DATA_OUT = (data);
+	E_HIGH();
+	E_LOW();
+}
 
 // Writes a byte to the display
 // "Chip" = LEFT or RIGHT
@@ -33,6 +95,7 @@
 // "Type" = CONTROL" or "DATA"
 void DisplayWrite(unsigned char Chip, unsigned char Data, unsigned char Type)
 {
+	
 }
 
 // Reads a byte from the display
@@ -47,6 +110,7 @@ unsigned char DisplayRead(unsigned char Chip, unsigned char Type)
 // "Y" = 0-63
 void SetY(unsigned char Chip, unsigned char Y)
 {
+	
 }
 
 // Set the display page number (left or right chip)
