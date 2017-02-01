@@ -11,6 +11,8 @@
 #include <util/delay.h>
 #include "DEM128064A.h"
 
+#define waitBusy_enable off
+
 // Control port pin definitions:
 #define CS2  7
 #define CS1  6
@@ -31,6 +33,8 @@
 // LOCAL FUNCTIONS /////////////////////////////////////////////////////////////
 
 #define _NOP8 do{_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP()}while(0)
+#define _NOP3 do{_NOP();_NOP();_NOP();}while(0)
+
 
 void E_HIGH();
 void E_LOW();
@@ -49,8 +53,13 @@ void E_LOW()
 	_NOP8;
 }
 
+
+
 void waitBusy()
 {
+	#if waitBusy_enable == ON
+
+
 	DATA_DDR = INPUT;
 	CONTROL_PORT = (0<<RS)|(1<<RW);
 	
@@ -68,11 +77,12 @@ void waitBusy()
 	
 	E_LOW();
 	DATA_DDR = OUTPUT;
+	#endif
 }
 
 void sendInstruction(unsigned char Chip, unsigned char data )
 {
-	//waitBusy();
+	waitBusy();
 	
 	CONTROL_PORT = (0<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
 	DATA_OUT = (data);
@@ -85,6 +95,7 @@ void sendData(unsigned char Chip, unsigned char data )
 	//waitBusy();
 	CONTROL_PORT = (1<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
 	DATA_OUT = (data);
+	
 	E_HIGH();
 	E_LOW();
 }
@@ -95,6 +106,11 @@ void sendData(unsigned char Chip, unsigned char data )
 // "Type" = CONTROL" or "DATA"
 void DisplayWrite(unsigned char Chip, unsigned char Data, unsigned char Type)
 {
+	waitBusy();
+	CONTROL_PORT = (!!Type<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
+	DATA_OUT = (Data);
+	E_HIGH();
+	E_LOW();
 	
 }
 
@@ -103,6 +119,16 @@ void DisplayWrite(unsigned char Chip, unsigned char Data, unsigned char Type)
 // "Type" = CONTROL" or "DATA"
 unsigned char DisplayRead(unsigned char Chip, unsigned char Type)
 {
+	uint8_t Data;
+	waitBusy();
+	DATA_DDR = INPUT;
+	CONTROL_PORT = (!!Type<<RS)|(1<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
+	_NOP3;
+	E_HIGH();
+	Data = DATA_IN;
+	E_LOW();
+	CONTROL_PORT = (!!Type<<RS)|(0<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
+	DATA_DDR = OUTPUT;
 }
 
 // Set the display Y address counter (left or right chip)
@@ -110,7 +136,8 @@ unsigned char DisplayRead(unsigned char Chip, unsigned char Type)
 // "Y" = 0-63
 void SetY(unsigned char Chip, unsigned char Y)
 {
-	
+	uint8_t tmp = (0b111111 & Y) | (0<<7) | (1<<6);
+	DisplayWrite(Chip, tmp, CONTROL);
 }
 
 // Set the display page number (left or right chip)
@@ -118,6 +145,8 @@ void SetY(unsigned char Chip, unsigned char Y)
 // "Page" = 0-7
 void SetPage(unsigned char Chip, unsigned char Page)
 {
+	uint8_t tmp = (0b111 & Page) | (0b10111<<3);
+	DisplayWrite(Chip, tmp, CONTROL);
 }
 
 // Sets the display start line (only used for display scroling)
@@ -125,12 +154,15 @@ void SetPage(unsigned char Chip, unsigned char Page)
 // "StartLinePage = 0-63
 void SetStartLine(unsigned char Chip, unsigned char StartLine)
 {
+	uint8_t tmp = (0b111111 & StartLine) | (1<<7) | (1<<6);
+	DisplayWrite(Chip, tmp, CONTROL);
 }
 
 // Reads and returns the display status byte (left or right chip)
 // "Chip" = LEFT or RIGHT
 unsigned char Status(unsigned char Chip)
 {
+	return DisplayRead(Chip, CONTROL);
 }
 
 
@@ -138,6 +170,7 @@ unsigned char Status(unsigned char Chip)
 // "Chip" = LEFT or RIGHT
 void ClearHalfScreen(unsigned char Chip)
 {
+	for()
 }
 
 // PUBLIC FUNCTIONS ////////////////////////////////////////////////////////////
