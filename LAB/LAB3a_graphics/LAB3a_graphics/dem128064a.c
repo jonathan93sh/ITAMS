@@ -123,7 +123,7 @@ unsigned char DisplayRead(unsigned char Chip, unsigned char Type)
 	waitBusy();
 	DATA_DDR = INPUT;
 	CONTROL_PORT = (!!Type<<RS)|(1<<RW)|(1<<(Chip == 1 ? CS1 : CS2));
-	_NOP3;
+	_NOP3; // address look up
 	E_HIGH();
 	Data = DATA_IN;
 	E_LOW();
