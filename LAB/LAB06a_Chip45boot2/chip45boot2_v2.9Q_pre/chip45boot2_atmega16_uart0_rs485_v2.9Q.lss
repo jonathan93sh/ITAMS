@@ -1,0 +1,1451 @@
+
+chip45boot2.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000720  00003800  00003800  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00003f20  000007b4  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000058  00800060  00800060  000007b4  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000007b4  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000050  00000000  00000000  000007e4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000009e4  00000000  00000000  00000834  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000320  00000000  00000000  00001218  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000047f  00000000  00000000  00001538  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  0000010c  00000000  00000000  000019b8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000035f  00000000  00000000  00001ac4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000052f  00000000  00000000  00001e23  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000020  00000000  00000000  00002352  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00003800 <__ctors_end>:
+    3800:	20 e0       	ldi	r18, 0x00	; 0
+    3802:	a0 e6       	ldi	r26, 0x60	; 96
+    3804:	b0 e0       	ldi	r27, 0x00	; 0
+    3806:	01 c0       	rjmp	.+2      	; 0x380a <.do_clear_bss_start>
+
+00003808 <.do_clear_bss_loop>:
+    3808:	1d 92       	st	X+, r1
+
+0000380a <.do_clear_bss_start>:
+    380a:	a8 3b       	cpi	r26, 0xB8	; 184
+    380c:	b2 07       	cpc	r27, r18
+    380e:	e1 f7       	brne	.-8      	; 0x3808 <.do_clear_bss_loop>
+
+00003810 <_jumpMain>:
+{   
+	// set stack to end of RAM
+	asm volatile ( ".set __stack, %0" :: "i" (RAMEND) );
+
+	// initialize  stack pointer 
+	asm volatile ("ldi r28, lo8(__stack)");
+    3810:	cf e5       	ldi	r28, 0x5F	; 95
+	asm volatile ("ldi r29, hi8(__stack)");
+    3812:	d4 e0       	ldi	r29, 0x04	; 4
+	asm volatile ("out %0, r29" :: "i" (_SFR_IO_ADDR(SPH)) );
+    3814:	de bf       	out	0x3e, r29	; 62
+	asm volatile ("out %0, r28" :: "i" (_SFR_IO_ADDR(SPL)) );
+    3816:	cd bf       	out	0x3d, r28	; 61
+
+	// GCC depends on register r1 set to 0
+	asm volatile ( "clr __zero_reg__" );   
+    3818:	11 24       	eor	r1, r1
+
+	// set SREG to 0
+	asm volatile ( "out %0, __zero_reg__" :: "i" (_SFR_IO_ADDR(SREG)) );
+    381a:	1f be       	out	0x3f, r1	; 63
+
+	// jump to main()
+	asm volatile ( "rjmp main");
+    381c:	60 c0       	rjmp	.+192    	; 0x38de <main>
+
+0000381e <asciiToHex>:
+uint8_t asciiToHex(uint8_t ucNibble) {
+
+	uint8_t ucHex = 0;
+
+	// check if ascii character is a lower case letter a-f
+	if(ucNibble >= 'a') {
+    381e:	81 36       	cpi	r24, 0x61	; 97
+    3820:	10 f0       	brcs	.+4      	; 0x3826 <asciiToHex+0x8>
+		ucHex = (ucNibble - 'a') + 0x0a;
+    3822:	87 55       	subi	r24, 0x57	; 87
+    3824:	08 95       	ret
+	// or an upper case letter A-F
+	} else if(ucNibble >= 'A') {
+    3826:	81 34       	cpi	r24, 0x41	; 65
+    3828:	10 f0       	brcs	.+4      	; 0x382e <asciiToHex+0x10>
+		ucHex = (ucNibble - 'A') + 0x0a;
+    382a:	87 53       	subi	r24, 0x37	; 55
+    382c:	08 95       	ret
+	// or if it is a number 0-9
+	} else if((ucNibble >= '0')) {
+    382e:	80 33       	cpi	r24, 0x30	; 48
+    3830:	10 f0       	brcs	.+4      	; 0x3836 <asciiToHex+0x18>
+		ucHex = (ucNibble - '0');
+    3832:	80 53       	subi	r24, 0x30	; 48
+    3834:	08 95       	ret
+// in: ascii character (nibble) to be converted
+// out: 4 bit hex number
+// ============================================================================
+uint8_t asciiToHex(uint8_t ucNibble) {
+
+	uint8_t ucHex = 0;
+    3836:	80 e0       	ldi	r24, 0x00	; 0
+	} else if((ucNibble >= '0')) {
+		ucHex = (ucNibble - '0');
+	}
+	
+	return ucHex;  // return the hex number
+}
+    3838:	08 95       	ret
+
+0000383a <asciiToHex2>:
+// ============================================================================
+// convert two hex ascii nibbles into a number
+// in: two ascii characters (high, low nibble) to be converted
+// out: 8 bit hex number
+// ============================================================================
+uint8_t asciiToHex2(uint8_t ucNibbleHigh, uint8_t ucNibbleLow) {
+    383a:	1f 93       	push	r17
+    383c:	cf 93       	push	r28
+    383e:	df 93       	push	r29
+    3840:	1f 92       	push	r1
+    3842:	cd b7       	in	r28, 0x3d	; 61
+    3844:	de b7       	in	r29, 0x3e	; 62
+	return (asciiToHex(ucNibbleHigh) << 4) + asciiToHex(ucNibbleLow);  // just call the function for one nibble twice
+    3846:	69 83       	std	Y+1, r22	; 0x01
+    3848:	0e 94 0f 1c 	call	0x381e	; 0x381e <asciiToHex>
+    384c:	18 2f       	mov	r17, r24
+    384e:	69 81       	ldd	r22, Y+1	; 0x01
+    3850:	86 2f       	mov	r24, r22
+    3852:	0e 94 0f 1c 	call	0x381e	; 0x381e <asciiToHex>
+}
+    3856:	90 e1       	ldi	r25, 0x10	; 16
+    3858:	19 9f       	mul	r17, r25
+    385a:	80 0d       	add	r24, r0
+    385c:	11 24       	eor	r1, r1
+    385e:	0f 90       	pop	r0
+    3860:	df 91       	pop	r29
+    3862:	cf 91       	pop	r28
+    3864:	1f 91       	pop	r17
+    3866:	08 95       	ret
+
+00003868 <usartInit>:
+	// control registers
+	myUSART.CTRLA = 0;  // no interrupts used, we write the default reset value here
+  	myUSART.CTRLC = (myUSART.CTRLC & ~USART_CHSIZE_gm) | USART_CHSIZE_8BIT_gc;  // 8 data bits, 1 stop bit
+	myUSART.CTRLB = (1<<USART_RXEN_bp) | (1<<USART_TXEN_bp) | (1<<USART_CLK2X_bp);	// receiver enable, transmitter enable, usart 2x
+#else
+	uxDiv >>= 4;  // devide by 16 to get the actual baud rate divider
+    3868:	24 e0       	ldi	r18, 0x04	; 4
+    386a:	96 95       	lsr	r25
+    386c:	87 95       	ror	r24
+    386e:	2a 95       	dec	r18
+    3870:	e1 f7       	brne	.-8      	; 0x386a <usartInit+0x2>
+    myUBRRH = (uint8_t)(uxDiv>>8);
+    3872:	90 bd       	out	0x20, r25	; 32
+    myUBRRL = (uint8_t)uxDiv;
+    3874:	89 b9       	out	0x09, r24	; 9
+    myUCSRA = 0;
+    3876:	1b b8       	out	0x0b, r1	; 11
+    myUCSRB = (1<<myTXEN) | (1<<myRXEN);
+    3878:	88 e1       	ldi	r24, 0x18	; 24
+    387a:	8a b9       	out	0x0a, r24	; 10
+    myUCSRC = myURSEL | (3<<myUCSZ0);
+    387c:	86 e8       	ldi	r24, 0x86	; 134
+    387e:	80 bd       	out	0x20, r24	; 32
+    3880:	08 95       	ret
+
+00003882 <usartPutChar>:
+// ============================================================================
+// send a character over the usart
+// in: character to be sent
+// out: nothing
+// ============================================================================
+void usartPutChar(char c) {
+    3882:	cf 93       	push	r28
+    3884:	c8 2f       	mov	r28, r24
+
+    if(c == '\r')
+    3886:	8d 30       	cpi	r24, 0x0D	; 13
+    3888:	19 f4       	brne	.+6      	; 0x3890 <usartPutChar+0xe>
+		usartPutChar('\n');
+    388a:	8a e0       	ldi	r24, 0x0A	; 10
+    388c:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	// wait for transmit buffer empty (in case a previous transmission is not yet completed)
+	loop_until_bit_is_set(myUSART.STATUS, USART_DREIF_bp);
+	// put character into data register and send
+	myUSART.DATA = c;
+#else
+    loop_until_bit_is_set(myUCSRA, myUDRE);
+    3890:	5d 9b       	sbis	0x0b, 5	; 11
+    3892:	fe cf       	rjmp	.-4      	; 0x3890 <usartPutChar+0xe>
+    myUDR = c;
+    3894:	cc b9       	out	0x0c, r28	; 12
+#endif
+}
+    3896:	cf 91       	pop	r28
+    3898:	08 95       	ret
+
+0000389a <usartGetChar>:
+	// wait for data to be received
+	loop_until_bit_is_set(myUSART.STATUS, USART_RXCIF_bp);
+	// get and return the recieved data
+	return myUSART.DATA;
+#else
+    loop_until_bit_is_set(myUCSRA, myRXC);  // wait until character is received
+    389a:	5f 9b       	sbis	0x0b, 7	; 11
+    389c:	fe cf       	rjmp	.-4      	; 0x389a <usartGetChar>
+    return myUDR;                           // return the character
+    389e:	8c b1       	in	r24, 0x0c	; 12
+#endif
+}
+    38a0:	08 95       	ret
+
+000038a2 <usartPutNibble>:
+// in: 4 bit nibble
+// out: nothing
+// ============================================================================
+void usartPutNibble(uint8_t ucNibble)
+{
+    ucNibble &= 0x0f;
+    38a2:	8f 70       	andi	r24, 0x0F	; 15
+
+    if(ucNibble > 9) {
+    38a4:	8a 30       	cpi	r24, 0x0A	; 10
+    38a6:	10 f0       	brcs	.+4      	; 0x38ac <usartPutNibble+0xa>
+        ucNibble += ('a' - 10);
+    38a8:	89 5a       	subi	r24, 0xA9	; 169
+    38aa:	01 c0       	rjmp	.+2      	; 0x38ae <usartPutNibble+0xc>
+    } else {
+        ucNibble += '0';
+    38ac:	80 5d       	subi	r24, 0xD0	; 208
+    }
+
+    usartPutChar(ucNibble);
+    38ae:	0c 94 41 1c 	jmp	0x3882	; 0x3882 <usartPutChar>
+
+000038b2 <usartPutHex>:
+// print an 8 bit word as two ascii characters over the usart
+// in: 8 bit word
+// out: nothing
+// ============================================================================
+void usartPutHex(uint8_t ucHex)
+{
+    38b2:	cf 93       	push	r28
+    38b4:	c8 2f       	mov	r28, r24
+    usartPutNibble (ucHex >> 4);
+    38b6:	82 95       	swap	r24
+    38b8:	8f 70       	andi	r24, 0x0F	; 15
+    38ba:	0e 94 51 1c 	call	0x38a2	; 0x38a2 <usartPutNibble>
+    usartPutNibble (ucHex);
+    38be:	8c 2f       	mov	r24, r28
+}
+    38c0:	cf 91       	pop	r28
+// out: nothing
+// ============================================================================
+void usartPutHex(uint8_t ucHex)
+{
+    usartPutNibble (ucHex >> 4);
+    usartPutNibble (ucHex);
+    38c2:	0c 94 51 1c 	jmp	0x38a2	; 0x38a2 <usartPutNibble>
+
+000038c6 <usartPutRamStr>:
+// print a string from sram memory over the usart
+// in: pointer to string in sram memory
+// out: nothing
+// ============================================================================
+void usartPutRamStr(uint8_t *ucStr)
+{
+    38c6:	cf 93       	push	r28
+    38c8:	df 93       	push	r29
+    38ca:	ec 01       	movw	r28, r24
+	while (*ucStr) {
+    38cc:	89 91       	ld	r24, Y+
+    38ce:	88 23       	and	r24, r24
+    38d0:	19 f0       	breq	.+6      	; 0x38d8 <usartPutRamStr+0x12>
+		usartPutChar(*ucStr++);
+    38d2:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+    38d6:	fa cf       	rjmp	.-12     	; 0x38cc <usartPutRamStr+0x6>
+	}
+}
+    38d8:	df 91       	pop	r29
+    38da:	cf 91       	pop	r28
+    38dc:	08 95       	ret
+
+000038de <main>:
+// ============================================================================
+// main program function
+// in: nothing
+// out: nothing
+// ============================================================================
+int main(void) {
+    38de:	cf 93       	push	r28
+    38e0:	df 93       	push	r29
+    38e2:	00 d0       	rcall	.+0      	; 0x38e4 <main+0x6>
+    38e4:	00 d0       	rcall	.+0      	; 0x38e6 <main+0x8>
+    38e6:	cd b7       	in	r28, 0x3d	; 61
+    38e8:	de b7       	in	r29, 0x3e	; 62
+#ifdef WORKAROUND
+	PMIC_SetVectorLocationToBoot();  // locate the interrupt vector table location to bootloader section
+#endif
+
+	// disable interrupts globally, in case the bootloader was called from an application and not due to a reset
+	cli();
+    38ea:	f8 94       	cli
+	#ifdef RS485
+	myDIR_DIRSET = (1<<myDIR);  // RS485 direction pin is output
+	myDIR_OUTCLR = (1<<myDIR);  // pin is low -> RS485 receiver enable
+	#endif
+#else
+	myRXDPORT |= ( (1<<myRXD) | (1<<myTXD) );  // both RXD and TXD get a pullup
+    38ec:	82 b3       	in	r24, 0x12	; 18
+    38ee:	83 60       	ori	r24, 0x03	; 3
+    38f0:	82 bb       	out	0x12, r24	; 18
+	#ifdef RS485
+	myDIRDDR |= (1<<myDIR);  // RS485 direction pin is output
+    38f2:	b8 9a       	sbi	0x17, 0	; 23
+	myDIRPORT &= ~(1<<myDIR);  // pin is low -> RS485 receiver enable
+    38f4:	c0 98       	cbi	0x18, 0	; 24
+	TCC0.CTRLD = 0;  // we do not use events
+	TCC0.CTRLE = 0;  // no byte mode
+#else
+	// init timer 1 (should be available on almost any AVR)
+	// no prescaler, since we want to measure the RXD timing precisely
+	TCCR1A = 0;  // normal mode
+    38f6:	1f bc       	out	0x2f, r1	; 47
+	TCCR1B = 1;
+    38f8:	81 e0       	ldi	r24, 0x01	; 1
+    38fa:	8e bd       	out	0x2e, r24	; 46
+		MCUSR &= ~(1<<WDRF);  // disable the WDRF flag, otherwise disabling WDE won't work
+		WDTCSR |= (1<<WDCE) | (1<<WDE);	// timed sequence
+		WDTCSR = (1<<WDIE) | (6<<WDP0);  // let the watchdog timer run with 2 seconds timeout and enable watchdog interrupt
+
+	#else  // otherwise we use timer 1 (timeout depends on CPU clock) but we also try to disable the watchdog
+		myMCUSR &= ~(1<<WDRF);  // disable the WDRF flag, otherwise disabling WDE won't work
+    38fc:	84 b7       	in	r24, 0x34	; 52
+    38fe:	87 7f       	andi	r24, 0xF7	; 247
+    3900:	84 bf       	out	0x34, r24	; 52
+		WDTCR |= (1<<myWDCE) | (1<<WDE);	// timed sequence
+    3902:	81 b5       	in	r24, 0x21	; 33
+    3904:	88 61       	ori	r24, 0x18	; 24
+    3906:	81 bd       	out	0x21, r24	; 33
+		WDTCR = 0;  // disable the watchdog
+    3908:	11 bc       	out	0x21, r1	; 33
+	
+	// now we try to measure the baud rate!
+	// loop 17 times (i.e. ~four characters) and measure the low time between falling and rising edges
+	// we drop the first measurement, so we divide by 16 later
+	ucTmp = 17;  
+	uxBaudRateDivFactor = 0;  // clear variable
+    390a:	10 92 61 00 	sts	0x0061, r1
+    390e:	10 92 60 00 	sts	0x0060, r1
+
+	#else  // otherwise we use timer 1 (timeout depends on CPU clock) but we also try to disable the watchdog
+		myMCUSR &= ~(1<<WDRF);  // disable the WDRF flag, otherwise disabling WDE won't work
+		WDTCR |= (1<<myWDCE) | (1<<WDE);	// timed sequence
+		WDTCR = 0;  // disable the watchdog
+		uint32_t ulTimeoutCounter = 0;  // we need a long timeout counter
+    3912:	80 e0       	ldi	r24, 0x00	; 0
+    3914:	90 e0       	ldi	r25, 0x00	; 0
+    3916:	dc 01       	movw	r26, r24
+
+	
+	// now we try to measure the baud rate!
+	// loop 17 times (i.e. ~four characters) and measure the low time between falling and rising edges
+	// we drop the first measurement, so we divide by 16 later
+	ucTmp = 17;  
+    3918:	71 e1       	ldi	r23, 0x11	; 17
+
+		// wait for low level with timeout
+#ifdef XMEGA
+		while(bit_is_set(myRXD_IN, myRXD)) {
+#else	
+		while(bit_is_set(myRXDPIN, myRXD)) {
+    391a:	80 9b       	sbis	0x10, 0	; 16
+    391c:	0c c0       	rjmp	.+24     	; 0x3936 <main+0x58>
+			#endif
+#else
+	#ifdef WATCHDOG
+			if(bit_is_set(WDTCSR, WDIF)) {  // if we can use watchdog timer, we check it's interrupt bit
+	#else
+			if( (++ulTimeoutCounter) > (uint32_t)USART_TIMEOUT) {  // if not, we use a simple counter
+    391e:	01 96       	adiw	r24, 0x01	; 1
+    3920:	a1 1d       	adc	r26, r1
+    3922:	b1 1d       	adc	r27, r1
+    3924:	81 30       	cpi	r24, 0x01	; 1
+    3926:	2a e6       	ldi	r18, 0x6A	; 106
+    3928:	92 07       	cpc	r25, r18
+    392a:	28 e1       	ldi	r18, 0x18	; 24
+    392c:	a2 07       	cpc	r26, r18
+    392e:	b1 05       	cpc	r27, r1
+    3930:	a0 f3       	brcs	.-24     	; 0x391a <main+0x3c>
+	#endif
+#endif
+				ucFlagTimeout = 1;  // set timeout flag
+    3932:	61 e0       	ldi	r22, 0x01	; 1
+    3934:	01 c0       	rjmp	.+2      	; 0x3938 <main+0x5a>
+    3936:	60 e0       	ldi	r22, 0x00	; 0
+		}
+
+#ifdef XMEGA
+		TCC0.CNT = 0;  // clear timer
+#else
+		TCNT1 = 0;  // clear timer
+    3938:	1d bc       	out	0x2d, r1	; 45
+    393a:	1c bc       	out	0x2c, r1	; 44
+		
+		// wait for high level with timeout
+#ifdef XMEGA
+		while(bit_is_clear(myRXD_IN, myRXD)) {
+#else	
+		while(bit_is_clear(myRXDPIN, myRXD)) {
+    393c:	80 99       	sbic	0x10, 0	; 16
+    393e:	0b c0       	rjmp	.+22     	; 0x3956 <main+0x78>
+			#endif
+#else
+	#ifdef WATCHDOG
+			if(bit_is_set(WDTCSR, WDIF)) {  // if we can use watchdog timer, we check it's interrupt bit
+	#else
+			if( (++ulTimeoutCounter) > (uint32_t)USART_TIMEOUT) {  // if not, we use a simple counter
+    3940:	01 96       	adiw	r24, 0x01	; 1
+    3942:	a1 1d       	adc	r26, r1
+    3944:	b1 1d       	adc	r27, r1
+    3946:	81 30       	cpi	r24, 0x01	; 1
+    3948:	3a e6       	ldi	r19, 0x6A	; 106
+    394a:	93 07       	cpc	r25, r19
+    394c:	38 e1       	ldi	r19, 0x18	; 24
+    394e:	a3 07       	cpc	r26, r19
+    3950:	b1 05       	cpc	r27, r1
+    3952:	a0 f3       	brcs	.-24     	; 0x393c <main+0x5e>
+	#endif
+#endif
+				ucFlagTimeout = 1;  // set timeout flag
+    3954:	61 e0       	ldi	r22, 0x01	; 1
+				break;
+			}
+		}
+		// we ignore the first measurement, since it might have started somewhere within the low phase
+		if(ucTmp < 17) {
+    3956:	71 31       	cpi	r23, 0x11	; 17
+    3958:	60 f4       	brcc	.+24     	; 0x3972 <main+0x94>
+#ifdef XMEGA
+			uxBaudRateDivFactor += TCC0.CNT;  // add timer value to variable
+#else
+			uxBaudRateDivFactor += TCNT1;  // add timer value to variable
+    395a:	4c b5       	in	r20, 0x2c	; 44
+    395c:	5d b5       	in	r21, 0x2d	; 45
+    395e:	20 91 60 00 	lds	r18, 0x0060
+    3962:	30 91 61 00 	lds	r19, 0x0061
+    3966:	24 0f       	add	r18, r20
+    3968:	35 1f       	adc	r19, r21
+    396a:	30 93 61 00 	sts	0x0061, r19
+    396e:	20 93 60 00 	sts	0x0060, r18
+#endif
+		}
+		
+	} while( (--ucTmp) && (ucFlagTimeout == 0) );
+    3972:	71 50       	subi	r23, 0x01	; 1
+    3974:	19 f0       	breq	.+6      	; 0x397c <main+0x9e>
+    3976:	66 23       	and	r22, r22
+    3978:	81 f2       	breq	.-96     	; 0x391a <main+0x3c>
+    397a:	61 e0       	ldi	r22, 0x01	; 1
+		TCNT1 = 0;  // clear counter register
+		myRXDPORT &= ~( (1<<myRXD) | (1<<myTXD) );  // disable the pullups
+		myUBRRH = 0;
+		myUBRRL = 0;
+		myUCSRB = 0;
+		myUCSRC = myURSEL | 6;
+    397c:	16 e8       	ldi	r17, 0x86	; 134
+        OSC.CTRL = (1<<OSC_RC2MEN_bp);  // 2MHz RC and no pll
+#endif
+		#if (BOOTADDR >= 0x20000)
+			EIND = 0;
+		#endif
+		((void (*)())0x0)();  // jump to bottom of flash, i.e. start of application
+    397e:	e1 2c       	mov	r14, r1
+    3980:	f1 2c       	mov	r15, r1
+	WDTCSR = 0;  // clear watchdog activities
+#endif
+
+	// if we had a timeout, we jump to 0x0000
+TIMEOUT_CHECK:
+	if(ucFlagTimeout == 1) {  // no edge detected
+    3982:	61 30       	cpi	r22, 0x01	; 1
+    3984:	61 f4       	brne	.+24     	; 0x399e <main+0xc0>
+		myUSART.CTRLC = 0x03;
+		myUSART.BAUDCTRLA = 0x00;
+		myUSART.BAUDCTRLB = 0x00;	
+
+#else
+		TCCR1B = 0;  // stop the timer 1 and set register to reset default
+    3986:	1e bc       	out	0x2e, r1	; 46
+		TCNT1 = 0;  // clear counter register
+    3988:	1d bc       	out	0x2d, r1	; 45
+    398a:	1c bc       	out	0x2c, r1	; 44
+		myRXDPORT &= ~( (1<<myRXD) | (1<<myTXD) );  // disable the pullups
+    398c:	82 b3       	in	r24, 0x12	; 18
+    398e:	8c 7f       	andi	r24, 0xFC	; 252
+    3990:	82 bb       	out	0x12, r24	; 18
+		myUBRRH = 0;
+    3992:	10 bc       	out	0x20, r1	; 32
+		myUBRRL = 0;
+    3994:	19 b8       	out	0x09, r1	; 9
+		myUCSRB = 0;
+    3996:	1a b8       	out	0x0a, r1	; 10
+		myUCSRC = myURSEL | 6;
+    3998:	10 bd       	out	0x20, r17	; 32
+        OSC.CTRL = (1<<OSC_RC2MEN_bp);  // 2MHz RC and no pll
+#endif
+		#if (BOOTADDR >= 0x20000)
+			EIND = 0;
+		#endif
+		((void (*)())0x0)();  // jump to bottom of flash, i.e. start of application
+    399a:	f7 01       	movw	r30, r14
+    399c:	09 95       	icall
+	}
+
+
+	// divide usBaudRateDivFactor by 16 to get the average value
+	uxBaudRateDivFactor >>= 4;
+    399e:	80 91 60 00 	lds	r24, 0x0060
+    39a2:	90 91 61 00 	lds	r25, 0x0061
+    39a6:	44 e0       	ldi	r20, 0x04	; 4
+    39a8:	96 95       	lsr	r25
+    39aa:	87 95       	ror	r24
+    39ac:	4a 95       	dec	r20
+    39ae:	e1 f7       	brne	.-8      	; 0x39a8 <main+0xca>
+    39b0:	90 93 61 00 	sts	0x0061, r25
+    39b4:	80 93 60 00 	sts	0x0060, r24
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+    39b8:	8f e4       	ldi	r24, 0x4F	; 79
+    39ba:	93 ec       	ldi	r25, 0xC3	; 195
+    39bc:	01 97       	sbiw	r24, 0x01	; 1
+    39be:	f1 f7       	brne	.-4      	; 0x39bc <main+0xde>
+    39c0:	00 c0       	rjmp	.+0      	; 0x39c2 <main+0xe4>
+    39c2:	00 00       	nop
+	// short delay to make sure the trailing edges of the remaining data bits and stop bit are gone
+	_delay_ms(10);
+
+
+	// intialize usart with the above calculated baudrate factor
+	usartInit(uxBaudRateDivFactor);
+    39c4:	80 91 60 00 	lds	r24, 0x0060
+    39c8:	90 91 61 00 	lds	r25, 0x0061
+    39cc:	0e 94 34 1c 	call	0x3868	; 0x3868 <usartInit>
+
+
+	// check if we can receive three U's at the calculated baud rate
+	ucTmp = usartGetChar();  // dump the first received character, since it might be garbage directly after USART initialization
+    39d0:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+	if(usartGetChar() == 'U')
+    39d4:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    39d8:	85 35       	cpi	r24, 0x55	; 85
+    39da:	a9 f6       	brne	.-86     	; 0x3986 <main+0xa8>
+		if(usartGetChar() == 'U')
+    39dc:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    39e0:	85 35       	cpi	r24, 0x55	; 85
+    39e2:	21 f4       	brne	.+8      	; 0x39ec <main+0x10e>
+			if(usartGetChar() == 'U')
+    39e4:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    39e8:	85 35       	cpi	r24, 0x55	; 85
+    39ea:	11 f0       	breq	.+4      	; 0x39f0 <main+0x112>
+				goto CORRECT;  // jump to label
+	ucFlagTimeout = 1;  // set timeout flag and
+    39ec:	61 e0       	ldi	r22, 0x01	; 1
+    39ee:	c9 cf       	rjmp	.-110    	; 0x3982 <main+0xa4>
+	goto TIMEOUT_CHECK;  // jump to previous flag check (this avoid additional code for register default setting here)
+CORRECT:
+
+
+#ifdef RS485
+	while(usartGetChar() == 'U');  // wait as long as we still receive U's (other side has to send any other character to proceed to welcome message)
+    39f0:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    39f4:	85 35       	cpi	r24, 0x55	; 85
+    39f6:	e1 f3       	breq	.-8      	; 0x39f0 <main+0x112>
+#ifdef XMEGA
+	myDIR_OUTSET = (1<<myDIR);  // set RS485 direction to output
+#else
+	myDIRPORT |= (1<<myDIR);  // set RS485 direction to output
+    39f8:	c0 9a       	sbi	0x18, 0	; 24
+#endif
+
+
+	// welcome!
+	// we use usartPutChar's instead of usartPutRamStr(""), because it makes problems with -nostartfiles linker option to save space
+	usartPutChar('c');
+    39fa:	83 e6       	ldi	r24, 0x63	; 99
+    39fc:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('4');
+    3a00:	84 e3       	ldi	r24, 0x34	; 52
+    3a02:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('5');
+    3a06:	85 e3       	ldi	r24, 0x35	; 53
+    3a08:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('b');
+    3a0c:	82 e6       	ldi	r24, 0x62	; 98
+    3a0e:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('2');
+    3a12:	82 e3       	ldi	r24, 0x32	; 50
+    3a14:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar(' ');
+    3a18:	80 e2       	ldi	r24, 0x20	; 32
+    3a1a:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('v');
+    3a1e:	86 e7       	ldi	r24, 0x76	; 118
+    3a20:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('2');
+    3a24:	82 e3       	ldi	r24, 0x32	; 50
+    3a26:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('.');
+    3a2a:	8e e2       	ldi	r24, 0x2E	; 46
+    3a2c:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('9');
+    3a30:	89 e3       	ldi	r24, 0x39	; 57
+    3a32:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+	usartPutChar('N');
+    3a36:	8e e4       	ldi	r24, 0x4E	; 78
+    3a38:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+
+	// init the buffer to empty buffer
+	ucBuffer[0] = 0;
+    3a3c:	10 92 86 00 	sts	0x0086, r1
+				myUCSRC = myURSEL | 6;
+#endif
+				#if (BOOTADDR >= 0x20000)
+					EIND = 0;
+				#endif
+				((void (*)())0x0)();  // jump to bottom of flash, i.e. start of application
+    3a40:	a1 2c       	mov	r10, r1
+    3a42:	b1 2c       	mov	r11, r1
+				ucFlagEepromWrite = 0;  // default is flash programming
+				if(ucBuffer[1] == 'e') {  // except we received an 'e' as second character
+					ucFlagEepromWrite = 1;  // set eeprom flag
+				}
+				
+				ulPageBaseAddress = 0xffffffff;  // preset page base address to impossible value
+    3a44:	cc 24       	eor	r12, r12
+    3a46:	ca 94       	dec	r12
+    3a48:	dc 2c       	mov	r13, r12
+    3a4a:	76 01       	movw	r14, r12
+							ucComputedChecksum += ucTmpDataByte;  // compute checksum
+							if(ucFlagEepromWrite == 1) {  // if we want to program eeprom, we store the data in another buffer
+								ucEepromBuffer[usPageAddressOffset] = ucDataByte;
+								ucEepromBuffer[usPageAddressOffset+1] = ucTmpDataByte;
+							} else {  // flash programming
+								boot_page_fill((uint32_t)(ulPageBaseAddress + usPageAddressOffset + usExtSegmentAddress * 16), (((uint16_t)ucTmpDataByte) << 8) + (((uint16_t)ucDataByte) & 0x00ff)); 
+    3a4c:	55 24       	eor	r5, r5
+    3a4e:	53 94       	inc	r5
+
+#ifdef RS485
+#ifdef XMEGA
+		myDIR_OUTSET = (1<<myDIR);  // set RS485 direction to output
+#else
+		myDIRPORT |= (1<<myDIR);  // set RS485 direction to output
+    3a50:	c0 9a       	sbi	0x18, 0	; 24
+#endif
+#endif
+
+		// show a prompt
+		usartPutChar(CARRIAGE_RETURN);
+    3a52:	8d e0       	ldi	r24, 0x0D	; 13
+    3a54:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+		usartPutChar('>');
+    3a58:	8e e3       	ldi	r24, 0x3E	; 62
+    3a5a:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+		usartPutChar(XON);  // send XON to allow transmission
+    3a5e:	81 e1       	ldi	r24, 0x11	; 17
+    3a60:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+#ifdef XMEGA
+		myUSART.STATUS |= (1<<USART_TXCIF_bp);  // clear transmit complete flag
+		loop_until_bit_is_set(myUSART.STATUS, USART_TXCIF_bp);  // and wait until flag is set
+		myDIR_OUTCLR = (1<<myDIR);  // set RS485 direction to input
+#else
+		myUCSRA |= (1<<myTXC);  // clear transmit complete flag
+    3a64:	5e 9a       	sbi	0x0b, 6	; 11
+		loop_until_bit_is_set(myUCSRA, myTXC);  // and wait until flag is set
+    3a66:	5e 9b       	sbis	0x0b, 6	; 11
+    3a68:	fe cf       	rjmp	.-4      	; 0x3a66 <main+0x188>
+		myDIRPORT &= ~(1<<myDIR);  // set RS485 direction to input
+    3a6a:	c0 98       	cbi	0x18, 0	; 24
+#endif
+#endif
+
+		// read one line from uart until line ending
+		ucTmp = 0;
+    3a6c:	10 e0       	ldi	r17, 0x00	; 0
+		do {
+			// we have to ignore U's, which might be in the buffer due to holding U-key pressed too long.
+			// loop until we receive other characters than a 'U'
+			do {
+				ucBuffer[ucTmp] = usartGetChar();
+    3a6e:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    3a72:	e1 2f       	mov	r30, r17
+    3a74:	f0 e0       	ldi	r31, 0x00	; 0
+    3a76:	ea 57       	subi	r30, 0x7A	; 122
+    3a78:	ff 4f       	sbci	r31, 0xFF	; 255
+    3a7a:	80 83       	st	Z, r24
+			} while(ucBuffer[ucTmp] == 'U');
+    3a7c:	85 35       	cpi	r24, 0x55	; 85
+    3a7e:	b9 f3       	breq	.-18     	; 0x3a6e <main+0x190>
+			// if ctrl-c was pressed, we do not process the command
+			if(ucBuffer[ucTmp] == BREAK) {
+    3a80:	83 30       	cpi	r24, 0x03	; 3
+    3a82:	21 f4       	brne	.+8      	; 0x3a8c <main+0x1ae>
+				ucBuffer[0] = 'X';  // set first character to 'X' to avoid any case match in switch
+    3a84:	98 e5       	ldi	r25, 0x58	; 88
+    3a86:	90 93 86 00 	sts	0x0086, r25
+				break;
+    3a8a:	03 c0       	rjmp	.+6      	; 0x3a92 <main+0x1b4>
+			}
+		} while(ucBuffer[ucTmp++] != LINE_ENDING);
+    3a8c:	1f 5f       	subi	r17, 0xFF	; 255
+    3a8e:	8a 30       	cpi	r24, 0x0A	; 10
+    3a90:	71 f7       	brne	.-36     	; 0x3a6e <main+0x190>
+		ucBuffer[ucTmp-1] = 0;  // terminate the string at the new line position
+    3a92:	e1 2f       	mov	r30, r17
+    3a94:	f0 e0       	ldi	r31, 0x00	; 0
+    3a96:	df 01       	movw	r26, r30
+    3a98:	ab 57       	subi	r26, 0x7B	; 123
+    3a9a:	bf 4f       	sbci	r27, 0xFF	; 255
+    3a9c:	1c 92       	st	X, r1
+		if(ucBuffer[ucTmp-2] == 0x0d) {  // if there was a carriage return before the new line, clear it too.
+    3a9e:	ec 57       	subi	r30, 0x7C	; 124
+    3aa0:	ff 4f       	sbci	r31, 0xFF	; 255
+    3aa2:	80 81       	ld	r24, Z
+    3aa4:	8d 30       	cpi	r24, 0x0D	; 13
+    3aa6:	09 f4       	brne	.+2      	; 0x3aaa <main+0x1cc>
+			ucBuffer[ucTmp-2] = 0;
+    3aa8:	10 82       	st	Z, r1
+
+#ifdef RS485
+#ifdef XMEGA
+		myDIR_OUTSET = (1<<myDIR);  // set RS485 direction to output
+#else
+		myDIRPORT |= (1<<myDIR);  // set RS485 direction to output
+    3aaa:	c0 9a       	sbi	0x18, 0	; 24
+#endif
+#endif
+
+		usartPutChar(XOFF);  // send XOFF to pause transmission
+    3aac:	83 e1       	ldi	r24, 0x13	; 19
+    3aae:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+		usartPutRamStr(ucBuffer);  // echo the command
+    3ab2:	86 e8       	ldi	r24, 0x86	; 134
+    3ab4:	90 e0       	ldi	r25, 0x00	; 0
+    3ab6:	0e 94 63 1c 	call	0x38c6	; 0x38c6 <usartPutRamStr>
+
+		// parse first character of command buffer
+		switch(ucBuffer[0]) {
+    3aba:	10 91 86 00 	lds	r17, 0x0086
+    3abe:	17 36       	cpi	r17, 0x67	; 103
+    3ac0:	51 f0       	breq	.+20     	; 0x3ad6 <main+0x1f8>
+    3ac2:	18 f4       	brcc	.+6      	; 0x3aca <main+0x1ec>
+    3ac4:	15 36       	cpi	r17, 0x65	; 101
+    3ac6:	29 f1       	breq	.+74     	; 0x3b12 <main+0x234>
+    3ac8:	08 c2       	rjmp	.+1040   	; 0x3eda <main+0x5fc>
+    3aca:	1d 36       	cpi	r17, 0x6D	; 109
+    3acc:	11 f1       	breq	.+68     	; 0x3b12 <main+0x234>
+    3ace:	10 37       	cpi	r17, 0x70	; 112
+    3ad0:	09 f4       	brne	.+2      	; 0x3ad4 <main+0x1f6>
+    3ad2:	5f c0       	rjmp	.+190    	; 0x3b92 <main+0x2b4>
+    3ad4:	02 c2       	rjmp	.+1028   	; 0x3eda <main+0x5fc>
+			
+			// jump to application at flash start 0x0000
+			case 'g':
+				usartPutChar('+');
+    3ad6:	8b e2       	ldi	r24, 0x2B	; 43
+    3ad8:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				usartPutChar(CARRIAGE_RETURN);
+    3adc:	8d e0       	ldi	r24, 0x0D	; 13
+    3ade:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				usartPutChar(XON);
+    3ae2:	81 e1       	ldi	r24, 0x11	; 17
+    3ae4:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+    3ae8:	ef e4       	ldi	r30, 0x4F	; 79
+    3aea:	f3 ec       	ldi	r31, 0xC3	; 195
+    3aec:	31 97       	sbiw	r30, 0x01	; 1
+    3aee:	f1 f7       	brne	.-4      	; 0x3aec <main+0x20e>
+    3af0:	00 c0       	rjmp	.+0      	; 0x3af2 <main+0x214>
+    3af2:	00 00       	nop
+				asm volatile ("nop");
+				OSC.CTRL &= ~(1<<OSC_PLLEN_bp);   // disable the PLL
+				OSC.PLLCTRL = 0;  // PLL factor reset
+				OSC.CTRL = (1<<OSC_RC2MEN_bp);  // 2MHz RC and no pll
+#else
+				TCCR1B = 0;  // stop the timer 1 and set register to reset default
+    3af4:	1e bc       	out	0x2e, r1	; 46
+				TCNT1 = 0;  // clear counter register
+    3af6:	1d bc       	out	0x2d, r1	; 45
+    3af8:	1c bc       	out	0x2c, r1	; 44
+				#ifdef RS485
+				myDIRPORT &= ~(1<<myDIR);  // pin is low -> RS485 receiver enable
+    3afa:	c0 98       	cbi	0x18, 0	; 24
+				#endif
+				myRXDPORT &= ~( (1<<myRXD) | (1<<myTXD) );  // disable the pullups
+    3afc:	82 b3       	in	r24, 0x12	; 18
+    3afe:	8c 7f       	andi	r24, 0xFC	; 252
+    3b00:	82 bb       	out	0x12, r24	; 18
+				myUBRRH = 0;
+    3b02:	10 bc       	out	0x20, r1	; 32
+				myUBRRL = 0;
+    3b04:	19 b8       	out	0x09, r1	; 9
+				myUCSRB = 0;
+    3b06:	1a b8       	out	0x0a, r1	; 10
+				myUCSRC = myURSEL | 6;
+    3b08:	f6 e8       	ldi	r31, 0x86	; 134
+    3b0a:	f0 bd       	out	0x20, r31	; 32
+#endif
+				#if (BOOTADDR >= 0x20000)
+					EIND = 0;
+				#endif
+				((void (*)())0x0)();  // jump to bottom of flash, i.e. start of application
+    3b0c:	f5 01       	movw	r30, r10
+    3b0e:	09 95       	icall
+				break;
+    3b10:	9f cf       	rjmp	.-194    	; 0x3a50 <main+0x172>
+
+			// read or write single byte to eeprom or memory
+			case 'e':
+			case 'm':
+				ucTmp = asciiToHex2(ucBuffer[2], ucBuffer[3]);  // get the address high byte
+    3b12:	60 91 89 00 	lds	r22, 0x0089
+    3b16:	80 91 88 00 	lds	r24, 0x0088
+    3b1a:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3b1e:	88 2e       	mov	r8, r24
+				usAddr = (ucTmp << 8) + asciiToHex2(ucBuffer[4], ucBuffer[5]);  // get the address low byte
+    3b20:	60 91 8b 00 	lds	r22, 0x008B
+    3b24:	80 91 8a 00 	lds	r24, 0x008A
+    3b28:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3b2c:	91 2c       	mov	r9, r1
+    3b2e:	98 2c       	mov	r9, r8
+    3b30:	88 24       	eor	r8, r8
+    3b32:	88 0e       	add	r8, r24
+    3b34:	91 1c       	adc	r9, r1
+				if(ucBuffer[1] == 'w') {  // we want to write
+    3b36:	80 91 87 00 	lds	r24, 0x0087
+    3b3a:	87 37       	cpi	r24, 0x77	; 119
+    3b3c:	a9 f4       	brne	.+42     	; 0x3b68 <main+0x28a>
+					ucTmp = asciiToHex2(ucBuffer[6], ucBuffer[7]);  // get the data to write
+    3b3e:	60 91 8d 00 	lds	r22, 0x008D
+    3b42:	80 91 8c 00 	lds	r24, 0x008C
+    3b46:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3b4a:	08 2f       	mov	r16, r24
+					// we write to eeprom
+					if(ucBuffer[0] == 'e') {
+    3b4c:	15 36       	cpi	r17, 0x65	; 101
+    3b4e:	31 f4       	brne	.+12     	; 0x3b5c <main+0x27e>
+						eeprom_busy_wait();  // wait in case eeprom is busy
+    3b50:	e1 99       	sbic	0x1c, 1	; 28
+    3b52:	fe cf       	rjmp	.-4      	; 0x3b50 <main+0x272>
+						eeprom_write_byte((uint8_t*)usAddr, ucTmp);  // write cell
+    3b54:	60 2f       	mov	r22, r16
+    3b56:	c4 01       	movw	r24, r8
+    3b58:	0e 94 83 1f 	call	0x3f06	; 0x3f06 <__eewr_byte_m16>
+					}
+					// we write to ram
+					if(ucBuffer[0] == 'm') {
+    3b5c:	80 91 86 00 	lds	r24, 0x0086
+    3b60:	8d 36       	cpi	r24, 0x6D	; 109
+    3b62:	11 f4       	brne	.+4      	; 0x3b68 <main+0x28a>
+						*(uint8_t*)usAddr = ucTmp;  // write data directly to destination address
+    3b64:	f4 01       	movw	r30, r8
+    3b66:	00 83       	st	Z, r16
+					}
+				}
+				// read (back) from the address in eeprom or ram
+				if(ucBuffer[0] == 'e') {
+    3b68:	80 91 86 00 	lds	r24, 0x0086
+    3b6c:	85 36       	cpi	r24, 0x65	; 101
+    3b6e:	29 f4       	brne	.+10     	; 0x3b7a <main+0x29c>
+					ucTmp = eeprom_read_byte((uint8_t*)usAddr);  // read cell
+    3b70:	c4 01       	movw	r24, r8
+    3b72:	0e 94 71 1f 	call	0x3ee2	; 0x3ee2 <__eerd_byte_m16>
+    3b76:	18 2f       	mov	r17, r24
+    3b78:	02 c0       	rjmp	.+4      	; 0x3b7e <main+0x2a0>
+				} else {
+					ucTmp = *(uint8_t*)usAddr;  // read destination
+    3b7a:	f4 01       	movw	r30, r8
+    3b7c:	10 81       	ld	r17, Z
+				}
+				usartPutChar('+');
+    3b7e:	8b e2       	ldi	r24, 0x2B	; 43
+    3b80:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				usartPutChar(CARRIAGE_RETURN);
+    3b84:	8d e0       	ldi	r24, 0x0D	; 13
+    3b86:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				usartPutHex(ucTmp);  // and print the read back value
+    3b8a:	81 2f       	mov	r24, r17
+    3b8c:	0e 94 59 1c 	call	0x38b2	; 0x38b2 <usartPutHex>
+				break;
+    3b90:	5f cf       	rjmp	.-322    	; 0x3a50 <main+0x172>
+				
+			// read hex file and write to flash or eeprom memory
+			case 'p':
+				usartPutChar('+');
+    3b92:	8b e2       	ldi	r24, 0x2B	; 43
+    3b94:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				usartPutChar(CARRIAGE_RETURN);
+    3b98:	8d e0       	ldi	r24, 0x0D	; 13
+    3b9a:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+				
+				ucFlagEepromWrite = 0;  // default is flash programming
+    3b9e:	10 92 7f 00 	sts	0x007F, r1
+				if(ucBuffer[1] == 'e') {  // except we received an 'e' as second character
+    3ba2:	80 91 87 00 	lds	r24, 0x0087
+    3ba6:	85 36       	cpi	r24, 0x65	; 101
+    3ba8:	11 f4       	brne	.+4      	; 0x3bae <main+0x2d0>
+					ucFlagEepromWrite = 1;  // set eeprom flag
+    3baa:	50 92 7f 00 	sts	0x007F, r5
+				}
+				
+				ulPageBaseAddress = 0xffffffff;  // preset page base address to impossible value
+    3bae:	c0 92 63 00 	sts	0x0063, r12
+    3bb2:	d0 92 64 00 	sts	0x0064, r13
+    3bb6:	e0 92 65 00 	sts	0x0065, r14
+    3bba:	f0 92 66 00 	sts	0x0066, r15
+				usPageAddressOffset = 0;  // clear offset
+    3bbe:	10 92 81 00 	sts	0x0081, r1
+    3bc2:	10 92 80 00 	sts	0x0080, r1
+				usExtSegmentAddress = 0;  // clear segment address
+    3bc6:	10 92 83 00 	sts	0x0083, r1
+    3bca:	10 92 82 00 	sts	0x0082, r1
+				
+				do {
+				
+					ucFlagError = 0;  // clear error flag
+    3bce:	10 92 68 00 	sts	0x0068, r1
+					ucFlagEof = 0;  // clear end-of-file flag
+    3bd2:	10 92 62 00 	sts	0x0062, r1
+					ucFlagWrite = 0;  // clear write flag
+    3bd6:	10 92 69 00 	sts	0x0069, r1
+					
+					// read one line from hex file into the buffer
+					usartPutChar(XON);
+    3bda:	81 e1       	ldi	r24, 0x11	; 17
+    3bdc:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+#ifdef XMEGA
+					myUSART.STATUS |= (1<<USART_TXCIF_bp);  // clear transmit complete flag
+					loop_until_bit_is_set(myUSART.STATUS, USART_TXCIF_bp);  // and wait until flag is set
+					myDIR_OUTCLR = (1<<myDIR);  // set RS485 direction to input
+#else
+					myUCSRA |= (1<<myTXC);  // clear transmit complete flag
+    3be0:	5e 9a       	sbi	0x0b, 6	; 11
+					loop_until_bit_is_set(myUCSRA, myTXC);  // and wait until flag is set
+    3be2:	5e 9b       	sbis	0x0b, 6	; 11
+    3be4:	fe cf       	rjmp	.-4      	; 0x3be2 <main+0x304>
+					myDIRPORT &= ~(1<<myDIR);  // set RS485 direction to input
+    3be6:	c0 98       	cbi	0x18, 0	; 24
+#endif
+#endif
+					ucTmp = 0;
+    3be8:	10 e0       	ldi	r17, 0x00	; 0
+					do {
+						ucBuffer[ucTmp] = usartGetChar();
+    3bea:	0e 94 4d 1c 	call	0x389a	; 0x389a <usartGetChar>
+    3bee:	a1 2f       	mov	r26, r17
+    3bf0:	b0 e0       	ldi	r27, 0x00	; 0
+    3bf2:	aa 57       	subi	r26, 0x7A	; 122
+    3bf4:	bf 4f       	sbci	r27, 0xFF	; 255
+    3bf6:	8c 93       	st	X, r24
+					} while(ucBuffer[ucTmp++] != LINE_ENDING);
+    3bf8:	1f 5f       	subi	r17, 0xFF	; 255
+    3bfa:	8a 30       	cpi	r24, 0x0A	; 10
+    3bfc:	b1 f7       	brne	.-20     	; 0x3bea <main+0x30c>
+#ifdef RS485
+#ifdef XMEGA
+					myDIR_OUTSET = (1<<myDIR);  // set RS485 direction to output
+#else
+					myDIRPORT |= (1<<myDIR);  // set RS485 direction to output
+    3bfe:	c0 9a       	sbi	0x18, 0	; 24
+#endif
+#endif
+					usartPutChar(XOFF);  // send XOFF to pause transmission
+    3c00:	83 e1       	ldi	r24, 0x13	; 19
+    3c02:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+					ucBuffer[ucTmp-1] = 0;
+    3c06:	e1 2f       	mov	r30, r17
+    3c08:	f0 e0       	ldi	r31, 0x00	; 0
+    3c0a:	eb 57       	subi	r30, 0x7B	; 123
+    3c0c:	ff 4f       	sbci	r31, 0xFF	; 255
+    3c0e:	10 82       	st	Z, r1
+
+					// grab hex record information, like byte count, address and type of record
+					ucByteCount = asciiToHex2(ucBuffer[1], ucBuffer[2]);  // get the number of bytes
+    3c10:	60 91 88 00 	lds	r22, 0x0088
+    3c14:	80 91 87 00 	lds	r24, 0x0087
+    3c18:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c1c:	98 2e       	mov	r9, r24
+    3c1e:	80 93 67 00 	sts	0x0067, r24
+					ucComputedChecksum = ucByteCount;  // compute checksum
+					usAddr = asciiToHex2(ucBuffer[3], ucBuffer[4]);  // get the address high byte
+    3c22:	60 91 8a 00 	lds	r22, 0x008A
+    3c26:	80 91 89 00 	lds	r24, 0x0089
+    3c2a:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c2e:	18 2f       	mov	r17, r24
+    3c30:	68 2e       	mov	r6, r24
+    3c32:	71 2c       	mov	r7, r1
+					ucComputedChecksum += (uint8_t)usAddr;  // compute checksum
+					usAddr = (usAddr << 8) + asciiToHex2(ucBuffer[5], ucBuffer[6]);  // get the address low byte
+    3c34:	76 2c       	mov	r7, r6
+    3c36:	66 24       	eor	r6, r6
+    3c38:	60 91 8c 00 	lds	r22, 0x008C
+    3c3c:	80 91 8b 00 	lds	r24, 0x008B
+    3c40:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c44:	68 0e       	add	r6, r24
+    3c46:	71 1c       	adc	r7, r1
+					ucComputedChecksum += (uint8_t)(usAddr & 0xff);  // compute checksum
+					ucRecordType = asciiToHex2(ucBuffer[7], ucBuffer[8]);  // get the record type
+    3c48:	60 91 8e 00 	lds	r22, 0x008E
+    3c4c:	80 91 8d 00 	lds	r24, 0x008D
+    3c50:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c54:	08 2f       	mov	r16, r24
+    3c56:	80 93 85 00 	sts	0x0085, r24
+
+					// grab hex record information, like byte count, address and type of record
+					ucByteCount = asciiToHex2(ucBuffer[1], ucBuffer[2]);  // get the number of bytes
+					ucComputedChecksum = ucByteCount;  // compute checksum
+					usAddr = asciiToHex2(ucBuffer[3], ucBuffer[4]);  // get the address high byte
+					ucComputedChecksum += (uint8_t)usAddr;  // compute checksum
+    3c5a:	19 0d       	add	r17, r9
+					usAddr = (usAddr << 8) + asciiToHex2(ucBuffer[5], ucBuffer[6]);  // get the address low byte
+					ucComputedChecksum += (uint8_t)(usAddr & 0xff);  // compute checksum
+    3c5c:	18 0f       	add	r17, r24
+					ucRecordType = asciiToHex2(ucBuffer[7], ucBuffer[8]);  // get the record type
+					ucComputedChecksum += ucRecordType;  // compute checksum
+    3c5e:	16 0d       	add	r17, r6
+    3c60:	10 93 6a 00 	sts	0x006A, r17
+					ucHexRecChecksum = asciiToHex2(ucBuffer[(ucByteCount*2)+9], ucBuffer[(ucByteCount*2)+10]);  // get the checksum
+    3c64:	a9 2d       	mov	r26, r9
+    3c66:	b0 e0       	ldi	r27, 0x00	; 0
+    3c68:	15 96       	adiw	r26, 0x05	; 5
+    3c6a:	aa 0f       	add	r26, r26
+    3c6c:	bb 1f       	adc	r27, r27
+    3c6e:	4d 01       	movw	r8, r26
+    3c70:	fa e0       	ldi	r31, 0x0A	; 10
+    3c72:	8f 1a       	sub	r8, r31
+    3c74:	91 08       	sbc	r9, r1
+    3c76:	aa 57       	subi	r26, 0x7A	; 122
+    3c78:	bf 4f       	sbci	r27, 0xFF	; 255
+    3c7a:	f4 01       	movw	r30, r8
+    3c7c:	ea 57       	subi	r30, 0x7A	; 122
+    3c7e:	ff 4f       	sbci	r31, 0xFF	; 255
+    3c80:	6c 91       	ld	r22, X
+    3c82:	81 85       	ldd	r24, Z+9	; 0x09
+    3c84:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c88:	48 2e       	mov	r4, r24
+    3c8a:	80 93 84 00 	sts	0x0084, r24
+					
+					// check the record type
+					if(ucRecordType == 2) {  // extendes segment address record
+    3c8e:	02 30       	cpi	r16, 0x02	; 2
+    3c90:	e1 f4       	brne	.+56     	; 0x3cca <main+0x3ec>
+						usExtSegmentAddress = asciiToHex2(ucBuffer[9], ucBuffer[10]) << 8;
+    3c92:	60 91 90 00 	lds	r22, 0x0090
+    3c96:	80 91 8f 00 	lds	r24, 0x008F
+    3c9a:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3c9e:	90 e0       	ldi	r25, 0x00	; 0
+    3ca0:	98 2e       	mov	r9, r24
+    3ca2:	88 24       	eor	r8, r8
+						ucComputedChecksum += (usExtSegmentAddress >> 8);  // compute checksum
+						usExtSegmentAddress += asciiToHex2(ucBuffer[11], ucBuffer[12]);
+    3ca4:	60 91 92 00 	lds	r22, 0x0092
+    3ca8:	80 91 91 00 	lds	r24, 0x0091
+    3cac:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3cb0:	94 01       	movw	r18, r8
+    3cb2:	28 0f       	add	r18, r24
+    3cb4:	31 1d       	adc	r19, r1
+    3cb6:	c9 01       	movw	r24, r18
+    3cb8:	30 93 83 00 	sts	0x0083, r19
+    3cbc:	20 93 82 00 	sts	0x0082, r18
+					ucHexRecChecksum = asciiToHex2(ucBuffer[(ucByteCount*2)+9], ucBuffer[(ucByteCount*2)+10]);  // get the checksum
+					
+					// check the record type
+					if(ucRecordType == 2) {  // extendes segment address record
+						usExtSegmentAddress = asciiToHex2(ucBuffer[9], ucBuffer[10]) << 8;
+						ucComputedChecksum += (usExtSegmentAddress >> 8);  // compute checksum
+    3cc0:	89 0d       	add	r24, r9
+						usExtSegmentAddress += asciiToHex2(ucBuffer[11], ucBuffer[12]);
+						ucComputedChecksum += (usExtSegmentAddress & 0xff);  // compute checksum
+    3cc2:	81 0f       	add	r24, r17
+    3cc4:	80 93 6a 00 	sts	0x006A, r24
+    3cc8:	7e c0       	rjmp	.+252    	; 0x3dc6 <main+0x4e8>
+					
+					} else if(ucRecordType == 1) {  // end of file record
+    3cca:	01 30       	cpi	r16, 0x01	; 1
+    3ccc:	29 f4       	brne	.+10     	; 0x3cd8 <main+0x3fa>
+						ucFlagEof = 1;
+    3cce:	00 93 62 00 	sts	0x0062, r16
+						ucFlagWrite = 1;
+    3cd2:	00 93 69 00 	sts	0x0069, r16
+    3cd6:	77 c0       	rjmp	.+238    	; 0x3dc6 <main+0x4e8>
+						
+					} else if(ucRecordType == 0) {  // data record
+    3cd8:	01 11       	cpse	r16, r1
+    3cda:	75 c0       	rjmp	.+234    	; 0x3dc6 <main+0x4e8>
+					
+						// set base address for the flash page, if not set
+						if(ulPageBaseAddress == 0xffffffff) {
+    3cdc:	80 91 63 00 	lds	r24, 0x0063
+    3ce0:	90 91 64 00 	lds	r25, 0x0064
+    3ce4:	a0 91 65 00 	lds	r26, 0x0065
+    3ce8:	b0 91 66 00 	lds	r27, 0x0066
+    3cec:	8f 3f       	cpi	r24, 0xFF	; 255
+    3cee:	9f 4f       	sbci	r25, 0xFF	; 255
+    3cf0:	af 4f       	sbci	r26, 0xFF	; 255
+    3cf2:	bf 4f       	sbci	r27, 0xFF	; 255
+    3cf4:	59 f4       	brne	.+22     	; 0x3d0c <main+0x42e>
+							ulPageBaseAddress = usAddr;
+    3cf6:	c3 01       	movw	r24, r6
+    3cf8:	a0 e0       	ldi	r26, 0x00	; 0
+    3cfa:	b0 e0       	ldi	r27, 0x00	; 0
+    3cfc:	80 93 63 00 	sts	0x0063, r24
+    3d00:	90 93 64 00 	sts	0x0064, r25
+    3d04:	a0 93 65 00 	sts	0x0065, r26
+    3d08:	b0 93 66 00 	sts	0x0066, r27
+						for(ucTmp = 0; ucTmp < (2*ucByteCount); ucTmp += 4) {  // increment by four, since we parse the ascii buffer for four ascii character (i.e. two hex numbers)
+							ucDataByte = asciiToHex2(ucBuffer[ucTmp+9], ucBuffer[ucTmp+10]);  // get the low data byte
+							ucComputedChecksum += ucDataByte;  // compute checksum
+							ucTmpDataByte = asciiToHex2(ucBuffer[ucTmp+11], ucBuffer[ucTmp+12]);  // get the high data byte
+							ucComputedChecksum += ucTmpDataByte;  // compute checksum
+							if(ucFlagEepromWrite == 1) {  // if we want to program eeprom, we store the data in another buffer
+    3d0c:	50 91 7f 00 	lds	r21, 0x007F
+								ucEepromBuffer[usPageAddressOffset] = ucDataByte;
+								ucEepromBuffer[usPageAddressOffset+1] = ucTmpDataByte;
+							} else {  // flash programming
+								boot_page_fill((uint32_t)(ulPageBaseAddress + usPageAddressOffset + usExtSegmentAddress * 16), (((uint16_t)ucTmpDataByte) << 8) + (((uint16_t)ucDataByte) & 0x00ff)); 
+    3d10:	60 90 82 00 	lds	r6, 0x0082
+    3d14:	70 90 83 00 	lds	r7, 0x0083
+    3d18:	14 e0       	ldi	r17, 0x04	; 4
+    3d1a:	66 0c       	add	r6, r6
+    3d1c:	77 1c       	adc	r7, r7
+    3d1e:	1a 95       	dec	r17
+    3d20:	e1 f7       	brne	.-8      	; 0x3d1a <main+0x43c>
+    3d22:	80 91 63 00 	lds	r24, 0x0063
+    3d26:	90 91 64 00 	lds	r25, 0x0064
+    3d2a:	68 0e       	add	r6, r24
+    3d2c:	79 1e       	adc	r7, r25
+    3d2e:	30 90 6a 00 	lds	r3, 0x006A
+    3d32:	20 91 80 00 	lds	r18, 0x0080
+    3d36:	30 91 81 00 	lds	r19, 0x0081
+    3d3a:	3c 83       	std	Y+4, r19	; 0x04
+    3d3c:	2b 83       	std	Y+3, r18	; 0x03
+    3d3e:	90 e0       	ldi	r25, 0x00	; 0
+						if(ulPageBaseAddress == 0xffffffff) {
+							ulPageBaseAddress = usAddr;
+						}
+						
+						// parse the data bytes
+						for(ucTmp = 0; ucTmp < (2*ucByteCount); ucTmp += 4) {  // increment by four, since we parse the ascii buffer for four ascii character (i.e. two hex numbers)
+    3d40:	09 2f       	mov	r16, r25
+    3d42:	10 e0       	ldi	r17, 0x00	; 0
+    3d44:	08 15       	cp	r16, r8
+    3d46:	19 05       	cpc	r17, r9
+    3d48:	b4 f5       	brge	.+108    	; 0x3db6 <main+0x4d8>
+							ucDataByte = asciiToHex2(ucBuffer[ucTmp+9], ucBuffer[ucTmp+10]);  // get the low data byte
+    3d4a:	0a 57       	subi	r16, 0x7A	; 122
+    3d4c:	1f 4f       	sbci	r17, 0xFF	; 255
+    3d4e:	f8 01       	movw	r30, r16
+    3d50:	62 85       	ldd	r22, Z+10	; 0x0a
+    3d52:	81 85       	ldd	r24, Z+9	; 0x09
+    3d54:	5a 83       	std	Y+2, r21	; 0x02
+    3d56:	99 83       	std	Y+1, r25	; 0x01
+    3d58:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+    3d5c:	28 2e       	mov	r2, r24
+							ucComputedChecksum += ucDataByte;  // compute checksum
+							ucTmpDataByte = asciiToHex2(ucBuffer[ucTmp+11], ucBuffer[ucTmp+12]);  // get the high data byte
+    3d5e:	f8 01       	movw	r30, r16
+    3d60:	64 85       	ldd	r22, Z+12	; 0x0c
+    3d62:	83 85       	ldd	r24, Z+11	; 0x0b
+    3d64:	0e 94 1d 1c 	call	0x383a	; 0x383a <asciiToHex2>
+						}
+						
+						// parse the data bytes
+						for(ucTmp = 0; ucTmp < (2*ucByteCount); ucTmp += 4) {  // increment by four, since we parse the ascii buffer for four ascii character (i.e. two hex numbers)
+							ucDataByte = asciiToHex2(ucBuffer[ucTmp+9], ucBuffer[ucTmp+10]);  // get the low data byte
+							ucComputedChecksum += ucDataByte;  // compute checksum
+    3d68:	62 2d       	mov	r22, r2
+    3d6a:	68 0f       	add	r22, r24
+							ucTmpDataByte = asciiToHex2(ucBuffer[ucTmp+11], ucBuffer[ucTmp+12]);  // get the high data byte
+							ucComputedChecksum += ucTmpDataByte;  // compute checksum
+    3d6c:	63 0d       	add	r22, r3
+							if(ucFlagEepromWrite == 1) {  // if we want to program eeprom, we store the data in another buffer
+    3d6e:	5a 81       	ldd	r21, Y+2	; 0x02
+    3d70:	99 81       	ldd	r25, Y+1	; 0x01
+    3d72:	51 30       	cpi	r21, 0x01	; 1
+    3d74:	39 f4       	brne	.+14     	; 0x3d84 <main+0x4a6>
+    3d76:	eb 81       	ldd	r30, Y+3	; 0x03
+    3d78:	fc 81       	ldd	r31, Y+4	; 0x04
+    3d7a:	e5 59       	subi	r30, 0x95	; 149
+    3d7c:	ff 4f       	sbci	r31, 0xFF	; 255
+								ucEepromBuffer[usPageAddressOffset] = ucDataByte;
+    3d7e:	20 82       	st	Z, r2
+								ucEepromBuffer[usPageAddressOffset+1] = ucTmpDataByte;
+    3d80:	81 83       	std	Z+1, r24	; 0x01
+    3d82:	10 c0       	rjmp	.+32     	; 0x3da4 <main+0x4c6>
+							} else {  // flash programming
+								boot_page_fill((uint32_t)(ulPageBaseAddress + usPageAddressOffset + usExtSegmentAddress * 16), (((uint16_t)ucTmpDataByte) << 8) + (((uint16_t)ucDataByte) & 0x00ff)); 
+    3d84:	28 2f       	mov	r18, r24
+    3d86:	30 e0       	ldi	r19, 0x00	; 0
+    3d88:	32 2f       	mov	r19, r18
+    3d8a:	22 27       	eor	r18, r18
+    3d8c:	22 0d       	add	r18, r2
+    3d8e:	31 1d       	adc	r19, r1
+    3d90:	eb 81       	ldd	r30, Y+3	; 0x03
+    3d92:	fc 81       	ldd	r31, Y+4	; 0x04
+    3d94:	e6 0d       	add	r30, r6
+    3d96:	f7 1d       	adc	r31, r7
+    3d98:	81 e0       	ldi	r24, 0x01	; 1
+    3d9a:	09 01       	movw	r0, r18
+    3d9c:	80 93 57 00 	sts	0x0057, r24
+    3da0:	e8 95       	spm
+    3da2:	11 24       	eor	r1, r1
+						if(ulPageBaseAddress == 0xffffffff) {
+							ulPageBaseAddress = usAddr;
+						}
+						
+						// parse the data bytes
+						for(ucTmp = 0; ucTmp < (2*ucByteCount); ucTmp += 4) {  // increment by four, since we parse the ascii buffer for four ascii character (i.e. two hex numbers)
+    3da4:	9c 5f       	subi	r25, 0xFC	; 252
+    3da6:	2b 81       	ldd	r18, Y+3	; 0x03
+    3da8:	3c 81       	ldd	r19, Y+4	; 0x04
+    3daa:	2e 5f       	subi	r18, 0xFE	; 254
+    3dac:	3f 4f       	sbci	r19, 0xFF	; 255
+    3dae:	3c 83       	std	Y+4, r19	; 0x04
+    3db0:	2b 83       	std	Y+3, r18	; 0x03
+							ucDataByte = asciiToHex2(ucBuffer[ucTmp+9], ucBuffer[ucTmp+10]);  // get the low data byte
+							ucComputedChecksum += ucDataByte;  // compute checksum
+							ucTmpDataByte = asciiToHex2(ucBuffer[ucTmp+11], ucBuffer[ucTmp+12]);  // get the high data byte
+							ucComputedChecksum += ucTmpDataByte;  // compute checksum
+    3db2:	36 2e       	mov	r3, r22
+    3db4:	c5 cf       	rjmp	.-118    	; 0x3d40 <main+0x462>
+    3db6:	2b 81       	ldd	r18, Y+3	; 0x03
+    3db8:	3c 81       	ldd	r19, Y+4	; 0x04
+    3dba:	30 93 81 00 	sts	0x0081, r19
+    3dbe:	20 93 80 00 	sts	0x0080, r18
+    3dc2:	30 92 6a 00 	sts	0x006A, r3
+						}
+						
+					}
+					
+					// check checksum
+					if((uint8_t)(ucComputedChecksum + ucHexRecChecksum) != 0x00) {  // computed checksum plus checksum from hexfile must be zero
+    3dc6:	80 91 6a 00 	lds	r24, 0x006A
+    3dca:	84 0d       	add	r24, r4
+    3dcc:	19 f0       	breq	.+6      	; 0x3dd4 <main+0x4f6>
+						ucFlagError = 1;
+    3dce:	50 92 68 00 	sts	0x0068, r5
+						break;  // leave do loop, we do not program anything in case we get a checksum error
+    3dd2:	7d c0       	rjmp	.+250    	; 0x3ece <main+0x5f0>
+					}
+					
+					usartPutChar('.');  // progress indicator
+    3dd4:	8e e2       	ldi	r24, 0x2E	; 46
+    3dd6:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+					
+					// check if page is filled, if so, we set the write flag
+					if(usPageAddressOffset >= SPM_PAGESIZE) {
+    3dda:	40 91 80 00 	lds	r20, 0x0080
+    3dde:	50 91 81 00 	lds	r21, 0x0081
+    3de2:	40 38       	cpi	r20, 0x80	; 128
+    3de4:	51 05       	cpc	r21, r1
+    3de6:	10 f0       	brcs	.+4      	; 0x3dec <main+0x50e>
+						ucFlagWrite = 1;
+    3de8:	50 92 69 00 	sts	0x0069, r5
+					}
+					if(ucFlagEepromWrite == 1) {
+    3dec:	e0 91 7f 00 	lds	r30, 0x007F
+    3df0:	e1 30       	cpi	r30, 0x01	; 1
+    3df2:	11 f4       	brne	.+4      	; 0x3df8 <main+0x51a>
+						ucFlagWrite = 1;
+    3df4:	e0 93 69 00 	sts	0x0069, r30
+					}
+					
+					
+					// check if write flag is set
+					if((ucFlagWrite == 1) && (ulPageBaseAddress != 0xffffffff)) {
+    3df8:	f0 91 69 00 	lds	r31, 0x0069
+    3dfc:	f1 30       	cpi	r31, 0x01	; 1
+    3dfe:	09 f0       	breq	.+2      	; 0x3e02 <main+0x524>
+    3e00:	5d c0       	rjmp	.+186    	; 0x3ebc <main+0x5de>
+    3e02:	00 91 63 00 	lds	r16, 0x0063
+    3e06:	10 91 64 00 	lds	r17, 0x0064
+    3e0a:	20 91 65 00 	lds	r18, 0x0065
+    3e0e:	30 91 66 00 	lds	r19, 0x0066
+    3e12:	0f 3f       	cpi	r16, 0xFF	; 255
+    3e14:	8f ef       	ldi	r24, 0xFF	; 255
+    3e16:	18 07       	cpc	r17, r24
+    3e18:	28 07       	cpc	r18, r24
+    3e1a:	38 07       	cpc	r19, r24
+    3e1c:	09 f4       	brne	.+2      	; 0x3e20 <main+0x542>
+    3e1e:	4e c0       	rjmp	.+156    	; 0x3ebc <main+0x5de>
+						ulPageBaseAddress += ((uint32_t)usExtSegmentAddress * 16);  // add the extended segment address to the base address
+    3e20:	60 91 82 00 	lds	r22, 0x0082
+    3e24:	70 91 83 00 	lds	r23, 0x0083
+    3e28:	80 e0       	ldi	r24, 0x00	; 0
+    3e2a:	90 e0       	ldi	r25, 0x00	; 0
+    3e2c:	a4 e0       	ldi	r26, 0x04	; 4
+    3e2e:	66 0f       	add	r22, r22
+    3e30:	77 1f       	adc	r23, r23
+    3e32:	88 1f       	adc	r24, r24
+    3e34:	99 1f       	adc	r25, r25
+    3e36:	aa 95       	dec	r26
+    3e38:	d1 f7       	brne	.-12     	; 0x3e2e <main+0x550>
+    3e3a:	60 0f       	add	r22, r16
+    3e3c:	71 1f       	adc	r23, r17
+    3e3e:	82 1f       	adc	r24, r18
+    3e40:	93 1f       	adc	r25, r19
+    3e42:	60 93 63 00 	sts	0x0063, r22
+    3e46:	70 93 64 00 	sts	0x0064, r23
+    3e4a:	80 93 65 00 	sts	0x0065, r24
+    3e4e:	90 93 66 00 	sts	0x0066, r25
+
+						if(ucFlagEepromWrite == 1) {  // we want to write eeprom
+    3e52:	e1 30       	cpi	r30, 0x01	; 1
+    3e54:	39 f4       	brne	.+14     	; 0x3e64 <main+0x586>
+							/*for(ucTmp = 0; ucTmp < usPageAddressOffset; ++ucTmp) {
+								eeprom_busy_wait();  // wait in case eeprom is busy
+								eeprom_write_byte((uint8_t*)(uint16_t)(ulPageBaseAddress+ucTmp), ucEepromBuffer[ucTmp]);  // write cell
+							}*/
+							eeprom_busy_wait();  // wait in case eeprom is busy
+    3e56:	e1 99       	sbic	0x1c, 1	; 28
+    3e58:	fe cf       	rjmp	.-4      	; 0x3e56 <main+0x578>
+							eeprom_write_block(ucEepromBuffer, (uint8_t*)(uint16_t)ulPageBaseAddress, usPageAddressOffset);
+    3e5a:	8b e6       	ldi	r24, 0x6B	; 107
+    3e5c:	90 e0       	ldi	r25, 0x00	; 0
+    3e5e:	0e 94 79 1f 	call	0x3ef2	; 0x3ef2 <__eewr_block_m16>
+    3e62:	1d c0       	rjmp	.+58     	; 0x3e9e <main+0x5c0>
+						} else {  // we want to write flash
+
+							// check if page base address exceeds maximum address before bootloader section begins (BOOTADDR comes from -D compiler option)
+							if(ulPageBaseAddress >= (uint32_t)BOOTADDR) {
+    3e64:	61 15       	cp	r22, r1
+    3e66:	e8 e3       	ldi	r30, 0x38	; 56
+    3e68:	7e 07       	cpc	r23, r30
+    3e6a:	81 05       	cpc	r24, r1
+    3e6c:	91 05       	cpc	r25, r1
+    3e6e:	18 f0       	brcs	.+6      	; 0x3e76 <main+0x598>
+								ucFlagError = 1;
+    3e70:	f0 93 68 00 	sts	0x0068, r31
+								break;
+    3e74:	2c c0       	rjmp	.+88     	; 0x3ece <main+0x5f0>
+							}
+						
+							boot_page_erase((uint32_t)ulPageBaseAddress);  // do a page erase
+    3e76:	23 e0       	ldi	r18, 0x03	; 3
+    3e78:	fb 01       	movw	r30, r22
+    3e7a:	20 93 57 00 	sts	0x0057, r18
+    3e7e:	e8 95       	spm
+							boot_spm_busy_wait();  // wait for page erase done
+    3e80:	07 b6       	in	r0, 0x37	; 55
+    3e82:	00 fc       	sbrc	r0, 0
+    3e84:	fd cf       	rjmp	.-6      	; 0x3e80 <main+0x5a2>
+							boot_page_write((uint32_t)ulPageBaseAddress);  // do a page write
+    3e86:	25 e0       	ldi	r18, 0x05	; 5
+    3e88:	fb 01       	movw	r30, r22
+    3e8a:	20 93 57 00 	sts	0x0057, r18
+    3e8e:	e8 95       	spm
+							boot_spm_busy_wait();  // wait for write completed
+    3e90:	07 b6       	in	r0, 0x37	; 55
+    3e92:	00 fc       	sbrc	r0, 0
+    3e94:	fd cf       	rjmp	.-6      	; 0x3e90 <main+0x5b2>
+							boot_rww_enable();  // reenable rww section again
+    3e96:	81 e1       	ldi	r24, 0x11	; 17
+    3e98:	80 93 57 00 	sts	0x0057, r24
+    3e9c:	e8 95       	spm
+						}
+						usartPutChar('*');  // * indicates a page write
+    3e9e:	8a e2       	ldi	r24, 0x2A	; 42
+    3ea0:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+						ulPageBaseAddress = 0xffffffff;
+    3ea4:	c0 92 63 00 	sts	0x0063, r12
+    3ea8:	d0 92 64 00 	sts	0x0064, r13
+    3eac:	e0 92 65 00 	sts	0x0065, r14
+    3eb0:	f0 92 66 00 	sts	0x0066, r15
+						usPageAddressOffset = 0;
+    3eb4:	10 92 81 00 	sts	0x0081, r1
+    3eb8:	10 92 80 00 	sts	0x0080, r1
+					}
+					
+				} while(!ucFlagError && !ucFlagEof);  // in case of retval or end of file
+    3ebc:	80 91 68 00 	lds	r24, 0x0068
+    3ec0:	81 11       	cpse	r24, r1
+    3ec2:	05 c0       	rjmp	.+10     	; 0x3ece <main+0x5f0>
+    3ec4:	80 91 62 00 	lds	r24, 0x0062
+    3ec8:	88 23       	and	r24, r24
+    3eca:	09 f4       	brne	.+2      	; 0x3ece <main+0x5f0>
+    3ecc:	80 ce       	rjmp	.-768    	; 0x3bce <main+0x2f0>
+				
+				// test on error and print + or -
+				if(!ucFlagError) {
+    3ece:	80 91 68 00 	lds	r24, 0x0068
+    3ed2:	81 11       	cpse	r24, r1
+    3ed4:	02 c0       	rjmp	.+4      	; 0x3eda <main+0x5fc>
+					usartPutChar('+');
+    3ed6:	8b e2       	ldi	r24, 0x2B	; 43
+    3ed8:	01 c0       	rjmp	.+2      	; 0x3edc <main+0x5fe>
+				
+				break;
+			
+			// no case found, so we return a fail indicator '-'
+			default:
+				usartPutChar('-');
+    3eda:	8d e2       	ldi	r24, 0x2D	; 45
+    3edc:	0e 94 41 1c 	call	0x3882	; 0x3882 <usartPutChar>
+    3ee0:	b7 cd       	rjmp	.-1170   	; 0x3a50 <main+0x172>
+
+00003ee2 <__eerd_byte_m16>:
+    3ee2:	e1 99       	sbic	0x1c, 1	; 28
+    3ee4:	fe cf       	rjmp	.-4      	; 0x3ee2 <__eerd_byte_m16>
+    3ee6:	9f bb       	out	0x1f, r25	; 31
+    3ee8:	8e bb       	out	0x1e, r24	; 30
+    3eea:	e0 9a       	sbi	0x1c, 0	; 28
+    3eec:	99 27       	eor	r25, r25
+    3eee:	8d b3       	in	r24, 0x1d	; 29
+    3ef0:	08 95       	ret
+
+00003ef2 <__eewr_block_m16>:
+    3ef2:	dc 01       	movw	r26, r24
+    3ef4:	cb 01       	movw	r24, r22
+    3ef6:	03 c0       	rjmp	.+6      	; 0x3efe <__eewr_block_m16+0xc>
+    3ef8:	2d 91       	ld	r18, X+
+    3efa:	0e 94 84 1f 	call	0x3f08	; 0x3f08 <__eewr_r18_m16>
+    3efe:	41 50       	subi	r20, 0x01	; 1
+    3f00:	50 40       	sbci	r21, 0x00	; 0
+    3f02:	d0 f7       	brcc	.-12     	; 0x3ef8 <__eewr_block_m16+0x6>
+    3f04:	08 95       	ret
+
+00003f06 <__eewr_byte_m16>:
+    3f06:	26 2f       	mov	r18, r22
+
+00003f08 <__eewr_r18_m16>:
+    3f08:	e1 99       	sbic	0x1c, 1	; 28
+    3f0a:	fe cf       	rjmp	.-4      	; 0x3f08 <__eewr_r18_m16>
+    3f0c:	9f bb       	out	0x1f, r25	; 31
+    3f0e:	8e bb       	out	0x1e, r24	; 30
+    3f10:	2d bb       	out	0x1d, r18	; 29
+    3f12:	0f b6       	in	r0, 0x3f	; 63
+    3f14:	f8 94       	cli
+    3f16:	e2 9a       	sbi	0x1c, 2	; 28
+    3f18:	e1 9a       	sbi	0x1c, 1	; 28
+    3f1a:	0f be       	out	0x3f, r0	; 63
+    3f1c:	01 96       	adiw	r24, 0x01	; 1
+    3f1e:	08 95       	ret
