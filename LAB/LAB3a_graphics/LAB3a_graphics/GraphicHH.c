@@ -83,22 +83,36 @@ const char capitalletters[] = {
 
 int main()
 {
+	DDRC = 0xFF;
+	
+	PORTC = 1;	
   DisplayInit();
   DisplayOn();
   ClearScreen();
   
+  
+  
   SetPixel (63,54);
+  //_delay_ms(5000);
   SetPixel (64,55);
+  //_delay_ms(5000);
   SetPixel (65,56); 
-  _delay_ms(1000);
+
+  //_delay_ms(5000);
 
   Draw_Horizontal_Line(7,11,100);
+
   Draw_Horizontal_Line(62,22,5);
+  
   Draw_Horizontal_Line(7,12,100);
+  
   Draw_Horizontal_Line(7,56,100);
-  _delay_ms(2000);
+  
+  _delay_ms(5000);
+  
    
   DisplayPic(capitalletters);
+  
   while(1)
   {}
 }
