@@ -38,12 +38,12 @@
 *.cywrk.*
 *.cyprj.*
 
-LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsnDebug/Export
-LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsnDebug/Release
-LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsnDebug/Debug
+LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn/Export
+LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn/Release
+LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn/Debug
 
-*\codegentemp\
-*/codegentemp/
+*\codegentemp
+*/codegentemp
 */Generated_Source
 *_datasheet.pdf
 *_timing.html
