@@ -34,6 +34,18 @@
 
 *.ini
 
+# PSOC
+*.cywrk.*
+*.cyprj.*
+*.cycdx
+*.cyfit
+*.rpt
+*.uvopt
+*.uvproj
+*_timing.html
+*.cydsn/codegentemp
+*.cydsn/Generated_Source
+
 LAB/*/Debug/*
 
 LAB/*/.vs/*
