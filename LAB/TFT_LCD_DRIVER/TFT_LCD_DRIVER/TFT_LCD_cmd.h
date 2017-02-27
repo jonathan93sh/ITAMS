@@ -35,4 +35,7 @@
 #define TFT_MEMORY_WRITE_CONTINUE 0x3C
 #define TFT_MEMORY_READ_CONTINUE 0x3E
 
+#define TFT_DPI 4
+#define TFT_DBI 0
+
 #endif /* TFT_LCD_CMD_H_ */

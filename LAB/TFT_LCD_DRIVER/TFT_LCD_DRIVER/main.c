@@ -6,11 +6,15 @@
  */ 
 
 #include <avr/io.h>
+#include "TFT_LCD.h"
 
 
 int main(void)
 {
     /* Replace with your application code */
+	
+	TFT_init();
+	
     while (1) 
     {
     }

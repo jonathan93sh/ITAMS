@@ -121,10 +121,19 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="TFT_LCD.c">
+    <Compile Include="TFT_LCD.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="TFT_LCD.h">
+    <Compile Include="TFT_LCD_cmd.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TFT_LCD_delay.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TFT_LCD_jonathan.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TFT_LCD_laimonas.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
