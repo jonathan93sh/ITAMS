@@ -14,11 +14,6 @@
 
 #define INPUT 0x00
 #define OUTPUT 0xFF
-#define DATA_IN PINA
-
-#define _NOP8 do{_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();}while(0)
-#define _NOP3 do{_NOP();_NOP();_NOP();}while(0)
-
 
 /**
  * renser alt hukommelse på skærm kontrolleren.
@@ -26,7 +21,7 @@
 **/
 void TFT_clear()
 {
-	TFT_write_data(TFT_SW_RESET);
+	TFT_write_com(TFT_SW_RESET);
 	_delay_ms(6); //wait MIN 5 ms
 }
 
@@ -46,9 +41,9 @@ void TFT_write_com(uint8_t com)
 	CONTROL_PORT &= ~(1<<DCX); //DCX 0 => command, DCX 1 = parameter/data
 	
 	CONTROL_PORT &= ~(1<<WRX);
-	_NOP();
+	TFT_DELAY_wcl;
 	CONTROL_PORT |= (1<<WRX);
-	_NOP();
+	TFT_DELAY_wch;
 	
 	CONTROL_PORT |= (1<<CSX)|(1<<DCX);
 
@@ -61,7 +56,7 @@ void TFT_write_com(uint8_t com)
  * | 7-0|
  * |data|
 **/
-uint8_t TFT_read_data(uint8_t data)
+void TFT_read_data(uint8_t *dataPtr)
 {
 	/*
 	RDX FM H duration MIN 90ns    
@@ -72,34 +67,38 @@ uint8_t TFT_read_data(uint8_t data)
 	RDX ID read min 160ns
 	*/
 	
-	uint8_t ReceivedData;
+// 	//TFT_write_com(0b0001);
+// 	CONTROL_PORT = 0b10001;
+// 	TFT_DELAY_trcsfm;
+// 	*dataPtr = DATA_PIN;
+// 	//TFT_write_com(0b0011);
+// 	CONTROL_PORT = 0b10011;
+// 	TFT_DELAY_trdhfm;
+// 	TFT_DELAY_tcsf;
 	
 	DATA_DDR = INPUT;
 	
 	CONTROL_PORT &= ~(1<<CSX);
 	CONTROL_PORT |= (1<<WRX)|(1<<DCX);
 	
-	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm min 355ns, 6 cycles ved 16MHz = 375ns
-	_NOP3;
-	_NOP3;
+	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm min 355ns
+	TFT_DELAY_trcsfm;
+
 	CONTROL_PORT |= (1<<RDX); //dummy read;
 	_NOP();
 	_NOP();
 	
 	CONTROL_PORT &= ~(1<<RDX); //prepare for actual read
-	_NOP3;
-	_NOP3;
+	TFT_DELAY_trcsfm;
+
 	CONTROL_PORT = (1<<RDX);
 	//maybe read here
-	_NOP();
-	_NOP();
+	TFT_DELAY_trdhfm;
 	
-	ReceivedData = DATA_IN; //DATA_IN
+	*dataPtr = DATA_PIN;
 	_NOP();
 	
 	CONTROL_PORT |= (1<<CSX);
-	
-	return ReceivedData;
 }
 
 

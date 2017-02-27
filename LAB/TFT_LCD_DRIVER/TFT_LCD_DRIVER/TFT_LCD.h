@@ -77,7 +77,7 @@ void TFT_init(); // j
  * |data|
 **/
 
-uint8_t TFT_read_data(uint8_t data); // L
+void TFT_read_data(uint8_t *dataPtr); // L
 /**
  * Tilskrive til skærmen, ved først at sende kommando og eventuelt data efterfølgende.
  * datasize = er længden af data.

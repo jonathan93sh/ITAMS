@@ -18,7 +18,7 @@
 #define TFT_DELAY_wcl do {_NOP();} while (0)
 #define TFT_DELAY_wch do {_NOP();} while (0)
 
-#define TFT_DELAY_trcsfm do {_NOP();_NOP();_NOP();_NOP();_NOP();} while (0)
-#define TFT_DELAY_trdhfm do {_NOP();_NOP();} while (0)
+#define TFT_DELAY_trcsfm do {_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();_NOP();} while (0) //min 355=> 9 cycles
+#define TFT_DELAY_trdhfm do {_NOP();_NOP();_NOP();} while (0) //min 90 => 3 cycles
 
 #endif /* TFT_LCD_DELAY_H_ */

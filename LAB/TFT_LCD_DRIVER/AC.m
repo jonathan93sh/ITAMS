@@ -1,11 +1,11 @@
-F_CPU = 12000000;
+F_CPU = 24*10^6;
 
 T_CPU = F_CPU^-1;
 
 ns = 10^-9;
 
 tcs = 15*ns;
-twcl = 0
+twcl = 30*ns;
 twch =0
 twc  =0
 
