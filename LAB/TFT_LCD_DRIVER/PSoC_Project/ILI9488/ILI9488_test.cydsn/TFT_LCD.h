@@ -5,11 +5,11 @@
  *  Author: jonathan
  */ 
 
-#include <stddef.h>
+#include "project.h"
 
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
-
+/*
 #define DATA_PORT	PORTC	
 #define CONTROL_PORT PORTB
 
@@ -26,7 +26,7 @@
 #define DCX 2//eller RS
 #define CSX 3
 #define RST 4
-
+*/
 /**
  * Klargøre skærmen
 **/
@@ -43,7 +43,7 @@ void TFT_init(); // j
  * 0 => off
  * 1 => on
 **/
-//void TFT_Screen(uint8_t on); // J
+//void TFT_Screen(uint8 on); // J
 /**
  * renser alt hukommelse på skærm kontrolleren.
  * reset værdi er 255:255:255 rgb
@@ -52,11 +52,11 @@ void TFT_init(); // j
 /**
  * sætter en enkel pixel.
 **/
-//void setPixel(uint8_t red, uint8_t green, uint8_t blue); // L
+//void setPixel(uint8 red, uint8 green, uint8 blue); // L
 /**
  * sætter et array af pixels.
 **/
-//void setPixels(uint8_t * red, uint8_t * green, uint8_t * blue, size_t len); // J
+//void setPixels(uint8 * red, uint8 * green, uint8 * blue, size_t len); // J
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -67,30 +67,30 @@ void TFT_init(); // j
  * |7    -  |--4|--3|--2|--1|--0|
  * |--------|RST|CSX|DCX|RDX|WRX|
 **/
-//void TFT_write_com(uint8_t com); //L
+//void TFT_write_com(uint8 com); //L
 /**
  * Brugest til at styre den port der bruges til data.
  * | 7-0|
  * |data|
 **/
-//void TFT_write_data(uint8_t data); //J
+//void TFT_write_data(uint8 data); //J
 /**
  * Brugest til at aflæse data fra data porten.
  * | 7-0|
  * |data|
 **/
 
-void TFT_read_data(uint8_t *dataPtr); // L
+//void TFT_read_data(uint8 *dataPtr); // L
 /**
  * Tilskrive til skærmen, ved først at sende kommando og eventuelt data efterfølgende.
  * datasize = er længden af data.
 **/
-void TFT_write_data(uint8_t cmd, uint8_t *data, size_t datasize); //J
+void TFT_write_data(uint8 cmd, uint8 *data, size_t datasize); //J
 /**
  * Bruges til at aflæse fra skærmen eventuelt status beskeder.
  * return er længden af hvor data der er hentet.
 **/
-size_t TFT_read_data(uint8_t cmd, uint8_t *dataOut, size_t bufSize); //J
+size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize); //J
 /**
  * sætter Column adresse.
 **/

@@ -25,7 +25,7 @@ void TFT_clear()
  * |7    -  |--4|--3|--2|--1|--0|
  * |--------|RST|CSX|DCX|RDX|WRX|
 **/
-void TFT_write_com(uint8_t com)
+void TFT_write_com(uint8 com)
 {
 	DATA_PORT = com;
 	DATA_DDR = OUTPUT;
@@ -52,7 +52,7 @@ void TFT_write_com(uint8_t com)
  * | 7-0|
  * |data|
 **/
-void TFT_read_data(uint8_t *dataPtr) //Remember to do a dummy read first!
+void TFT_read_data(uint8 *dataPtr) //Remember to do a dummy read first!
 {
 	DATA_DDR = INPUT;
 	
@@ -93,7 +93,7 @@ void TFT_setPageAddress(unsigned addr)
 /**
  * sætter en enkel pixel.
 **/
-void setPixel(uint8_t red, uint8_t green, uint8_t blue)
+void setPixel(uint8 red, uint8 green, uint8 blue)
 {
 	
 }

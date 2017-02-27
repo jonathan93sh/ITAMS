@@ -10,7 +10,7 @@
  * ========================================
 */
 #include "project.h"
-#include "TFT_LCD.h"
+//#include "TFT_LCD.h"
 
 int main(void)
 {
@@ -18,7 +18,7 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
 
-    TFT_init();
+    //TFT_init();
     
     for(;;)
     {
