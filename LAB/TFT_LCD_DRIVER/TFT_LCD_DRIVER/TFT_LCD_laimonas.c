@@ -40,7 +40,7 @@ void TFT_write_com(uint8_t com)
 	CONTROL_PORT &= ~(1<<CSX);
 	CONTROL_PORT &= ~(1<<DCX); //DCX 0 => command, DCX 1 = parameter/data
 	
-	CONTROL_PORT &= ~(1<<WRX);
+	CONTROL_PORT &= ~(1<<WRX); //command sent
 	TFT_DELAY_wcl;
 	CONTROL_PORT |= (1<<WRX);
 	TFT_DELAY_wch;
@@ -58,47 +58,20 @@ void TFT_write_com(uint8_t com)
 **/
 void TFT_read_data(uint8_t *dataPtr)
 {
-	/*
-	RDX FM H duration MIN 90ns    
-	RDX FM L duration MIN 355ns 
-	RDX ID H duration MIN 90ns
-	RDX ID L duration min 45ns
-	RDX FM read min 450ns
-	RDX ID read min 160ns
-	*/
-	
-// 	//TFT_write_com(0b0001);
-// 	CONTROL_PORT = 0b10001;
-// 	TFT_DELAY_trcsfm;
-// 	*dataPtr = DATA_PIN;
-// 	//TFT_write_com(0b0011);
-// 	CONTROL_PORT = 0b10011;
-// 	TFT_DELAY_trdhfm;
-// 	TFT_DELAY_tcsf;
-	
 	DATA_DDR = INPUT;
 	
 	CONTROL_PORT &= ~(1<<CSX);
 	CONTROL_PORT |= (1<<WRX)|(1<<DCX);
 	
-	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm min 355ns
+	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm<=>trcsfm, min 355ns
 	TFT_DELAY_trcsfm;
-
-	CONTROL_PORT |= (1<<RDX); //dummy read;
-	_NOP();
-	_NOP();
-	
-	CONTROL_PORT &= ~(1<<RDX); //prepare for actual read
-	TFT_DELAY_trcsfm;
-
-	CONTROL_PORT = (1<<RDX);
-	//maybe read here
-	TFT_DELAY_trdhfm;
 	
 	*dataPtr = DATA_PIN;
-	_NOP();
 	
+	CONTROL_PORT = (1<<RDX);
+	TFT_DELAY_trdhfm;
 	CONTROL_PORT |= (1<<CSX);
+	TFT_DELAY_tcsf;
 }
 
 
