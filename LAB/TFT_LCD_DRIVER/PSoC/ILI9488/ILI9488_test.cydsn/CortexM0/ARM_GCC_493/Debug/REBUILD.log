@@ -1,9 +1,11 @@
---------------- Rebuild Started: 02/27/2017 14:43:35 Project: ILI9488_test, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
-Deleting file ".\CortexM0\ARM_GCC_493\Debug\main.o"
+--------------- Rebuild Started: 02/27/2017 14:59:37 Project: ILI9488_test, Configuration: ARM GCC 4.9-2015-q1-update Debug ---------------
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\ILI9488_test.map"
 Deleting file ".\ILI9488_test.cycdx"
 Deleting file ".\ILI9488_test.svd"
 Deleting file ".\ILI9488_test.rpt"
 Deleting file ".\ILI9488_test_timing.html"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\.deps\SOURCE_C__ARM_GCC_GENERIC.P"
+Deleting file ".\CortexM0\ARM_GCC_493\Debug\.deps\SOURCE_ASM__ARM_GCC_GENERIC.P"
 cydsfit.exe -.appdatapath "C:\Users\Studie-PC\AppData\Local\Cypress Semiconductor\PSoC Creator\4.0" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p C:\Users\Studie-PC\Documents\GitHub\ITAMS\LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn\ILI9488_test.cyprj -d CY8C4245AXI-483 -s C:\Users\Studie-PC\Documents\GitHub\ITAMS\LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn\Generated_Source\PSoC4 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 Elaborating Design...
 HDL Generation...
@@ -30,4 +32,4 @@ TFT_LCD.h:83:6: note: previous declaration of 'TFT_read_data' was here
  void TFT_read_data(uint8_t *dataPtr); // L
       ^
 The command 'arm-none-eabi-gcc.exe' failed with exit code '1'.
---------------- Rebuild Failed: 02/27/2017 14:43:50 ---------------
+--------------- Rebuild Failed: 02/27/2017 14:59:51 ---------------

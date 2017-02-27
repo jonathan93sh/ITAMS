@@ -1,8 +1,0 @@
-C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/CyBootAsmGnu.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfittergnu.inc 
-
-C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyBootAsmGnu.s : 
-
-C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevicegnu_trm.inc : 
-
-C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfittergnu.inc : 
-
