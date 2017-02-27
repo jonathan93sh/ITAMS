@@ -37,14 +37,17 @@
 # PSOC
 *.cywrk.*
 *.cyprj.*
+
+*/codegentemp
+*/Generated_Source
+*_datasheet.pdf
+*_timing.html
 *.cycdx
 *.cyfit
 *.rpt
-*.uvopt
-*.uvproj
-*_timing.html
-*.cydsn/codegentemp
-*.cydsn/Generated_Source
+*.svd
+
+
 
 LAB/*/Debug/*
 
