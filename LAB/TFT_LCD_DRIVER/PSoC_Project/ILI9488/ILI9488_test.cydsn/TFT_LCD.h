@@ -100,5 +100,10 @@ size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize); //J
 **/
 //void TFT_setPageAddress(unsigned addr); // L
 
+void execute_cmd(uint8 cmd);
+void send_data(uint8 data);
+void receive_data(uint8 *dataPtr);
+void TFT_test();
+
 
 #endif /* TFT_LCD_H_ */

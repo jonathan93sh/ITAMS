@@ -30,21 +30,25 @@ void execute_cmd(uint8 cmd)
     DDR_DATA_Write(0xFF); //make to output
     PORT_DATA_Write(cmd);	
     
-    LCD_RD_Write(1);
     LCD_CS_Write(0);
+    //LCD_RD_Write(1);
+    //CyDelayUs(1);
     LCD_RS_Write(0);//RS 0 => command, DCX 1 = parameter/data
 	TFT_DELAY_tcs;
-	
+	//CyDelayUs(1);
     LCD_WR_Write(0);//command sent
 	TFT_DELAY_wcl;
+    //CyDelayUs(1);
     LCD_WR_Write(1);
 	TFT_DELAY_wch;
-	
+    //CyDelayUs(1);
+	LCD_RS_Write(1);
+    //CyDelayUs(1);
     LCD_CS_Write(1);
-    LCD_RS_Write(1);
+    
 	TFT_DELAY_tcs;
 	
-    PORT_DATA_Write(0x00); //make input again
+    DDR_DATA_Write(0x00); //make input again
 }
 
 void send_data(uint8 data)
@@ -52,20 +56,21 @@ void send_data(uint8 data)
     DDR_DATA_Write(0xFF); //make to output
     PORT_DATA_Write(data);	
     
-    LCD_RD_Write(1);
     LCD_CS_Write(0);
-    LCD_RS_Write(1);//RS 0 => command, DCX 1 => data
+    //LCD_RD_Write(1);
+    //LCD_RS_Write(1);//RS 0 => command, DCX 1 => data
 	TFT_DELAY_tcs;
-	
+	//CyDelayUs(1);
     LCD_WR_Write(0);//command sent
 	TFT_DELAY_wcl;
+    //CyDelayUs(1);
     LCD_WR_Write(1);
 	TFT_DELAY_wch;
-	
+	//CyDelayUs(1);
     LCD_CS_Write(1);
 	TFT_DELAY_tcs;
 	
-    PORT_DATA_Write(0x00); //make input again
+    DDR_DATA_Write(0x00); //make input again
 }
 
 
@@ -81,17 +86,18 @@ void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
     PORT_DATA_Write(0x00);
 
     LCD_CS_Write(0);
-    LCD_WR_Write(1);
-    LCD_RS_Write(1);
+    //LCD_WR_Write(1);
+    //LCD_RS_Write(1);
 	TFT_DELAY_tcs;
-	
+	//CyDelayUs(1);
     LCD_RD_Write(0); //t_rdlfm<=>trcsfm, min 355ns
 	TFT_DELAY_trcsfm;
-	
+	//CyDelayUs(1);
 	*dataPtr = PIN_DATA_Read();
 	
     LCD_RD_Write(1);
 	TFT_DELAY_trdhfm;
+    //CyDelayUs(1);
     LCD_CS_Write(1);
 	TFT_DELAY_tcsf;
 }
@@ -100,19 +106,19 @@ void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
 /**
  * sætter Column adresse.
 **/
-void TFT_setColumnAddress(unsigned addr)
+/*void TFT_setColumnAddress(unsigned addr)
 {
 	
-}
+}*/
 
 
 /**
  * sætter page adresse.
 **/
-void TFT_setPageAddress(unsigned addr)
+/*void TFT_setPageAddress(unsigned addr)
 {
 	
-}
+}*/
 
 
 /**
