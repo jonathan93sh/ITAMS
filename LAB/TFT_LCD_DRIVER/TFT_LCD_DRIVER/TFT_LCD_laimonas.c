@@ -33,6 +33,7 @@ void TFT_write_com(uint8_t com)
 	CONTROL_PORT |= (1<<RDX);
 	CONTROL_PORT &= ~(1<<CSX);
 	CONTROL_PORT &= ~(1<<DCX); //DCX 0 => command, DCX 1 = parameter/data
+	TFT_DELAY_tcs;
 	
 	CONTROL_PORT &= ~(1<<WRX); //command sent
 	TFT_DELAY_wcl;
@@ -40,7 +41,8 @@ void TFT_write_com(uint8_t com)
 	TFT_DELAY_wch;
 	
 	CONTROL_PORT |= (1<<CSX)|(1<<DCX);
-
+	TFT_DELAY_tcs;
+	
 	DATA_DDR = INPUT;
 }
 
@@ -56,6 +58,7 @@ void TFT_read_data(uint8_t *dataPtr) //Remember to do a dummy read first!
 	
 	CONTROL_PORT &= ~(1<<CSX);
 	CONTROL_PORT |= (1<<WRX)|(1<<DCX);
+	TFT_DELAY_tcs;
 	
 	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm<=>trcsfm, min 355ns
 	TFT_DELAY_trcsfm;
