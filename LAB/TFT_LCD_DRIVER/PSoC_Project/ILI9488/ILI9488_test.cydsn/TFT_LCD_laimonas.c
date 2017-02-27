@@ -15,7 +15,7 @@
 **/
 void TFT_clear()
 {
-	TFT_write_com(TFT_SW_RESET);
+	execute_cmd(TFT_SW_RESET);
 	_delay_ms(6); //wait MIN 5 ms
 }
 
@@ -25,25 +25,26 @@ void TFT_clear()
  * |7    -  |--4|--3|--2|--1|--0|
  * |--------|RST|CSX|DCX|RDX|WRX|
 **/
-void TFT_write_com(uint8 com)
+void execute_cmd(uint8 cmd)
 {
-	DATA_PORT = com;
-	DATA_DDR = OUTPUT;
-	
-	CONTROL_PORT |= (1<<RDX);
-	CONTROL_PORT &= ~(1<<CSX);
-	CONTROL_PORT &= ~(1<<DCX); //DCX 0 => command, DCX 1 = parameter/data
+    DDR_DATA_Write(0xFF); //make to output
+    PORT_DATA_Write(cmd);	
+    
+    LCD_RD_Write(1);
+    LCD_CS_Write(0);
+    LCD_RS_Write(0);//RS 0 => command, DCX 1 = parameter/data
 	TFT_DELAY_tcs;
 	
-	CONTROL_PORT &= ~(1<<WRX); //command sent
+    LCD_WR_Write(0);//command sent
 	TFT_DELAY_wcl;
-	CONTROL_PORT |= (1<<WRX);
+    LCD_WR_Write(1);
 	TFT_DELAY_wch;
 	
-	CONTROL_PORT |= (1<<CSX)|(1<<DCX);
+    LCD_CS_Write(1);
+    LCD_RS_Write(1);
 	TFT_DELAY_tcs;
 	
-	DATA_DDR = INPUT;
+    PORT_DATA_Write(0x00); //make input again
 }
 
 
@@ -52,22 +53,25 @@ void TFT_write_com(uint8 com)
  * | 7-0|
  * |data|
 **/
-void TFT_read_data(uint8 *dataPtr) //Remember to do a dummy read first!
+void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
 {
-	DATA_DDR = INPUT;
-	
-	CONTROL_PORT &= ~(1<<CSX);
-	CONTROL_PORT |= (1<<WRX)|(1<<DCX);
+    //Read_enable_Write(1);
+    
+    PORT_DATA_Write(0x00);
+
+    LCD_CS_Write(0);
+    LCD_WR_Write(1);
+    LCD_RS_Write(1);
 	TFT_DELAY_tcs;
 	
-	CONTROL_PORT &= ~(1<<RDX); //t_rdlfm<=>trcsfm, min 355ns
+    LCD_RD_Write(0); //t_rdlfm<=>trcsfm, min 355ns
 	TFT_DELAY_trcsfm;
 	
-	*dataPtr = DATA_PIN;
+	*dataPtr = PIN_DATA_Read();
 	
-	CONTROL_PORT = (1<<RDX);
+    LCD_RD_Write(1);
 	TFT_DELAY_trdhfm;
-	CONTROL_PORT |= (1<<CSX);
+    LCD_CS_Write(1);
 	TFT_DELAY_tcsf;
 }
 
