@@ -18,6 +18,9 @@
 #define DATA_DDR DDRC
 #define CONTROL_DDR DDRB
 
+#define INPUT 0x00
+#define OUTPUT 0xFF
+
 #define WRX 0
 #define RDX 1
 #define DCX 2//eller RS

@@ -8,12 +8,6 @@
 #include "TFT_LCD.h"
 #include "TFT_LCD_cmd.h"
 #include "TFT_LCD_delay.h"
-#include "avr/delay.h"
-#include "avr/cpufunc.h"
-
-
-#define INPUT 0x00
-#define OUTPUT 0xFF
 
 /**
  * renser alt hukommelse på skærm kontrolleren.
@@ -56,7 +50,7 @@ void TFT_write_com(uint8_t com)
  * | 7-0|
  * |data|
 **/
-void TFT_read_data(uint8_t *dataPtr)
+void TFT_read_data(uint8_t *dataPtr) //Remember to do a dummy read first!
 {
 	DATA_DDR = INPUT;
 	

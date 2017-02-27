@@ -8,9 +8,6 @@
 #include "TFT_LCD_cmd.h"
 #include "TFT_LCD_delay.h"
 
-#define INPUT 0x00
-#define OUTPUT 0xFF
-
 void execute_cmd(uint8_t cmd)
 {
 	DATA_PORT = cmd;
