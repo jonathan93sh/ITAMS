@@ -16,7 +16,7 @@
 void TFT_clear()
 {
 	execute_cmd(TFT_SW_RESET);
-	_delay_ms(6); //wait MIN 5 ms
+    CyDelay(6);//wait MIN 5 ms
 }
 
 
@@ -42,6 +42,27 @@ void execute_cmd(uint8 cmd)
 	
     LCD_CS_Write(1);
     LCD_RS_Write(1);
+	TFT_DELAY_tcs;
+	
+    PORT_DATA_Write(0x00); //make input again
+}
+
+void send_data(uint8 data)
+{
+    DDR_DATA_Write(0xFF); //make to output
+    PORT_DATA_Write(data);	
+    
+    LCD_RD_Write(1);
+    LCD_CS_Write(0);
+    LCD_RS_Write(1);//RS 0 => command, DCX 1 => data
+	TFT_DELAY_tcs;
+	
+    LCD_WR_Write(0);//command sent
+	TFT_DELAY_wcl;
+    LCD_WR_Write(1);
+	TFT_DELAY_wch;
+	
+    LCD_CS_Write(1);
 	TFT_DELAY_tcs;
 	
     PORT_DATA_Write(0x00); //make input again
