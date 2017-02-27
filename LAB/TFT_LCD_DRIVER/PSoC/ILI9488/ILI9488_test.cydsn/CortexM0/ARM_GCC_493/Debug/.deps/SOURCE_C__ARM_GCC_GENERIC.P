@@ -1,0 +1,174 @@
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/Cm0Start.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Cm0Start.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/cyapicallbacks.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Cm0Start.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/cyapicallbacks.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/CyFlash.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/CyLFClk.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/CyLib.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/DATA.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/DATA_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/DDR_DATA.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/DDR_DATA_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_CS.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_CS_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RD.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RD_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RS.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RST.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RST_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_RS_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_WR.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_WR_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_protected_RS.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_aliases.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/LCD_protected_RS_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/Read_enable.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/Read_enable_PM.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable_PM.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable_PM.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/cyPm.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyPm.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyPm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyPm.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyPm.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/cyfitter_cfg.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/cyapicallbacks.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/cymetadata.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cymetadata.c C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cymetadata.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/cyutils.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyutils.c 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyutils.c : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/CortexM0/ARM_GCC_493/Debug/main.o : C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cmsis_armcc.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cmsis_gcc.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cm0.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cm0_psoc4.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cmFunc.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cmInstr.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydisabledsheets.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/project.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyFlash.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLFClk.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/CyLib.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DATA_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/DDR_DATA.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_CS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RD_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_RST_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_WR_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/LCD_protected_RS_aliases.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/Read_enable.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyPm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydevice_trm.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cyfitter_cfg.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cypins.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cytypes.h C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/main.c 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cmsis_armcc.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cmsis_gcc.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cm0.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cm0_psoc4.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cmFunc.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/core_cmInstr.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/cydisabledsheets.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/Generated_Source/PSoC4/project.h : 
+
+C:/git/ITAMS/LAB/TFT_LCD_DRIVER/PSoC/ILI9488/ILI9488_test.cydsn/main.c : 
+

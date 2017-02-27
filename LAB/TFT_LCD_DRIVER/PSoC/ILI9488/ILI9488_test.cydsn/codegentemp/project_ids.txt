@@ -1,0 +1,5 @@
+C:\git\ITAMS\LAB\TFT_LCD_DRIVER\PSoC\ILI9488\ILI9488_test.cydsn\ILI9488_test.cyprj|0d708cd4-c653-424e-a3e1-2173dbf5a97e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|b32996b9-71c5-4a57-a0c7-33427ea7e85a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|b4a85bed-e2a0-4e85-b714-d70ed3147929
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|65f4c4ea-9d2e-4b96-8455-d7512d1bcef6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.0\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|7a2c9f20-4db6-400d-bbc9-bd42d578cf56
