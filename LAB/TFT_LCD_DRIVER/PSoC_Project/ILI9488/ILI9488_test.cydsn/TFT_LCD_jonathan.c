@@ -88,6 +88,11 @@ size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize)
 
 void TFT_init()
 {
+    
+    
+    
+    DDR_DATA_Write(0xFF);
+    
 	DDRA = OUTPUT;
 	PORTA = ~(0b01);
 	_delay_ms(500);

@@ -1,5 +1,5 @@
 # PSoC creator
-*.cydsn/CortexM3
+*.cydsn/CortexM0
 *.cywrk.*
 *.cyprj.*
 *.cycdx
