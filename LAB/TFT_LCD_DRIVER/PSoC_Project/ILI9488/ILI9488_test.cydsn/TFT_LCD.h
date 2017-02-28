@@ -2,12 +2,10 @@
  * TFT_LCD.h
  *
  * Created: 19-02-2017 20:21:42
- *  Author: jonathan
+ *  Author: Group 11 (Laimonas, Jonathan)
  */ 
 
 #include "project.h"
-
-
 
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
@@ -22,7 +20,7 @@ struct Color
     uint8 R;
     uint8 G;
     uint8 B;
-}
+};
     
 struct graph_object
 {
@@ -129,9 +127,11 @@ size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize); //J
 **/
 //void TFT_setPageAddress(unsigned addr); // L
 
+/*
 void execute_cmd(uint8 cmd);
 void send_data(uint8 data);
 void receive_data(uint8 *dataPtr);
+*/
 void TFT_test();
 
 
