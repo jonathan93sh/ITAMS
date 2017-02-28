@@ -32,7 +32,7 @@ void execute_cmd(uint8 cmd)
     //PORT_DATA_Write(cmd);	
     PORT_DATA = cmd;
     
-    LCD_CS_Write(0);
+    //LCD_CS_Write(0);
     //LCD_RD_Write(1);
     //CyDelayUs(1);
     LCD_RS_Write(0);//RS 0 => command, DCX 1 = parameter/data
@@ -46,7 +46,7 @@ void execute_cmd(uint8 cmd)
     //CyDelayUs(1);
 	LCD_RS_Write(1);
     //CyDelayUs(1);
-    LCD_CS_Write(1);
+    //LCD_CS_Write(1);
     
 	//TFT_DELAY_tcs;
 	
@@ -56,26 +56,30 @@ void execute_cmd(uint8 cmd)
 
 void send_data(uint8 data)
 {
-    DDR_DATA = 0xFF;
+    //DDR_DATA = 0xFF;
     //DDR_DATA_Write(0xFF); //make to output
     //PORT_DATA_Write(data);	
     PORT_DATA = data;
     
-    LCD_CS_Write(0);
+    //LCD_CS_Write(0);
     //LCD_RD_Write(1);
     //LCD_RS_Write(1);//RS 0 => command, DCX 1 => data
 	//TFT_DELAY_tcs;
 	//CyDelayUs(1);
-    LCD_WR_Write(0);//command sent
+    //LCD_WR_Write(0);//command sent
+    PORT_WR = 0;
+    _NOP();
 	//TFT_DELAY_wcl;
     //CyDelayUs(1);
-    LCD_WR_Write(1);
+    //LCD_WR_Write(1);
+    PORT_WR = 1;
+    //_NOP();
 	//TFT_DELAY_wch;
 	//CyDelayUs(1);
-    LCD_CS_Write(1);
+    //LCD_CS_Write(1);
 	//TFT_DELAY_tcs;
 	
-    DDR_DATA = 0x00;
+    //DDR_DATA = 0x00;
     //DDR_DATA_Write(0x00); //make input again
 }
 
@@ -91,7 +95,7 @@ void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
     PORT_DATA = 0x00;
     //PORT_DATA_Write(0x00);
 
-    LCD_CS_Write(0);
+    //LCD_CS_Write(0);
     //LCD_WR_Write(1);
     //LCD_RS_Write(1);
 	//TFT_DELAY_tcs;
@@ -104,7 +108,7 @@ void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
     LCD_RD_Write(1);
 	TFT_DELAY_trdhfm;
     //CyDelayUs(1);
-    LCD_CS_Write(1);
+    //LCD_CS_Write(1);
 	//TFT_DELAY_tcsf;
 }
 

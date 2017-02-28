@@ -15,13 +15,27 @@
 #define PORT_DATA PORT_DATA_Control
 #define DDR_DATA DDR_DATA_Control
 #define PIN_DATA PIN_DATA_Status
-
 #define PORT_WR LCD_WR_Control
+
+struct Color
+{
+    uint8 R;
+    uint8 G;
+    uint8 B;
+}
+    
+struct graph_object
+{
+           
+};
+    
+/*
+
 #define PORT_RS LCD_RS_Control
 #define PORT_CS LCD_CS_Control
 #define PORT_RD LCD_RD_Control
 #define PORT_RST LCD_RST_Control   
-    
+*/    
     
     
 /*

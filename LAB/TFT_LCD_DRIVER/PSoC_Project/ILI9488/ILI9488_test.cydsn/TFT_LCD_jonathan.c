@@ -16,12 +16,15 @@
 void TFT_write_data(uint8 cmd, uint8 *data, size_t datasize)
 {
     size_t i;
+    LCD_CS_Write(0);
 	execute_cmd(cmd);
-	
+	DDR_DATA = 0xFF;
 	for (i = 0; i < datasize; i++)
 	{
 		send_data(data[i]);
 	}
+    DDR_DATA = 0x00;
+    LCD_CS_Write(1);
 }
 /**
  * Bruges til at aflæse fra skærmen eventuelt status beskeder.
@@ -30,6 +33,7 @@ void TFT_write_data(uint8 cmd, uint8 *data, size_t datasize)
 size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize)
 {
     size_t i;
+    LCD_CS_Write(0);
 	execute_cmd(cmd);
 
 	uint8 dummy;
@@ -38,6 +42,7 @@ size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize)
 	{
 		receive_data(dataOut + i);
 	}
+    LCD_CS_Write(1);
 	return bufSize; //todo fix
 }
 
@@ -77,8 +82,11 @@ void TFT_test()
         TFT_setColumnAddress(0,320u-(1u));
         TFT_setPageAddress(0,((uint16)480u)-(1u));
         //TFT_write_data(TFT_ALL_PIXEL_OFF, NULL,0);
+        LCD_CS_Write(0);
         execute_cmd(TFT_MEMORY_WRITE);
         
+        
+        DDR_DATA = 0xFF;
     	for (i=0; i<153600lu*1; i++)	
         {
             
@@ -86,6 +94,8 @@ void TFT_test()
             send_data((G<<5)|(B));
 
         }
+        DDR_DATA = 0x00;
+        LCD_CS_Write(1);
         //TFT_write_data(TFT_ALL_PIXEL_ON, NULL,0);
         
     	R = (R+7)%32;
