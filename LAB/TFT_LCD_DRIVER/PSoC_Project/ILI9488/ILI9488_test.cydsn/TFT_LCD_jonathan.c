@@ -85,7 +85,6 @@ void TFT_test()
         LCD_CS_Write(0);
         execute_cmd(TFT_MEMORY_WRITE);
         
-        
         DDR_DATA = 0xFF;
     	for (i=0; i<153600lu*1; i++)	
         {
@@ -105,6 +104,33 @@ void TFT_test()
     
     
 }
+
+void TFT_start_print()
+{
+    LCD_CS_Write(0);
+    execute_cmd(TFT_MEMORY_WRITE);
+    DDR_DATA = 0xFF;
+}
+
+void TFT_write_print(uint8 R, uint8 G, uint8 B, unsigned N)
+{
+    uint8 MSB = (R<<3)|(G>>3);
+    uint8 LSB = (G<<5)|(B);
+    unsigned i;
+    
+    for(i = 0; i < N; i++)
+    {
+        send_data(MSB);
+        send_data(LSB);
+    }
+}
+
+void TFT_end_print()
+{
+    DDR_DATA = 0x00;
+    LCD_CS_Write(1);
+}
+
 
 void TFT_init()
 {
@@ -170,3 +196,5 @@ void TFT_init()
     while(1);
 */
 }
+
+

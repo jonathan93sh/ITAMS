@@ -17,17 +17,7 @@
 #define PIN_DATA PIN_DATA_Status
 #define PORT_WR LCD_WR_Control
 
-struct Color
-{
-    uint8 R;
-    uint8 G;
-    uint8 B;
-}
-    
-struct graph_object
-{
-           
-};
+
     
 /*
 
@@ -60,7 +50,10 @@ struct graph_object
  * Klargøre skærmen
 **/
 void TFT_init(); // j
-
+void TFT_start_print();
+void TFT_write_print(uint8 R, uint8 G, uint8 B, unsigned N);
+void TFT_end_print();
+void TFT_setWindow(unsigned x_start, unsigned x_end, unsigned y_start, unsigned y_end);
 /**
  * sætter positionen på en bestemt pixel.
  * x = vandret
