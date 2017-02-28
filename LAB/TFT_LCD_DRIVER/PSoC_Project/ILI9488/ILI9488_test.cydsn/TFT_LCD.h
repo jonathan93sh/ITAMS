@@ -7,8 +7,23 @@
 
 #include "project.h"
 
+
+
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
+    
+#define PORT_DATA PORT_DATA_Control
+#define DDR_DATA DDR_DATA_Control
+#define PIN_DATA PIN_DATA_Status
+
+#define PORT_WR LCD_WR_Control
+#define PORT_RS LCD_RS_Control
+#define PORT_CS LCD_CS_Control
+#define PORT_RD LCD_RD_Control
+#define PORT_RST LCD_RST_Control   
+    
+    
+    
 /*
 #define DATA_PORT	PORTC	
 #define CONTROL_PORT PORTB

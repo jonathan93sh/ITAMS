@@ -76,7 +76,7 @@ void TFT_test()
     {
         TFT_setColumnAddress(0,320u-(1u));
         TFT_setPageAddress(0,((uint16)480u)-(1u));
-        
+        //TFT_write_data(TFT_ALL_PIXEL_OFF, NULL,0);
         execute_cmd(TFT_MEMORY_WRITE);
         
     	for (i=0; i<153600lu*1; i++)	
@@ -86,6 +86,7 @@ void TFT_test()
             send_data((G<<5)|(B));
 
         }
+        //TFT_write_data(TFT_ALL_PIXEL_ON, NULL,0);
         
     	R = (R+7)%32;
     	G = (R+9)%64;
