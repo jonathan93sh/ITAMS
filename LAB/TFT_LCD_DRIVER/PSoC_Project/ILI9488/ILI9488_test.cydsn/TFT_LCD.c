@@ -232,15 +232,15 @@ void TFT_clear()
     
 /**
  * sætter positionen på en bestemt pixel.
- * x_start = lodret start position
- * x_end = lodret slut position
- * y_start = vandret start
- * y_slut = vandret slut
+ * x_start = vandret start position
+ * x_end = vandret slut position
+ * y_start = lodret start
+ * y_slut = lodret slut
 **/
 void TFT_setWindow(unsigned x_start, unsigned x_end, unsigned y_start, unsigned y_end)
 {
-  TFT_setColumnAddress(x_start,x_end);
-  TFT_setPageAddress(y_start,y_end);
+  TFT_setColumnAddress(y_start,y_end);
+  TFT_setPageAddress(x_start,x_end);
 }
 
 /* [] END OF FILE */
