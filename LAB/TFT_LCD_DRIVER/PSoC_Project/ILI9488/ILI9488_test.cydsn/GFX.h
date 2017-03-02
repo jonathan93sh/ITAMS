@@ -23,15 +23,15 @@ struct graph_object
     struct GFX_Pos last_pos_;
 	uint8 * graph_tex_;
 	
-	//void (*init)(struct graph_object * this, struct GFX_Pos pos, struct Color color, uint8 * graph_tex);
 	void (*setPos)(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
-	
 	struct GFX_Pos (*getPos)(struct graph_object * this);
+    uint16 (*getX)(struct graph_object * this);
+    uint16 (*getY)(struct graph_object * this);
+    void (*delete)(struct graph_object * this);
+    
 };
 
 void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, uint8 * graph_tex);
 
-void GFX_setPos(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
 
-void GFX_delete(struct graph_object * this);
 

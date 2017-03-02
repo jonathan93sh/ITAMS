@@ -27,60 +27,29 @@ void TFT_clear()
 **/
 void execute_cmd(uint8 cmd)
 {
-    DDR_DATA = 0xFF;
-    //DDR_DATA_Write(0xFF); //make to output
-    //PORT_DATA_Write(cmd);	
+    DDR_DATA = 0xFF; //make to output
     PORT_DATA = cmd;
     
-    //LCD_CS_Write(0);
-    //LCD_RD_Write(1);
-    //CyDelayUs(1);
     LCD_RS_Write(0);//RS 0 => command, DCX 1 = parameter/data
-	//TFT_DELAY_tcs;
-	//CyDelayUs(1);
-    LCD_WR_Write(0);//command sent
-	//TFT_DELAY_wcl;
-    //CyDelayUs(1);
-    LCD_WR_Write(1);
-	//TFT_DELAY_wch;
-    //CyDelayUs(1);
+
+    PORT_WR = 0; //command sent
+    _NOP();
+
+    PORT_WR = 1;
+
 	LCD_RS_Write(1);
-    //CyDelayUs(1);
-    //LCD_CS_Write(1);
-    
-	//TFT_DELAY_tcs;
 	
-    DDR_DATA = 0x00;
-    //DDR_DATA_Write(0x00); //make input again
+    DDR_DATA = 0x00; //make input again
 }
 
 void send_data(uint8 data)
 {
-    //DDR_DATA = 0xFF;
-    //DDR_DATA_Write(0xFF); //make to output
-    //PORT_DATA_Write(data);	
     PORT_DATA = data;
-    
-    //LCD_CS_Write(0);
-    //LCD_RD_Write(1);
-    //LCD_RS_Write(1);//RS 0 => command, DCX 1 => data
-	//TFT_DELAY_tcs;
-	//CyDelayUs(1);
-    //LCD_WR_Write(0);//command sent
-    PORT_WR = 0;
+
+    PORT_WR = 0; //data sent
     _NOP();
-	//TFT_DELAY_wcl;
-    //CyDelayUs(1);
-    //LCD_WR_Write(1);
-    PORT_WR = 1;
-    //_NOP();
-	//TFT_DELAY_wch;
-	//CyDelayUs(1);
-    //LCD_CS_Write(1);
-	//TFT_DELAY_tcs;
-	
-    //DDR_DATA = 0x00;
-    //DDR_DATA_Write(0x00); //make input again
+    
+    PORT_WR = 1; 
 }
 
 
@@ -92,60 +61,27 @@ void send_data(uint8 data)
 void receive_data(uint8 *dataPtr) //Remember to do a dummy read first!
 {
     //Read_enable_Write(1);
-    PORT_DATA = 0x00;
-    //PORT_DATA_Write(0x00);
+    PORT_DATA = 0x00; 
 
-    //LCD_CS_Write(0);
-    //LCD_WR_Write(1);
-    //LCD_RS_Write(1);
-	//TFT_DELAY_tcs;
-	//CyDelayUs(1);
-    LCD_RD_Write(0); //t_rdlfm<=>trcsfm, min 355ns
-	TFT_DELAY_trcsfm;
-	//CyDelayUs(1);
+    LCD_RD_Write(0);
+	TFT_DELAY_trcsfm;//trdlfm<=>trcsfm, min 355ns
+    
 	*dataPtr = PIN_DATA_Read();
 	
     LCD_RD_Write(1);
 	TFT_DELAY_trdhfm;
-    //CyDelayUs(1);
-    //LCD_CS_Write(1);
-	//TFT_DELAY_tcsf;
-}
-
-
-/**
- * sætter Column adresse.
-**/
-/*void TFT_setColumnAddress(unsigned addr)
-{
-	
-}*/
-
-
-/**
- * sætter page adresse.
-**/
-/*void TFT_setPageAddress(unsigned addr)
-{
-	
-}*/
-
-
-/**
- * sætter en enkel pixel.
-**/
-void setPixel(uint8 red, uint8 green, uint8 blue)
-{
-	
 }
 
 
 /**
  * sætter positionen på en bestemt pixel.
- * x = vandret
- * y = lodret
+ * x_start = lodret start position
+ * x_end = lodret slut position
+ * y_start = vandret start
+ * y_slut = vandret slut
 **/
-void TFT_setPos(unsigned x, unsigned y)
+void TFT_setWindow(unsigned x_start, unsigned x_end, unsigned y_start, unsigned y_end)
 {
-
+  TFT_setColumnAddress(x_start,x_end);
+  TFT_setPageAddress(y_start,y_end);
 }

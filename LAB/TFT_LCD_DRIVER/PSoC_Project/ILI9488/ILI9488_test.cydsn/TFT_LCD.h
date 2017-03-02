@@ -2,12 +2,10 @@
  * TFT_LCD.h
  *
  * Created: 19-02-2017 20:21:42
- *  Author: jonathan
+ *  Author: Group 11 (Laimonas, Jonathan)
  */ 
 
 #include "project.h"
-
-
 
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
@@ -54,6 +52,9 @@ void TFT_start_print();
 void TFT_write_print(uint8 R, uint8 G, uint8 B, unsigned N);
 void TFT_end_print();
 void TFT_setWindow(unsigned x_start, unsigned x_end, unsigned y_start, unsigned y_end);
+
+void TFT_clear_screen(uint8 R, uint8 G, uint8 B);
+
 /**
  * sætter positionen på en bestemt pixel.
  * x = vandret
@@ -122,9 +123,11 @@ size_t TFT_read_data(uint8 cmd, uint8 *dataOut, size_t bufSize); //J
 **/
 //void TFT_setPageAddress(unsigned addr); // L
 
+/*
 void execute_cmd(uint8 cmd);
 void send_data(uint8 data);
 void receive_data(uint8 *dataPtr);
+*/
 void TFT_test();
 
 
