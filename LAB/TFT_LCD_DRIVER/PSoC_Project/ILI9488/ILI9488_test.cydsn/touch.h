@@ -14,4 +14,4 @@ struct Coordinates
 void Touch_init();
 uint8 TouchStatus();
 uint8 StartTouch();
-struct Coordinates ReadTouch(struct Coordinates Coords);
+struct Coordinates ReadTouch();
