@@ -1,12 +1,15 @@
 #include "touch.h"
 #include "TFT_LCD.h"
+#include "math.h"
 
 #define ADC_MAX_INPUT 3300
+#define x_max 480
+#define y_max 320
 
 static uint16 Xm_; //A3 /p2-1
 static uint16 Yp_; //A2 /p2-2
 
-uint16 R_xplate;
+uint16 R_xplate = 1; //Rxm + Rxp ... hmmm##########
 
 static uint8 LCD_lock_;
 
@@ -23,8 +26,8 @@ CY_ISR(touch_isr)
 CY_ISR(isr_EOC)
 {
     //samples are done converting isr
-    Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
-    Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
+    //Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
+    //Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
 }
 
 uint16 ReadTouchX()
@@ -34,9 +37,8 @@ uint16 ReadTouchX()
     // Xp=OUTPUT, Xm=OUTPUT, Ym=INPUT, Yp=INPUT
     // Aflæse Yp med ADCen. 
     
-    
-   // LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
-   // LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG);
+    LCD_RS_SetDriveMode(LCD_RS_DM_ALG_HIZ);
+    DATA_1_SetDriveMode(DATA_1_DM_DIG_HIZ);
     
     DDR_DATA = 0b11111101; //input D1 (ym), output D0 (xp)
     DATA_0_Write(1); //xp
@@ -49,7 +51,10 @@ uint16 ReadTouchX()
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 yp_temp = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
     
-    return ((ADC_MAX_INPUT-yp_temp));
+    DATA_1_SetDriveMode(DATA_1_DM_STRONG); //xp
+    LCD_RS_SetDriveMode(LCD_RS_DM_STRONG); //xm
+
+    return (ADC_MAX_INPUT-yp_temp);
 }
 
 uint16 ReadTouchY()
@@ -58,6 +63,9 @@ uint16 ReadTouchY()
     // Xp=LOW, Xm=LOW, Ym=LOW, Yp=HIGH.
     // Xp=INPUT, Xm=INPUT, Ym=OUTPUT, Yp=OUTPUT
     // Aflæse Xm med ADCen. 
+    
+    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
+    DATA_0_SetDriveMode(DATA_0_DM_DIG_HIZ);
     
     DDR_DATA = 0b11111110; //output D1 (ym), input D0 (xp)
     DATA_0_Write(0); //xp
@@ -70,7 +78,10 @@ uint16 ReadTouchY()
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 xm_temp = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     
-    return ((ADC_MAX_INPUT-xm_temp));
+    DATA_0_SetDriveMode(DATA_0_DM_STRONG); //xp
+    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG); //xm
+    
+    return (ADC_MAX_INPUT-xm_temp);
 }
 uint8 getPressure()
 {
@@ -86,16 +97,17 @@ uint8 getPressure()
     DATA_1_Write(1); //ym 1
     //PORT_DATA = 0b10;
     
+    //Gøre dem høj impedans til aflæsning
+    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
+    LCD_RS_SetDriveMode(LCD_RS_DM_ALG_HIZ);
     
-    //LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
-    //LCD_RS_SetDriveMode(LCD_RS_DM_ALG_HIZ);
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(0); //Yp => 1
     
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 Z1 = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     uint16 Z2 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
-    int R_TOUCH;
+    double R_TOUCH;
     
     if (R_xplate != 0)
     {
@@ -104,13 +116,18 @@ uint8 getPressure()
     else
         return ((ADC_MAX_INPUT-(Z2-Z1))%255);
         
-    //mmmmmmmmmh
+    //mmmmmmmmmh######
+        
+    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG);
+    LCD_RS_SetDriveMode(LCD_RS_DM_STRONG);
+    
     
     return ((uint8)R_TOUCH);
 }
 
 uint8 TouchStatus()
 {
+    //return ADC_TOUCH_IsEndConversion(ADC_TOUCH_RETURN_STATUS); //returnerer 0 hvis ikke i brug/færdig, ellers nonzero value.
     return LCD_lock_;
 }
 uint8 StartTouch()
@@ -131,8 +148,23 @@ struct Coordinates ReadTouch()
 {
     struct Coordinates Coords;
     
-    Coords.Xm_ = ReadTouchX();
-    Coords.Yp_ = ReadTouchY();
+    uint16 tempX = ReadTouchX();
+    uint16 tempY = ReadTouchY();
+       
+    double XScaleFactor = x_max/(ADC_MAX_INPUT);
+    double YScaleFactor = y_max/(ADC_MAX_INPUT);
+        
+    double XMeasured = round((double)(XScaleFactor*(ADC_MAX_INPUT-tempX)));
+    double YMeasured = round((double)(YScaleFactor*(ADC_MAX_INPUT-tempY)));
+    
+    if(XMeasured > x_max)
+        XMeasured = x_max;
+    
+    if(YMeasured > y_max)
+        YMeasured = y_max;
+    
+    Coords.Xm_ = (uint16)XMeasured;
+    Coords.Yp_ = (uint16)YMeasured;
     Coords.pressure_ = getPressure();
     
     return Coords;
@@ -140,7 +172,6 @@ struct Coordinates ReadTouch()
 
 void Touch_init()
 {
-    
     ADC_TOUCH_Start();
     ADC_TOUCH_IRQ_Enable();
     StartTouch();
