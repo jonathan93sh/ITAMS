@@ -1,25 +1,30 @@
 #include "touch.h"
 #include "TFT_LCD.h"
 
-// TODO:
-// CalcTouchX() - Finde ud af hvilke værdier der forekommer fra X / Y => derfra udarbejde bruge dem til at udregne en gyldig
-// getPressure() - Hvilke værdier aflæser ADCen? Omregn til et threshhold fra 0-255 hvor 255 er max nedtryk på skærmen / størst modstand.
-//  dertil finde ud af hvordan den praktisk talt omregner signalet i source.
+#define ADC_MAX_INPUT 3300
 
 static uint16 Xm_; //A3 /p2-1
 static uint16 Yp_; //A2 /p2-2
 
-static uint8 pressure_;
+uint16 R_xplate;
 
 static uint8 LCD_lock_;
 
 CY_ISR(touch_isr)
 {
-    Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
-    Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
+    //sampling done isr
+    //Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
+    //Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
     PORT_TOUCH = 0;
     //ADC_TOUCH_IRQ_Disable();
     LCD_lock_ = 0;
+}
+
+CY_ISR(isr_EOC)
+{
+    //samples are done converting isr
+    Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
+    Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
 }
 
 uint16 ReadTouchX()
@@ -41,9 +46,10 @@ uint16 ReadTouchX()
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(0); //Yp => 0
     
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 yp_temp = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
     
-    return ((1024-yp_temp));
+    return ((ADC_MAX_INPUT-yp_temp));
 }
 
 uint16 ReadTouchY()
@@ -61,9 +67,10 @@ uint16 ReadTouchY()
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(1); //Yp => 1
     
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 xm_temp = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     
-    return ((1024-xm_temp));
+    return ((ADC_MAX_INPUT-xm_temp));
 }
 uint8 getPressure()
 {
@@ -80,11 +87,26 @@ uint8 getPressure()
     //PORT_DATA = 0b10;
     
     
+    //LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
+    //LCD_RS_SetDriveMode(LCD_RS_DM_ALG_HIZ);
+    LCD_WR_Analog_Write(0); //Xm => 0
+    LCD_RS_Write(0); //Yp => 1
     
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
+    uint16 Z1 = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
+    uint16 Z2 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
+    int R_TOUCH;
     
+    if (R_xplate != 0)
+    {
+        R_TOUCH = ((R_xplate*ReadTouchX())*((Z2/Z1)-1))/(1024);
+    }
+    else
+        return ((ADC_MAX_INPUT-(Z2-Z1))%255);
+        
+    //mmmmmmmmmh
     
-    
-    return pressure_;
+    return ((uint8)R_TOUCH);
 }
 
 uint8 TouchStatus()

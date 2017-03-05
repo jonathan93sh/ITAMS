@@ -3,6 +3,7 @@
 #define PORT_TOUCH LCD_Read_Touch_Control
 
 CY_ISR_PROTO(touch_isr);
+CY_ISR_PROTO(isr_EOC);
 
 struct Coordinates
 {
