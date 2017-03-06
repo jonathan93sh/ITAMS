@@ -1,8 +1,11 @@
-#include "project.h"
 
 #ifndef GFX_H_
 #define GFX_H_
+    
+#include "project.h"    
+#include "TFT_LCD.h"
 
+    
 struct Color
 {
     uint8 R;

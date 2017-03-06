@@ -81,9 +81,9 @@ void spaceInavader_start()
         Bgcol[i].B = 0;
     }
     
-    GE_SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
+    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
-    GE_Game_init(&engine, &factory);
+    GameEngine_init(&engine, &factory);
     
     spaceInvaders_init(&engine, &spaceInvaders_db);
     
@@ -92,7 +92,7 @@ void spaceInavader_start()
     while(1)
     {
         //sim
-        if(rand() % 100 > 95)
+        if(rand() % 100 > 50)
         {
             shoot_sim = 1;
         }
@@ -101,7 +101,7 @@ void spaceInavader_start()
             shoot_sim = 0;
         }
         if(count_sim == 0)
-            Y_sim_controller_delta = (rand() % 10) - 5;
+            Y_sim_controller_delta = (rand() % 11) - 5;
         
         count_sim = (count_sim + 1) % 20;
             
@@ -150,9 +150,9 @@ void spaceInavader_test()
         Bgcol[i].B = 0;
     }
     
-    GE_SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
+    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
-    GE_Game_init(&engine, &factory);
+    GameEngine_init(&engine, &factory);
     
     heroID = engine.spawn(&engine, "Hero", Player, 0, 450, yPos, 3);
     for(i = 0; i < 4; i++)
@@ -257,6 +257,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
 {
     uint8 alife, i, i2, hasWon;
     
+    alife = 0;
     
     for(i = 0; i < db->rowSize; i++)
     {
@@ -301,7 +302,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
         }
     }
     
-    db->count = (db->count + 1) % ((alife>>3) + 1);
+    db->count = (db->count + 1) % ((alife>>0) + 1);
     
     return NORMALSTATE;
 }
@@ -383,6 +384,7 @@ int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 Playe
         default:
         break;
     }
+    return NORMALSTATE;
 }
 
 /* [] END OF FILE */

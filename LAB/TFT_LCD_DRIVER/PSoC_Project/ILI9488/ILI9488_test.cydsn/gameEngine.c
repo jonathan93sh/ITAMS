@@ -9,25 +9,22 @@
  *
  * ========================================
 */
+
+
 #include "gameEngine.h"
-#include "GFX.h"
-#include "TFT_LCD.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-int GE_spawn(struct GameEngine * this, char * name, int8 teamID, int killpoints, int16 X, int16 Y, int8 lives); //return subject ID if -1 wrong name, -2 subject limit.
-int GE_move(struct GameEngine * this, int ID, int16 X, int16 Y, char relativ);
-struct coord GE_getPos(struct GameEngine * this, int ID);
-int GE_shoot(struct GameEngine * this, int ID, int dir, char * type, uint8 speed);
-int GE_tick(struct GameEngine * this);
+int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives); //return subject ID if -1 wrong name, -2 subject limit.
+int8 GE_move(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ);
+struct coord GE_getPos(struct GameEngine * this, uint8 ID);
+int8 GE_shoot(struct GameEngine * this, uint8 ID, int8 dir, char * type, uint8 speed);
+int8 GE_tick(struct GameEngine * this);
 void GE_checkHit(struct GameEngine * this);
 void GE_updatePos(struct GameEngine * this);
 void GE_shootMove(struct GameEngine * this);
-uint8 GE_isDead(struct GameEngine * this, int ID);
+uint8 GE_isDead(struct GameEngine * this, uint8 ID);
 uint8 hitCheck(struct graph_object * p1, struct graph_object * p2);
 
-int GE_spawn(struct GameEngine * this, char * name, int8 teamID, int killpoints, int16 X, int16 Y, int8 lives) //return subject ID if -1 wrong name, -2 subject limit.
+int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives) //return subject ID if -1 wrong name, -2 subject limit.
 {
     int ID, ptr;
 
@@ -55,7 +52,7 @@ int GE_spawn(struct GameEngine * this, char * name, int8 teamID, int killpoints,
     return ID;
 }
 
-int GE_move(struct GameEngine * this, int ID, int16 X, int16 Y, char relativ)
+int8 GE_move(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ)
 {
     if(this->subjects_[ID] == NULL)
         return -2;
@@ -81,7 +78,7 @@ int GE_move(struct GameEngine * this, int ID, int16 X, int16 Y, char relativ)
 }
 
 
-struct coord GE_getPos(struct GameEngine * this, int ID)
+struct coord GE_getPos(struct GameEngine * this, uint8 ID)
 {
     struct coord c;
     
@@ -98,7 +95,7 @@ struct coord GE_getPos(struct GameEngine * this, int ID)
     
 }
 
-uint8 GE_isDead(struct GameEngine * this, int ID)
+uint8 GE_isDead(struct GameEngine * this, uint8 ID)
 {
     if(this->subjects_[ID] == NULL)
         return 1;
@@ -106,9 +103,9 @@ uint8 GE_isDead(struct GameEngine * this, int ID)
     return 0;
 }
 
-int GE_shoot(struct GameEngine * this, int ID, int dir, char * type, uint8 speed)
+int8 GE_shoot(struct GameEngine * this, uint8 ID, int8 dir, char * type, uint8 speed)
 {
-    int index, ptr;
+    int8 index, ptr;
     struct coord c;
     ptr = -1;
     if(this->subjects_[ID] == NULL)
@@ -165,12 +162,12 @@ int GE_shoot(struct GameEngine * this, int ID, int dir, char * type, uint8 speed
     if(this->shoots_[ptr] == NULL){}
         //while(1);
     
-    return -2;
+    return 1;
 }
 
 void GE_shootMove(struct GameEngine * this)
 {
-    uint8 i,i2, hit;
+    uint8 i,i2;
     struct coord c;
     uint8 speed;
     
@@ -212,7 +209,7 @@ void GE_shootMove(struct GameEngine * this)
                 this->shoots_[i]->Y_ = c.Y;
                 this->shoots_[i]->graph_.setPos(&this->shoots_[i]->graph_, c.X, c.Y);
                 
-                hit = 0;
+                
                 for(i2 = 0; i2 < subjectLimit; i2++)
                 {
                     if(this->subjects_[i2] != NULL)
@@ -325,7 +322,7 @@ void GE_checkHit(struct GameEngine * this)
     
 }
 
-int GE_tick(struct GameEngine * this)
+int8 GE_tick(struct GameEngine * this)
 {
     GE_checkHit(this);
     GE_updatePos(this);
@@ -335,9 +332,9 @@ int GE_tick(struct GameEngine * this)
 
 
 
-void GE_Game_init(struct GameEngine * this, struct SubjectFactory * factory)
+void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory)
 {
-    unsigned i;
+    uint8 i;
     this->factory_ = factory;
     
     this->getPos = GE_getPos;
@@ -360,86 +357,5 @@ void GE_Game_init(struct GameEngine * this, struct SubjectFactory * factory)
         this->shoots_[i] = NULL;
     }
 }
-
-
-void GE_GameSubject_init(struct GameSubject * this, uint8 * graph_tex, uint16 sizeX, uint16 sizeY, struct Color color, struct Color BgColor, uint16 X, uint16 Y, int8 lives, int killPoints,  uint8 ID, int8 TeamID)
-{
-    
-    struct GFX_Pos pos;
-    
-    pos.pos_X_ = X;
-    pos.pos_Y_ = Y;
-    pos.size_X_ = sizeX;
-    pos.size_Y_ = sizeY;
-    
-    GFX_init(&this->graph_, pos, color, BgColor, graph_tex);
-    
-    this->X_ = X;
-    this->Y_ = Y;
-    this->ID_ = ID;
-    this->TeamID_ = TeamID;
-    this->killPoints_ = killPoints;
-    this->lives_ = lives;
-    
-    
-    
-}
-
-struct GameSubject * GE_creat(struct SubjectFactory * this, char * name, uint16 X, uint16 Y, int8 lives, int killpoints, int ID, int8 teamID);
-void GE_delete(struct SubjectFactory * this, struct GameSubject * object);
-
-void GE_SubjectFactory_init(struct SubjectFactory * this, uint8 ** graph_texs, uint16 * sizeXs, uint16 * sizeYs, char ** names, struct Color * colors, struct Color * Bgcolors, size_t length)
-{
-    this->graph_texs_ = graph_texs;
-    this->sizeXs_ = sizeXs;
-    this->sizeYs_ = sizeYs;
-    this->names_ = names;
-    this->colors_ = colors;
-    this->Bgcolors_ = Bgcolors;
-    this->length_ = length;
-    
-    this->creat = GE_creat;
-    this->delete = GE_delete;
-}
-
-
-struct GameSubject * GE_creat(struct SubjectFactory * this, char * name, uint16 X, uint16 Y, int8 lives, int killpoints, int ID, int8 teamID)
-{
-    int index = -1;
-    unsigned i;
-    struct GameSubject * newSubject = NULL;
-    
-    for(i = 0; i < this->length_; i++)
-    {
-        if(strcmp(name, this->names_[i]) == 0)
-        {
-            newSubject = (struct GameSubject *)malloc(sizeof(struct GameSubject));
-            
-            if(newSubject == NULL)
-                return NULL;
-            
-            GE_GameSubject_init(newSubject, this->graph_texs_[i], this->sizeXs_[i], this->sizeYs_[i], this->colors_[i], this->Bgcolors_[i], X, Y, lives, killpoints, ID, teamID);
-            break;   
-        }
-    }
-    
-    
-    return newSubject;
-}
-
-void GE_delete(struct SubjectFactory * this, struct GameSubject * object)
-{
-    object->graph_.delete(&object->graph_);
-    
-    free(object);
-}
-
-
-//void GE_GamePlayer_init(struct GamePlayer * player);
-
-
-
-
-
 
 /* [] END OF FILE */

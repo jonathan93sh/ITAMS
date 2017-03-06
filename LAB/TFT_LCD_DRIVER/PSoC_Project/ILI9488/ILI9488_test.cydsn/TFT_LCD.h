@@ -5,10 +5,10 @@
  *  Author: Group 11 (Laimonas, Jonathan)
  */ 
 
-#include "project.h"
-
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
+
+#include "project.h"    
     
 #define SCREEN_SIZE_X 480
 #define SCREEN_SIZE_Y 320

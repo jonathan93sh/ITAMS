@@ -10,7 +10,7 @@
  * ========================================
 */
 #include "GFX.h"
-#include "TFT_LCD.h"
+
 enum color_enum {fg, bg};
 
 
