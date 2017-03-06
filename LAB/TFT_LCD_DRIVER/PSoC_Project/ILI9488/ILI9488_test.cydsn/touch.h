@@ -1,9 +1,7 @@
 #include "project.h"
 
-//#define PORT_TOUCH LCD_WR_AND_WR_RS_OE_SOC_Control
-
-CY_ISR_PROTO(touch_isr);
-CY_ISR_PROTO(isr_EOC);
+#ifndef TOUCH_H_
+#define TOUCH_H_
 
 struct Coordinates
 {
@@ -16,6 +14,8 @@ void Touch_init();
 uint8 TouchStatus();
 uint8 StartTouch();
 struct Coordinates ReadTouch();
-
+void readTouch_better(uint16 * X, uint8 * press);
 
 //void CalibrateTouch();
+
+#endif

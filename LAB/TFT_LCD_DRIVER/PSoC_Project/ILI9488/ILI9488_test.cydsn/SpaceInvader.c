@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include "gameEngine.h"
 #include "graph/graph.h"
+#include "touch.h"
 
 #define NORMALSTATE 0
 #define GAMEOVER -1
@@ -53,9 +54,9 @@ void spaceInavader_start()
     srand(321);
     uint8 i,i2, statusSI, statusP;
     
-    int16 Y_sim_controller = 150;
-    int16 Y_sim_controller_delta = 0, count_sim = 0;
-    uint8 shoot_sim = 0;
+    uint16 Y_controller;
+    //int16 Y_sim_controller_delta = 0, count_sim = 0;
+    uint8 shoot = 0;
     
     struct Player_dataBase player_db;
     struct spaceInvaders_dataBase spaceInvaders_db;
@@ -89,9 +90,13 @@ void spaceInavader_start()
     
     Player_init(&engine, &player_db);
     
+    Touch_init();
+    
     while(1)
     {
+        readTouch_better(&Y_controller,&shoot);
         //sim
+        /*
         if(rand() % 100 > 50)
         {
             shoot_sim = 1;
@@ -111,11 +116,11 @@ void spaceInavader_start()
             Y_sim_controller = 0;
         else if(Y_sim_controller > player_db.Y_max)
             Y_sim_controller = player_db.Y_max;
-        
+        */
         //end
         
         
-        statusP = Player_algoritme(&engine, &player_db,Y_sim_controller, shoot_sim);
+        statusP = Player_algoritme(&engine, &player_db,Y_controller, shoot);
         statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
         gameStatus(&engine, statusSI, statusP);
         CyDelay(16);
