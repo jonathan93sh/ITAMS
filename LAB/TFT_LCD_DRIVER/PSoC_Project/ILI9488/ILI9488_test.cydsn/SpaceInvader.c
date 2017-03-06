@@ -54,9 +54,9 @@ void spaceInavader_start()
     srand(322);
     uint8 i,i2, statusSI, statusP;
     
-    uint16 Y_controller;
+    uint16 Y_controller, X_controller;
     //int16 Y_sim_controller_delta = 0, count_sim = 0;
-    uint8 shoot = 0;
+    uint8 press, trig;
     
     struct Player_dataBase player_db;
     struct spaceInvaders_dataBase spaceInvaders_db;
@@ -94,7 +94,7 @@ void spaceInavader_start()
     
     while(1)
     {
-        readTouch_better(&Y_controller,&shoot);
+        readTouch_better(&Y_controller,&X_controller, &press, &trig);
         //sim
         /*
         if(rand() % 100 > 50)
@@ -120,7 +120,7 @@ void spaceInavader_start()
         //end
         
         
-        statusP = Player_algoritme(&engine, &player_db,Y_controller, shoot);
+        statusP = Player_algoritme(&engine, &player_db,Y_controller, trig);
         statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
         gameStatus(&engine, statusSI, statusP);
         CyDelay(16);
@@ -334,6 +334,7 @@ int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db)
 int8 Player_algoritme(struct GameEngine * engine, struct Player_dataBase * db, int16 Ypos, uint8 fire)
 {
     int Y_set;
+    const int16 Y_off = -(39/2);
     
     if(engine->isDead(engine, db->PlayerID))
     {
@@ -343,7 +344,7 @@ int8 Player_algoritme(struct GameEngine * engine, struct Player_dataBase * db, i
     if(db->reloadCountDown == 0 && fire)
     {
         engine->shoot(engine, db->PlayerID, UP, "shoot", 5);
-        db->reloadCountDown = 120;
+        db->reloadCountDown = 20;
     }
     else if(db->reloadCountDown != 0)
     {
@@ -351,17 +352,17 @@ int8 Player_algoritme(struct GameEngine * engine, struct Player_dataBase * db, i
     }
 
     
-    if(Ypos < db->Y_min)
+    if(Ypos + Y_off < db->Y_min)
     {
-        Y_set = db->Y_min;
+        Y_set = db->Y_min + Y_off;
     }
-    else if(Ypos > db->Y_max)
+    else if(Ypos + Y_off > db->Y_max)
     {
-        Y_set = db->Y_max;   
+        Y_set = db->Y_max + Y_off;   
     }
     else
     {
-        Y_set = Ypos;
+        Y_set = Ypos + Y_off;
     }
     
     engine->move(engine, db->PlayerID, db->X_lock, Y_set, 0);

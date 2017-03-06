@@ -65,7 +65,8 @@ uint16 ReadTouchX()
     DDR_DATA = 0;
     PORT_DATA = 0;
     WR_AND_WR_RS_OE = 0b001;
-    return (ADC_MAX_INPUT-yp_temp);
+    LCD_RS_Write(1);
+    return (yp_temp);
 }
 
 
@@ -86,7 +87,7 @@ uint16 ReadTouchY()
     //LCD_RS_Write(1); //Yp => 1
     
     WR_AND_WR_RS_OE = 0b101;
-    CyDelay(1);
+    CyDelay(2);
     ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 xm_temp = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
@@ -184,40 +185,69 @@ void Touch_init()
     //hmm##
 }
 
-static uint16 X_pre = 0;
-static uint8 press_pre = 0;
 
-void readTouch_better(uint16 * X, uint8 * press)
+static int16 X_pre = 0;
+    static int16 Y_pre = 0;
+    static uint8 press_pre = 0;
+
+void readTouch_better(uint16 * X, uint16 * Y, uint8 * press, uint8 * trig)
 {
-    int16 X_calc;
+    static const float XScale = 320.0f/(4258.0f - 1616.0f);
+    static const int16 XOffset = 1616;//mv
+    static const float YScale = 480.0f/(923.0f-884.0f);
+    static const int16 YOffset = 884;//mv
+
+    static const int16 Y_noPress_min = 1000;//mv
+    static const int16 X_noPress_min = 1865;//mv
     
-    uint16 pressCheck = (ReadTouchY() > 2600 ? 1 : 0);
-    uint16 tempX = ReadTouchX();
+    
+    
+    int16 X_calc;
+    int16 Y_calc;
+    uint8 pressCheck;
+    
+    int16 tempY = (5000 - ReadTouchY());
+    int16 tempX = (5000 - ReadTouchX());// - (2500+230);
+    
+    pressCheck = (tempY < Y_noPress_min && tempX > X_noPress_min ? 1 : 0);
     
     //uint16 XMeasured = (uint16)((XScaleFactor*(ADC_MAX_INPUT-tempX)));
-    X_calc = (int16)((float)(tempX-600)*XScaleFactor);
+    X_calc = (int16)((float)(tempX-XOffset)*XScale);
     if(X_calc > 320)
         X_calc = 320;
     else if(X_calc < 0)
         X_calc = 0;
     
-    *press = 0;
+    Y_calc = (int16)((float)(tempY-YOffset)*YScale);
+    if(Y_calc > 480)
+        Y_calc = 480;
+    else if(Y_calc < 0)
+        Y_calc = 0;
+    
     
     if(pressCheck)
     {
         if(press_pre == 0)
         {
-            *press = 1;
+            *trig = 1;
+        }
+        else
+        {
+            *trig = 0;   
         }
         *X = X_calc;
+        *Y = Y_calc;
         X_pre = X_calc;
+        Y_pre = Y_calc;
     }
     else
     {
         *X = X_pre;
-        
+        *Y = Y_pre;
+        *trig = 0;
     }
     
+    *press = pressCheck;
     press_pre = pressCheck;
     
 }

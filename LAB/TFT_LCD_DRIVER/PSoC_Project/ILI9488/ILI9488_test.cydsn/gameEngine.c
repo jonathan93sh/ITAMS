@@ -287,7 +287,7 @@ void GE_checkHit(struct GameEngine * this)
     {
         if(this->shoots_[i] != NULL)
         {
-            this->shoots_[i]->graph_.getPos(&this->shoots_[i]->graph_);
+            //this->shoots_[i]->graph_.getPos(&this->shoots_[i]->graph_);
             
             for(i2 = 0; i2 < subjectLimit; i2++)
             {
