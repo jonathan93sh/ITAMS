@@ -1,5 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DesignWideResources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://cypress.com/xsd/cydwr">
+  <Group key="Analog2">
+    <Group key="MUX_ROUTING" />
+    <Group key="NET_ROUTING">
+      <Data key="\ADC_SAR_Seq_1:muxout_plus\" value="sarmux_vplus" />
+      <Data key="Net_273" value="p2_1" />
+    </Group>
+  </Group>
   <Group key="Component">
     <Group key="v1">
       <Data key="cy_boot" value="cy_boot_v5_50" />
@@ -13,14 +20,15 @@
       <Data key="59b8ac27-c50e-4ffb-ba43-cdbfedbe2988" value="Clock_1" />
     </Group>
     <Group key="Pin">
-      <Data key="0d28c8a4-62bb-44d4-a86f-548a5efef471" value="LCD_protected_RD" />
-      <Data key="2d2750cc-d09c-48f9-be6e-a17f695aff7a" value="LCD_WR" />
+      <Data key="0d28c8a4-62bb-44d4-a86f-548a5efef471" value="LCD_RD" />
+      <Data key="2d2750cc-d09c-48f9-be6e-a17f695aff7a" value="LCD_p_WR" />
       <Data key="6a77d308-916f-420c-a54c-131b630b30a4" value="DATA_1" />
       <Data key="6f05e902-8b1f-4dcf-937d-9d373593b510" value="LCD_CS" />
       <Data key="57b396a2-d620-4fb7-8efd-46e23e3c633a" value="DATA_6" />
       <Data key="264be2d3-9481-494b-8d9c-c1905a45e9cc" value="DATA_0" />
       <Data key="1158d341-333a-4082-91a8-9c441517762b" value="DATA_3" />
       <Data key="3665e8ed-800e-43d1-b692-608b602a985a" value="LCD_RS" />
+      <Data key="77715107-f8d5-47e5-a629-0fb83101ac6b" value="LCD_WR_Analog" />
       <Data key="89481984-489d-4ae5-9bd6-905e98fba22e" value="DATA_7" />
       <Data key="a8e2dde3-bd6f-40e0-95f9-80c45df78011" value="DATA_2" />
       <Data key="bda6bfd4-7d36-4c3e-bd80-6724dee85e85" value="DATA_5" />
@@ -1268,7 +1276,7 @@
     </Group>
     <Group key="2d2750cc-d09c-48f9-be6e-a17f695aff7a">
       <Group key="0">
-        <Data key="Port Format" value="2,1" />
+        <Data key="Port Format" value="1,5" />
       </Group>
     </Group>
     <Group key="6a77d308-916f-420c-a54c-131b630b30a4">
@@ -1301,6 +1309,11 @@
         <Data key="Port Format" value="2,2" />
       </Group>
     </Group>
+    <Group key="77715107-f8d5-47e5-a629-0fb83101ac6b">
+      <Group key="0">
+        <Data key="Port Format" value="2,1" />
+      </Group>
+    </Group>
     <Group key="89481984-489d-4ae5-9bd6-905e98fba22e">
       <Group key="0">
         <Data key="Port Format" value="2,7" />
@@ -1327,12 +1340,13 @@
       </Group>
     </Group>
     <Group key="UnAssigned Pins" />
+    <Group key="Unlocked Pins" />
   </Group>
   <Group key="PlaceDir">
     <Data key="count" value="0" />
   </Group>
   <Group key="System3">
-    <Data key="CYDEV_CONFIG_UNUSED_IO" value="Disallowed" />
+    <Data key="CYDEV_CONFIG_UNUSED_IO" value="AllowButWarn" />
     <Data key="CYDEV_CONFIGURATION_MODE" value="COMPRESSED" />
     <Data key="CYDEV_DEBUG_PROTECT" value="OPEN" />
     <Data key="CYDEV_DEBUGGING_DPS" value="SWD" />
