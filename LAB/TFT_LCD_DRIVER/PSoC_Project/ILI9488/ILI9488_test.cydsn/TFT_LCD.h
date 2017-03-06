@@ -10,6 +10,9 @@
 #ifndef TFT_LCD_H_
 #define TFT_LCD_H_
     
+#define SCREEN_SIZE_X 480
+#define SCREEN_SIZE_Y 320
+    
 #define PORT_DATA PORT_DATA_Control
 #define DDR_DATA DDR_DATA_Control
 #define PIN_DATA PIN_DATA_Status

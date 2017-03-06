@@ -2,7 +2,7 @@ clear
 close all;
 clc
 FILE_NAME = 'graph.h';
-nameList = ['space_invader', 'shoot', 'invader_shoot', 'Hero', 'explode'];
+nameList = {'space_invader', 'shoot', 'invader_shoot', 'Hero', 'explode'};
 
 fileID=fopen(FILE_NAME,'w');
 
@@ -10,7 +10,9 @@ fprintf(fileID,'#include <project.h>\n\n');
 
 for name=nameList
 
-    image = imread(name & '.tif');
+
+    
+    image = imread(char(strcat(name, '.tif')));
 
 
 
@@ -39,14 +41,16 @@ for name=nameList
     end
 
 
-
+    charName = char(name);
     % LUT to header file
 
-    fprintf(fileID,'#define %s_SIZE\n#define %s_X_LEN
+    fprintf(fileID,'#define %s_SIZE %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
 
-    fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
-
-    fprintf(fileID,'static const uint8 RAMP_LUT[LUT_SIZE] = {\n');
+    %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
+    
+    fprintf(fileID,'static char *
+    
+    fprintf(fileID,'static uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
 
     fprintf(fileID,'%d', uint8(bitArray(1)));
     for i=2:length(bitArray)
@@ -65,6 +69,20 @@ for name=nameList
     %fprintf(fileID,'\n};');
 
 end
+length_ = length(nameList); 
+fprintf(fileID,'static char ** Graph_NAMES = {\n', length_);
+for name=nameList
+    charName = char(name);
+    
+    
+    
+    
+    
+end
+
+
+uint8 ** graph_texs, uint16 * sizeXs, uint16 * sizeYs, char ** names, struct Color * colors, struct Color * Bgcolors, size_t length
+
 
 fclose(fileID);
 

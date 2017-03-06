@@ -1,5 +1,8 @@
 #include "project.h"
 
+#ifndef GFX_H_
+#define GFX_H_
+
 struct Color
 {
     uint8 R;
@@ -24,6 +27,7 @@ struct graph_object
 	uint8 * graph_tex_;
 	
 	void (*setPos)(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
+    void (*refresh)(struct graph_object * this);
 	struct GFX_Pos (*getPos)(struct graph_object * this);
     uint16 (*getX)(struct graph_object * this);
     uint16 (*getY)(struct graph_object * this);
@@ -32,6 +36,5 @@ struct graph_object
 };
 
 void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, uint8 * graph_tex);
-
-
+#endif
 

@@ -10,4 +10,7 @@
  * ========================================
 */
 
+void spaceInavader_start();
+
+
 /* [] END OF FILE */

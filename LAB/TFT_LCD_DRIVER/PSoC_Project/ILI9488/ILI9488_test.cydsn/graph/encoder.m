@@ -47,8 +47,10 @@ for name=nameList
     fprintf(fileID,'#define %s_SIZE %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
 
     %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
-
-    fprintf(fileID,'static const uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
+    
+    fprintf(fileID,'static char %s_GRAPH_NAME[] = "%s";\n\n', charName, charName); 
+    
+    fprintf(fileID,'static uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
 
     fprintf(fileID,'%d', uint8(bitArray(1)));
     for i=2:length(bitArray)
@@ -67,6 +69,71 @@ for name=nameList
     %fprintf(fileID,'\n};');
 
 end
+
+length_ = length(nameList);
+
+
+
+
+fprintf(fileID,'static uint8 GRAPH_length = %d;\n\n', length_);
+
+
+fprintf(fileID,'static uint8 * GRAPHS[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_GRAPH', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
+
+
+fprintf(fileID,'static char * GRAPH_NAMES[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_GRAPH_NAME', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
+
+fprintf(fileID,'static uint16 GRAPH_SIZEXS[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_X', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
+
+fprintf(fileID,'static uint16 GRAPH_SIZEYS[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_Y', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
 
 fclose(fileID);
 

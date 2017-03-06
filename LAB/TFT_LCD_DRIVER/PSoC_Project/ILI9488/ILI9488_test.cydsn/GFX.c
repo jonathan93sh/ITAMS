@@ -15,6 +15,7 @@ enum color_enum {fg, bg};
 
 
 void GFX_setPos(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
+void GFX_refresh(struct graph_object * this);
 struct GFX_Pos GFX_getPos(struct graph_object * this);
 uint16 GFX_getPos_X(struct graph_object * this);
 uint16 GFX_getPos_Y(struct graph_object * this);
@@ -38,6 +39,7 @@ void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color
     this->getX = GFX_getPos_X;
     this->getY = GFX_getPos_Y;
     this->setPos = GFX_setPos;
+    this->refresh = GFX_refresh;
     
     GFX_print(this);
 }
@@ -65,11 +67,20 @@ uint16 GFX_getPos_Y(struct graph_object * this)
 
 void GFX_setPos(struct graph_object * this, uint16 pos_X, uint16 pos_Y)
 {
+    
+    if(pos_X > SCREEN_SIZE_X || pos_Y > SCREEN_SIZE_Y)
+        return;
+    
     this->last_pos_ = this->pos_;
 	this->pos_.pos_X_ = pos_X;
     this->pos_.pos_Y_ = pos_Y;
     GFX_print(this);
     GFX_rmove_shadow(this);
+}
+
+void GFX_refresh(struct graph_object * this)
+{
+    GFX_print(this);
 }
 
 void GFX_rmove_shadow(struct graph_object * this)
