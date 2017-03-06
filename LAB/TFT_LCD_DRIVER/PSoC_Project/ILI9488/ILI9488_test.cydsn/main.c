@@ -14,7 +14,7 @@
 #include "GFX.h"
 #include "graph/graph.h"
 #include "SpaceInvader.h"
-#include "touch.h"
+//#include "touch.h"
 
 uint8 test_[] = {5, 5, 5, 5, 5, 5, 1, 2, 3, 100, 23, 0, 23,34,20,100,12,32,34, 0, 0};
 
@@ -66,10 +66,15 @@ int main(void)
     TFT_init();
     
     TFT_clear_screen(0, 0, 0);
+    
+    Touch_init();
         
     spaceInavader_start();
-    
-    //struct Coordinates niceCoords;
+    /*
+    struct Coordinates niceCoords;
+    niceCoords.X_ = 0;
+    niceCoords.Y_ = 0;
+    niceCoords.pressure_ = 0;
     
     
     //TFT_test();
@@ -78,12 +83,18 @@ int main(void)
     
     //GFX_init(&test2, pos, col, Bgcol, space_invader_GRAPH);
     
-    
+    volatile int touches = 0;
     
     for(;;)
     {
         
-       //niceCoords = ReadTouch();
+        niceCoords = ReadTouch();
+        
+        if (niceCoords.pressure_ > 5)
+        {
+            touches++;
+        }
+    */
         /*
         test2.setPos(&test2,150, 150);
         
@@ -113,7 +124,7 @@ int main(void)
         */
 
         /* Place your application code here. */
-    }
+    //}
 }
 
 /* [] END OF FILE */
