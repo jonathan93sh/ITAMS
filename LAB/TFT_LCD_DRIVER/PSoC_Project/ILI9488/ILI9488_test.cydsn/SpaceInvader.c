@@ -235,19 +235,19 @@ void spaceInvaders_normal(struct GameEngine * engine, struct spaceInvaders_dataB
     
     for(i = 0; i < db->rowSize; i++)
     {
-        if(db->step <= 10)
+        if(db->step < 10)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, 10, 1);
         }
-        else if(db->step <= 15)
+        else if(db->step < 15)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 10, 0, 1);
         }
-        else if(db->step <= 25)
+        else if(db->step < 25)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, -10, 1);
         }
-        else if(db->step <= 30)
+        else if(db->step < 30)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 10, 0, 1);
         }
@@ -312,7 +312,7 @@ int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db)
 {
     const int16 X_pos = 450;
     const int16 Y_min = 0+1;
-    const int16 Y_max = 320-39-1;
+    const int16 Y_max = 320-39-6;
     
     const int16 Y_start = (320/2) - (39/2);
 
