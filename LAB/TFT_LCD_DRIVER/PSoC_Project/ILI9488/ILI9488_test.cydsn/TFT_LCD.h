@@ -16,7 +16,7 @@
 #define PORT_DATA PORT_DATA_Control
 #define DDR_DATA DDR_DATA_Control
 #define PIN_DATA PIN_DATA_Status
-#define PORT_WR LCD_WR_Control
+#define PORT_WR LCD_WR_AND_WR_RS_OE_Control
 
 
     

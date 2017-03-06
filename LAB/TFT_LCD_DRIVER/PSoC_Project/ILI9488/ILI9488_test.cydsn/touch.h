@@ -1,6 +1,6 @@
 #include "project.h"
 
-#define PORT_TOUCH LCD_Read_Touch_Control
+//#define PORT_TOUCH LCD_WR_AND_WR_RS_OE_SOC_Control
 
 CY_ISR_PROTO(touch_isr);
 CY_ISR_PROTO(isr_EOC);
