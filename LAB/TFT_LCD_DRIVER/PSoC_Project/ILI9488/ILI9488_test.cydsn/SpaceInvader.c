@@ -51,7 +51,7 @@ int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 Playe
 
 void spaceInavader_start()
 {
-    srand(321);
+    srand(322);
     uint8 i,i2, statusSI, statusP;
     
     uint16 Y_controller;
@@ -229,6 +229,7 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     db->step = 0;
     db->X_win_line = 440;
     db->nextCmd = 0;
+    db->rowIndex = 0;
     
     return NORMALSTATE;
 }
