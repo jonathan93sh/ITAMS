@@ -172,7 +172,7 @@ void TFT_init()
     LCD_RST_Write(1);
     LCD_CS_Write(1);
     LCD_RS_Write(1);
-    LCD_WR_Write(1);
+    PORT_WR = 1;
     LCD_RD_Write(1);
     CyDelay(500);
     CyDelayUs(10);

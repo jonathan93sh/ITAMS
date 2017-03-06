@@ -9,10 +9,9 @@
 static uint16 Xm_; //A3 /p2-1
 static uint16 Yp_; //A2 /p2-2
 
-uint16 R_xplate = 1; //Rxm + Rxp ... hmmm##########
+uint16 R_xplate = 300; //Rxm + Rxp ... hmmm##########
 
-static uint8 LCD_lock_;
-
+/*
 CY_ISR(touch_isr)
 {
     //sampling done isr
@@ -29,7 +28,7 @@ CY_ISR(isr_EOC)
     //Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     //Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
 }
-
+*/
 
 //For at læse X coord, skal følgende sættes op:
 // Xp=HIGH, Xm=LOW, Ym=LOW, Yp=LOW.
@@ -48,6 +47,7 @@ uint16 ReadTouchX()
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(0); //Yp => 0
     
+    ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 yp_temp = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
     
@@ -64,22 +64,23 @@ uint16 ReadTouchX()
 // Aflæse Xm med ADCen. 
 uint16 ReadTouchY()
 {
-    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
+    //LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
     DATA_0_SetDriveMode(DATA_0_DM_DIG_HIZ);
     
-    DDR_DATA = 0b11111110; //output D1 (ym), input D0 (xp)
-    DATA_0_Write(0); //xp
-    DATA_1_Write(0); //ym
-    //PORT_DATA = 0x00;
+    DDR_DATA = 0b10; //output D1 (ym), input D0 (xp)
+    //DATA_0_Write(0); //xp
+    //DATA_1_Write(0); //ym
+    PORT_DATA = 0b00;
     
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(1); //Yp => 1
     
+    ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 xm_temp = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     
     DATA_0_SetDriveMode(DATA_0_DM_STRONG); //xp
-    LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG); //xm
+    //LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG); //xm
     
     return (ADC_MAX_INPUT-xm_temp);
 }
@@ -91,11 +92,13 @@ uint16 ReadTouchY()
 // Aflæse Xm og Yp med ADCen for at få Z1 og Z2 impedanserne.
 uint8 getPressure()
 {
+    double R_TOUCH, tempTouch, ScaleFactor = 255/ADC_MAX_INPUT;
+    
     //Først D0 (xp) og D1(ym) til outputs..
-    DDR_DATA = 0xFF;
-    DATA_0_Write(0); //xp 0
-    DATA_1_Write(1); //ym 1
-    //PORT_DATA = 0b10;
+    DDR_DATA = 0b11;
+    //DATA_0_Write(0); //xp 0
+    //DATA_1_Write(1); //ym 1
+    PORT_DATA = 0b10;
     
     //Gøre dem høj impedans til aflæsning
     LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_ALG_HIZ);
@@ -104,11 +107,11 @@ uint8 getPressure()
     LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(0); //Yp => 1
     
+    ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 Z1 = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
     uint16 Z2 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
-    double R_TOUCH, tempTouch, ScaleFactor = 255/ADC_MAX_INPUT;
-    
+
     if (R_xplate != 0)
     {
         tempTouch = ((R_xplate*ReadTouchX())*((Z2/Z1)-1))/(1024);
@@ -134,19 +137,11 @@ uint8 getPressure()
 uint8 TouchStatus()
 {
     //return ADC_TOUCH_IsEndConversion(ADC_TOUCH_RETURN_STATUS); //returnerer 0 hvis ikke i brug/færdig, ellers nonzero value.
-    return LCD_lock_;
+    return 1;
 }
 uint8 StartTouch()
 {
-    /*
-    Note The soc signal must be applied after eoc; otherwise, it implies that the channels were
-    sampled later than was intended (jitter). So the data in the result register interprets it as incorrect
-    and the component will be stalled
-    ^hmm
-    */
-    LCD_lock_ = 1;
-    //ADC_TOUCH_IRQ_Enable();
-    PORT_TOUCH = 1;
+    PORT_WR = 2;
     return 1;
 }
 
@@ -172,6 +167,8 @@ struct Coordinates ReadTouch()
     Coords.X_ = (uint16)XMeasured;
     Coords.Y_ = (uint16)YMeasured;
     Coords.pressure_ = getPressure();
+    
+    PORT_WR = 0;
     
     return Coords;
 };

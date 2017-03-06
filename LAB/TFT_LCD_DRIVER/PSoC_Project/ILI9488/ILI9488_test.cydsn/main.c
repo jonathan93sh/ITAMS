@@ -14,6 +14,7 @@
 #include "GFX.h"
 #include "graph/graph.h"
 #include "SpaceInvader.h"
+#include "touch.h"
 
 uint8 test_[] = {5, 5, 5, 5, 5, 5, 1, 2, 3, 100, 23, 0, 23,34,20,100,12,32,34, 0, 0};
 
@@ -65,8 +66,11 @@ int main(void)
     TFT_init();
     
     TFT_clear_screen(0, 0, 0);
-    
+        
     spaceInavader_start();
+    
+    //struct Coordinates niceCoords;
+    
     
     //TFT_test();
     
@@ -78,6 +82,8 @@ int main(void)
     
     for(;;)
     {
+        
+       //niceCoords = ReadTouch();
         /*
         test2.setPos(&test2,150, 150);
         
