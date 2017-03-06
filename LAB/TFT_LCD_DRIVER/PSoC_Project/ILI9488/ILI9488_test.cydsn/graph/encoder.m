@@ -1,3 +1,11 @@
+%%
+clk = 48 * 10^6;
+
+T_tick = 1/60;
+
+count = clk*T_tick
+
+%%
 clear
 close all;
 clc
