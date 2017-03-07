@@ -98,6 +98,8 @@ void spaceInavader_start()
     
     Touch_init();
     
+    Timer_1_Start();
+    
     while(1)
     {
         readTouch_better(&Y_controller,&X_controller, &press, &trig);
@@ -141,8 +143,9 @@ void spaceInavader_start()
         statusP = Player_algoritme(&engine, &player_db,YposAVGSUM, trig);
         statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
         gameStatus(&engine, statusSI, statusP);
-        CyDelay(16);
+        //CyDelay(16);
         engine.tick(&engine);
+        while(TickControl_Read() == 0);
     }
     
 }
@@ -350,7 +353,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
             if(engine->getPos(engine, db->invaderIDs[i][i2]).X >= db->X_win_line)
                 return GAMEOVER;
             
-            if(rand() % 1000 > 998)
+            if(rand() % 1000 > 990)
             {
                 engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 3);
             }

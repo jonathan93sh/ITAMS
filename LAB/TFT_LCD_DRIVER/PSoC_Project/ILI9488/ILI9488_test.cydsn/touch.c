@@ -33,7 +33,9 @@ uint16 ReadTouchX()
     //LCD_WR_Analog_Write(0); //Xm => 0
     LCD_RS_Write(0); //Yp => 0
     WR_AND_WR_RS_OE = 0b011;
+    //CyDelay(1);
     CyDelay(1);
+    //CyDelayUs
     ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 yp_temp = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
@@ -65,7 +67,7 @@ uint16 ReadTouchY()
     //LCD_RS_Write(1); //Yp => 1
     
     WR_AND_WR_RS_OE = 0b101;
-    CyDelay(2);
+    CyDelay(1);
     ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
     uint16 xm_temp = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
