@@ -11,11 +11,8 @@ struct Coordinates
 };
 
 void Touch_init();
-uint8 TouchStatus();
-uint8 StartTouch();
 struct Coordinates ReadTouch();
 void readTouch_better(uint16 * X, uint16 * Y, uint8 * press, uint8 * trig);
-//void CalibrateTouch();
 #endif
 
 

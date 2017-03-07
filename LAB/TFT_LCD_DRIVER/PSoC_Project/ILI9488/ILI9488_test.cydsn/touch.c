@@ -8,35 +8,13 @@
 
 static uint16 Xm_; //A3 /p2-1
 static uint16 Yp_; //A2 /p2-2
-static float ScaleFactor = (255/ADC_MAX_INPUT);
+static float ScaleFactor = (255.0f)/2.2f;
 static float XScaleFactor = 320.0f/(2200.0f);
 static float YScaleFactor = y_max/(ADC_MAX_INPUT);
 
-uint16 R_xplate = 300; //Rxm + Rxp ... hmmm##########
+uint16 R_xplate = 300; //Rxm + Rxp ... normalt 300ohm
 
 #define WR_AND_WR_RS_OE LCD_WR_AND_WR_RS_OE_Control
-
-
-
-
-/*
-CY_ISR(touch_isr)
-{
-    //sampling done isr
-    //Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
-    //Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
-    PORT_TOUCH = 0;
-    //ADC_TOUCH_IRQ_Disable();
-    LCD_lock_ = 0;
-}
-
-CY_ISR(isr_EOC)
-{
-    //samples are done converting isr
-    //Xm_ = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
-    //Yp_ = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
-}
-*/
 
 //For at læse X coord, skal følgende sættes op:
 // Xp=HIGH, Xm=LOW, Ym=LOW, Yp=LOW.
@@ -125,13 +103,19 @@ uint8 getPressure()
     
     ADC_TOUCH_StartConvert();
     ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
-    uint16 Z1 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1));
-    uint16 Z2 = ADC_TOUCH_CountsTo_mVolts(0u, ADC_TOUCH_GetResult16(0));
+    volatile float Z1 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(1))-4020.0f;
+    volatile float Z2 = ADC_TOUCH_CountsTo_mVolts(1u, ADC_TOUCH_GetResult16(0))-4020.0f;
 
-    R_TOUCH = ((R_xplate*ReadTouchX())*((Z2/Z1)-1))/(1024);
+    static const float XScale = 320.0f/(4258.0f - 1616.0f);
+    
+    R_TOUCH = ((float)(R_xplate*((ReadTouchX()*XScale)))*((Z1/Z2)-1))/(1024.0f);
+    
+
     R_TOUCH = (ScaleFactor*R_TOUCH);
     if(R_TOUCH > 255)
         R_TOUCH = 255;
+    else if(R_TOUCH < 0)
+        R_TOUCH = 0;
 
     //LCD_WR_Analog_SetDriveMode(LCD_WR_Analog_DM_STRONG);
     //LCD_RS_SetDriveMode(LCD_RS_DM_STRONG);
@@ -139,17 +123,6 @@ uint8 getPressure()
     PORT_DATA = 0;
     WR_AND_WR_RS_OE = 0b001;
     return ((uint8)R_TOUCH);
-}
-
-uint8 TouchStatus()
-{
-    //return ADC_TOUCH_IsEndConversion(ADC_TOUCH_RETURN_STATUS); //returnerer 0 hvis ikke i brug/færdig, ellers nonzero value.
-    return 1;
-}
-uint8 StartTouch()
-{
-    //PORT_WR = 2;
-    return 1;
 }
 
 struct Coordinates ReadTouch()
@@ -180,9 +153,40 @@ struct Coordinates ReadTouch()
 
 void Touch_init()
 {
+    volatile uint16 result0, result1;
     ADC_TOUCH_Start();
-    StartTouch();
-    //hmm##
+    
+    LCD_RS_Write(0);
+    WR_AND_WR_RS_OE = 0b000;
+    
+    CyDelay(10);
+    
+    ADC_TOUCH_StartConvert();
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
+    ADC_TOUCH_GetResult16(0);
+    ADC_TOUCH_GetResult16(1);
+    CyDelay(10);
+    ADC_TOUCH_StartConvert();
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
+    ADC_TOUCH_GetResult16(0);
+    ADC_TOUCH_GetResult16(1);
+    CyDelay(10);
+    ADC_TOUCH_StartConvert();
+    ADC_TOUCH_IsEndConversion(ADC_TOUCH_WAIT_FOR_RESULT);
+    
+    
+    
+    result0 =  ADC_TOUCH_GetResult16(0);
+    result1 = ADC_TOUCH_GetResult16(1);
+    
+    ADC_TOUCH_SetOffset(0u,result0);
+    ADC_TOUCH_SetOffset(1u,result1);
+    
+    if(ADC_TOUCH_CountsTo_mVolts(0,result0) != 0 || ADC_TOUCH_CountsTo_mVolts(1,result1) != 0)
+        while(1);
+    
+    LCD_RS_Write(1);
+    WR_AND_WR_RS_OE = 0b001;
 }
 
 
@@ -192,33 +196,31 @@ static int16 X_pre = 0;
 
 void readTouch_better(uint16 * X, uint16 * Y, uint8 * press, uint8 * trig)
 {
-    static const float XScale = 320.0f/(4258.0f - 1616.0f);
-    static const int16 XOffset = 1616;//mv
-    static const float YScale = 480.0f/(923.0f-884.0f);
-    static const int16 YOffset = 884;//mv
+    static const float XScale = 320.0f/(3379.0f - 620.0f);
+    static const int16 XOffset = 620;//mv
+    static const float YScale = 480.0f/(4102.0f-4082.0f);
+    static const int16 YOffset = 4082;//mv
 
-    static const int16 Y_noPress_min = 1000;//mv
-    static const int16 X_noPress_min = 1865;//mv
-    
-    
+    static const int16 Y_noPress_min = 3804 + 150;//mv
+    static const int16 X_noPress_min = 3188 + 150;//mv
     
     int16 X_calc;
     int16 Y_calc;
     uint8 pressCheck;
     
-    int16 tempY = (5000 - ReadTouchY());
-    int16 tempX = (5000 - ReadTouchX());// - (2500+230);
+    int16 tempY = (ReadTouchY());
+    int16 tempX = (ReadTouchX());// - (2500+230);
     
-    pressCheck = (tempY < Y_noPress_min && tempX > X_noPress_min ? 1 : 0);
+    pressCheck = (tempY > Y_noPress_min && tempX < X_noPress_min ? 1 : 0);
     
     //uint16 XMeasured = (uint16)((XScaleFactor*(ADC_MAX_INPUT-tempX)));
-    X_calc = (int16)((float)(tempX-XOffset)*XScale);
+    X_calc = 320 - (int16)((float)(tempX-XOffset)*XScale);
     if(X_calc > 320)
         X_calc = 320;
     else if(X_calc < 0)
         X_calc = 0;
     
-    Y_calc = (int16)((float)(tempY-YOffset)*YScale);
+    Y_calc = 480 - (int16)((float)(tempY-YOffset)*YScale);
     if(Y_calc > 480)
         Y_calc = 480;
     else if(Y_calc < 0)

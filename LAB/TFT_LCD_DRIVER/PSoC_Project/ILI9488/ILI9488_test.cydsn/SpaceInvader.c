@@ -31,6 +31,8 @@ struct spaceInvaders_dataBase
     uint8 step;
     uint8 count;
     
+    int8 lastSteps;
+    uint8 lastdir;
     int16 X_win_line;
 };
 
@@ -51,6 +53,10 @@ int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 Playe
 
 void spaceInavader_start()
 {
+    int16 YposAVG[8] = {0};
+    int16 YposAVGSUM;
+    uint8 YposAVG_ptr = 0, SUM_i;
+    
     srand(322);
     uint8 i,i2, statusSI, statusP;
     
@@ -95,6 +101,18 @@ void spaceInavader_start()
     while(1)
     {
         readTouch_better(&Y_controller,&X_controller, &press, &trig);
+     
+        YposAVG[YposAVG_ptr] = Y_controller;
+        YposAVG_ptr = (YposAVG_ptr + 1) % 8;
+        
+        YposAVGSUM = 0;
+        
+        for(SUM_i = 0; SUM_i < 8; SUM_i++)
+            YposAVGSUM += YposAVG[SUM_i];
+            
+        YposAVGSUM >>= 3;  
+        
+        
         //sim
         /*
         if(rand() % 100 > 50)
@@ -120,7 +138,7 @@ void spaceInavader_start()
         //end
         
         
-        statusP = Player_algoritme(&engine, &player_db,Y_controller, trig);
+        statusP = Player_algoritme(&engine, &player_db,YposAVGSUM, trig);
         statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
         gameStatus(&engine, statusSI, statusP);
         CyDelay(16);
@@ -132,6 +150,8 @@ void spaceInavader_start()
 
 void spaceInavader_test()
 {
+    
+    
     srand(321);
     unsigned i,i2;
     struct Color col[5];
@@ -230,7 +250,8 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     db->X_win_line = 440;
     db->nextCmd = 0;
     db->rowIndex = 0;
-    
+    db->lastSteps = -1;
+    db->lastdir = 0;
     return NORMALSTATE;
 }
 
@@ -243,25 +264,72 @@ void spaceInvaders_normal(struct GameEngine * engine, struct spaceInvaders_dataB
         if(db->step < 10)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, 10, 1);
+            db->lastdir = 0;
         }
         else if(db->step < 15)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 10, 0, 1);
+            db->lastdir = 1;
         }
         else if(db->step < 25)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, -10, 1);
+            db->lastdir = 1;
         }
         else if(db->step < 30)
         {
             engine->move(engine, db->invaderIDs[db->rowIndex][i], 10, 0, 1);
+            db->lastdir = 0;
         }
     }
 }
 
+void spaceInvaders_LastOne(struct GameEngine * engine, struct spaceInvaders_dataBase * db, uint8 lastRowIndex, uint8 lastColIndex)
+{
+    int16 Y;
+    uint8 ID = db->invaderIDs[lastRowIndex][lastColIndex];
+    
+    if(engine->isDead(engine, ID))
+        return;
+    
+    if(db->lastSteps == -1)
+    {
+        Y = engine->getPos(engine, ID).Y;
+        
+        if(0 <= Y && Y <= 50 && db->lastdir == 1)
+        {
+            db->lastSteps = 1;
+             db->lastdir = 0;
+        }
+        else if(320-50 <= Y && Y <= 320 && db->lastdir == 0)
+        {
+            db->lastSteps = 1;
+            db->lastdir = 1;
+        }
+        else
+        {
+            if(db->lastdir == 0)
+                engine->move(engine, ID, 0, 10, 1);
+            else
+                engine->move(engine, ID, 0, -10, 1);
+        }
+        
+        
+    }
+    else
+    {
+        engine->move(engine, ID, 10, 0, 1);
+        db->lastSteps -= 1;
+    }
+    
+    
+}
+
 int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_dataBase * db)
 {
-    uint8 alife, i, i2, hasWon;
+    uint8 alife, isdeadTmp, i, i2, hasWon;
+    uint8 lastRowIndex = 0, lastColIndex = 0;
+    uint8 alife_row[ROWSIZE] = {0};
     
     alife = 0;
     
@@ -269,13 +337,22 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
     {
         for(i2 = 0; i2 < db->colSize; i2++)
         {
-            alife += !engine->isDead(engine, db->invaderIDs[i][i2]);
+            isdeadTmp = engine->isDead(engine, db->invaderIDs[i][i2]);
+            alife += !isdeadTmp;
+            alife_row[i] += !isdeadTmp;
+            
+            if(!isdeadTmp)
+            {
+                lastRowIndex = i;
+                lastColIndex = i2;
+            }
+            
             if(engine->getPos(engine, db->invaderIDs[i][i2]).X >= db->X_win_line)
                 return GAMEOVER;
             
             if(rand() % 1000 > 998)
             {
-                engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 2);
+                engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 3);
             }
         }
     }
@@ -291,16 +368,20 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
         {
             return WON;
         }
-        else if(alife == 0) //1
+        else if(alife == 1) //1
         {
-            
+            spaceInvaders_LastOne(engine, db, lastRowIndex, lastColIndex);
         }
         else
         {
             
             
             spaceInvaders_normal(engine, db); 
-            db->rowIndex = (db->rowIndex + 1) % db->colSize;  
+            
+            do
+            {
+                db->rowIndex = (db->rowIndex + 1) % db->colSize;  
+            }while(alife_row[db->rowIndex] == 0);
             if(db->rowIndex == 0)
             {
                 db->step = (db->step + 1) % 30;   
@@ -321,7 +402,7 @@ int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db)
     
     const int16 Y_start = (320/2) - (39/2);
 
-    db->PlayerID = engine->spawn(engine, "Hero", Player, 0, X_pos, Y_start, 10);
+    db->PlayerID = engine->spawn(engine, "Hero", Player, 0, X_pos, Y_start, 3);
     
     db->reloadCountDown = 0;
     db->X_lock = X_pos;
@@ -344,7 +425,7 @@ int8 Player_algoritme(struct GameEngine * engine, struct Player_dataBase * db, i
     if(db->reloadCountDown == 0 && fire)
     {
         engine->shoot(engine, db->PlayerID, UP, "shoot", 5);
-        db->reloadCountDown = 20;
+        db->reloadCountDown = 40;
     }
     else if(db->reloadCountDown != 0)
     {

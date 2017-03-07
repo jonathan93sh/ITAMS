@@ -16,7 +16,7 @@
 #include "SubjectFactory.h"
 
 #define subjectLimit 20
-#define shootsInAirLimit 8
+#define shootsInAirLimit 15
 enum teamID{Player, Enemies};
 enum Gdir{UP, DOWN, LEFT, RIGTH};
 struct GameEngine;
