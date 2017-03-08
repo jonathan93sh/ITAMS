@@ -1,8 +1,25 @@
+%%
+clk = 48 * 10^6;
+
+T_tick = 1/60;
+
+count = clk*T_tick
+
+%%
 clear
 close all;
 clc
-FILE_NAME = 'graph.h';
-nameList = {'space_invader', 'shoot', 'invader_shoot', 'Hero', 'explode'};
+FILE_NAME = 'graph_numFont.h';
+
+
+
+for i = 0:9
+    nameList(i+1,:) = strcat('number_', num2str(i));
+end
+
+nameList = nameList'
+
+%nameList = {'number_0', 'shoot', 'invader_shoot', 'Hero', 'explode'};
 
 fileID=fopen(FILE_NAME,'w');
 
@@ -10,7 +27,7 @@ fprintf(fileID,'#include <project.h>\n\n');
 
 for name=nameList
 
-
+    name = char(name');
     
     image = imread(char(strcat(name, '.tif')));
 
@@ -22,7 +39,7 @@ for name=nameList
     image(image~=0) = 1; 
     image = ~image;
 
-    image = nneighbor(image, 3);
+    image = nneighbor(image, 2);
 
     imshow(double(image))
     %
@@ -48,7 +65,7 @@ for name=nameList
 
     %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
     
-    fprintf(fileID,'static char *
+    fprintf(fileID,'static char %s_GRAPH_NAME[] = "%s";\n\n', charName, charName); 
     
     fprintf(fileID,'static uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
 
@@ -69,20 +86,71 @@ for name=nameList
     %fprintf(fileID,'\n};');
 
 end
-length_ = length(nameList); 
-fprintf(fileID,'static char ** Graph_NAMES = {\n', length_);
+
+length_ = length(nameList);
+
+
+
+
+fprintf(fileID,'static uint8 GRAPH_NUM_length = %d;\n\n', length_);
+
+
+fprintf(fileID,'static uint8 * NUM_GRAPHS[] = {\n');
+first = 1;
 for name=nameList
     charName = char(name);
-    
-    
-    
-    
-    
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_GRAPH', charName);
+
 end
 
+fprintf(fileID,'\n};\n\n');
 
-uint8 ** graph_texs, uint16 * sizeXs, uint16 * sizeYs, char ** names, struct Color * colors, struct Color * Bgcolors, size_t length
 
+fprintf(fileID,'static char * GRAPH_NUM_NAMES[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_GRAPH_NAME', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
+
+fprintf(fileID,'static uint16 GRAPH_NUM_SIZEXS[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_X', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
+
+fprintf(fileID,'static uint16 GRAPH_NUM_SIZEYS[] = {\n');
+first = 1;
+for name=nameList
+    charName = char(name);
+    if first == 0
+        fprintf(fileID,',');
+    end
+    first = 0;
+    fprintf(fileID,'%s_Y', charName);
+
+end
+
+fprintf(fileID,'\n};\n\n');
 
 fclose(fileID);
 

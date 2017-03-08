@@ -307,6 +307,7 @@ void GE_checkHit(struct GameEngine * this)
                                 
                                 if(this->subjects_[i2]->lives_ == 0)
                                 {
+                                    this->points +=  this->subjects_[i2]->killPoints_;
                                     this->factory_->delete( this->factory_, this->subjects_[i2]);
                                     this->subjects_[i2] = NULL;
                                 }

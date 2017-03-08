@@ -38,13 +38,18 @@ struct GameEngine
     uint8 shootDir_[shootsInAirLimit];
     
     struct SubjectFactory * factory_;
-
+    
     int16 (*spawn)(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives); //return subject ID if -1 wrong name, -2 subject limit.
     int8 (*move)(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ);
     struct coord (*getPos)(struct GameEngine * this, uint8 ID);
     int8 (*shoot)(struct GameEngine * this, uint8 ID, int8 dir, char * type, uint8 speed);
     uint8 (*isDead)(struct GameEngine * this, uint8 ID);
     int8 (*tick)(struct GameEngine * this);
+    
+    //new functions
+    
+    void (*endGame)(struct GameEngine * this);
+    
 };
 
 #endif
