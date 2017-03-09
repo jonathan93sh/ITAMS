@@ -1,3 +1,4 @@
+%% encoder_startScreen
 %%
 clk = 48 * 10^6;
 
@@ -9,8 +10,8 @@ count = clk*T_tick
 clear
 close all;
 clc
-FILE_NAME = 'graph.h';
-nameList = {'space_invader', 'shoot', 'invader_shoot', 'Hero', 'explode', 'invader_front_big', 'space', 'tap_to_play', 'invaders'};
+FILE_NAME = 'graph_front.h';
+nameList = {'invader_front_big', 'space', 'tap_to_play', 'invaders'};
 
 fileID=fopen(FILE_NAME,'w');
 
@@ -18,19 +19,13 @@ fprintf(fileID,'#include <project.h>\n\n');
 
 for name=nameList
 
-
-    
     image = imread(char(strcat(name, '.tif')));
-
-
-
-
     image = image(:,:,1);
 
     image(image~=0) = 1; 
     image = ~image;
 
-    image = nneighbor(image, 3);
+    image = nneighbor(image, 2);
 
     imshow(double(image))
     %
@@ -52,13 +47,13 @@ for name=nameList
     charName = char(name);
     % LUT to header file
 
-    fprintf(fileID,'#define %s_SIZE %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
+    fprintf(fileID,'#define %s_SIZE_FRONT %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
 
     %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
     
-    fprintf(fileID,'static char %s_GRAPH_NAME[] = "%s";\n\n', charName, charName); 
+    fprintf(fileID,'static char %s_GRAPH_FRONT_NAME[] = "%s";\n\n', charName, charName); 
     
-    fprintf(fileID,'static uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
+    fprintf(fileID,'static uint8 %s_GRAPH_FRONT[%d] = {\n', charName, length(bitArray));
 
     fprintf(fileID,'%d', uint8(bitArray(1)));
     for i=2:length(bitArray)
@@ -83,10 +78,10 @@ length_ = length(nameList);
 
 
 
-fprintf(fileID,'static uint8 GRAPH_length = %d;\n\n', length_);
+fprintf(fileID,'static uint8 GRAPH_FRONT_length = %d;\n\n', length_);
 
 
-fprintf(fileID,'static uint8 * GRAPHS[] = {\n');
+fprintf(fileID,'static uint8 * GRAPHS_FRONT[] = {\n');
 first = 1;
 for name=nameList
     charName = char(name);
@@ -94,14 +89,14 @@ for name=nameList
         fprintf(fileID,',');
     end
     first = 0;
-    fprintf(fileID,'%s_GRAPH', charName);
+    fprintf(fileID,'%s_GRAPH_FRONT', charName);
 
 end
 
 fprintf(fileID,'\n};\n\n');
 
 
-fprintf(fileID,'static char * GRAPH_NAMES[] = {\n');
+fprintf(fileID,'static char * GRAPH_FRONT_NAMES[] = {\n');
 first = 1;
 for name=nameList
     charName = char(name);
@@ -109,13 +104,13 @@ for name=nameList
         fprintf(fileID,',');
     end
     first = 0;
-    fprintf(fileID,'%s_GRAPH_NAME', charName);
+    fprintf(fileID,'%s_GRAPH__FRONTNAME', charName);
 
 end
 
 fprintf(fileID,'\n};\n\n');
 
-fprintf(fileID,'static uint16 GRAPH_SIZEXS[] = {\n');
+fprintf(fileID,'static uint16 GRAPH__FRONT_SIZEXS[] = {\n');
 first = 1;
 for name=nameList
     charName = char(name);
@@ -129,7 +124,7 @@ end
 
 fprintf(fileID,'\n};\n\n');
 
-fprintf(fileID,'static uint16 GRAPH_SIZEYS[] = {\n');
+fprintf(fileID,'static uint16 GRAPH_FRONT_SIZEYS[] = {\n');
 first = 1;
 for name=nameList
     charName = char(name);

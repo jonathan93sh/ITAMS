@@ -1,3 +1,4 @@
+%% encoder_startScreen
 %%
 clk = 48 * 10^6;
 
@@ -9,8 +10,8 @@ count = clk*T_tick
 clear
 close all;
 clc
-FILE_NAME = 'graph.h';
-nameList = {'space_invader', 'shoot', 'invader_shoot', 'Hero', 'explode', 'invader_front_big', 'space', 'tap_to_play', 'invaders'};
+FILE_NAME = 'graph_front.h';
+nameList = {'invader_front_big', 'space', 'tap_to_play', 'invaders'};
 
 fileID=fopen(FILE_NAME,'w');
 
@@ -18,19 +19,13 @@ fprintf(fileID,'#include <project.h>\n\n');
 
 for name=nameList
 
-
-    
     image = imread(char(strcat(name, '.tif')));
-
-
-
-
     image = image(:,:,1);
 
     image(image~=0) = 1; 
     image = ~image;
 
-    image = nneighbor(image, 3);
+    image = nneighbor(image, 2);
 
     imshow(double(image))
     %
@@ -56,7 +51,7 @@ for name=nameList
 
     %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
     
-    fprintf(fileID,'static char %s_GRAPH_NAME[] = "%s";\n\n', charName, charName); 
+    fprintf(fileID,'static char %s_GRAPH_FRONT_NAME[] = "%s";\n\n', charName, charName); 
     
     fprintf(fileID,'static uint8 %s_GRAPH[%d] = {\n', charName, length(bitArray));
 
