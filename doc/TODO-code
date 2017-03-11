@@ -1,0 +1,27 @@
+TODO
+
+GameEngine:
+fix point to point_ in GameEngine
+fix int16 spawn too int8 spawn
+fix uint8 isDead(uint8) too int8 isDead(uint8)
+fix int8 tick() too void tick() 
+
+GameSubject:
+add metodes.
+
+
+
+GFX:
+
+find better name graph_object - graph_object -> GFXObject
+GFX_Pos->GFXPos
+Color -> GFXColor
+
+GFXPos -> nedarv fra pos
+
+SubjectFactory:
+SubjectFactory -> GameSubjectFactory
+
+NumberGFX:
+filenavn
+NumberGFX -> GFXNumber
