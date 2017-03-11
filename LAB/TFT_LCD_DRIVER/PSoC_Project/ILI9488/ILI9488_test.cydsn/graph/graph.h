@@ -1,3 +1,5 @@
+#ifndef GRAPH_H_
+    #define GRAPH_H_
 #include <project.h>
 
 #define space_invader_SIZE 113
@@ -67,4 +69,4 @@ space_invader_X,shoot_X,invader_shoot_X,Hero_X,explode_X
 static uint16 GRAPH_SIZEYS[] = {
 space_invader_Y,shoot_Y,invader_shoot_Y,Hero_Y,explode_Y
 };
-
+#endif

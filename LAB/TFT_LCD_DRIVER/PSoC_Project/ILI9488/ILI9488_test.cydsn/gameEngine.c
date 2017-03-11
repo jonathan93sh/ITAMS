@@ -12,6 +12,7 @@
 
 
 #include "gameEngine.h"
+#include "EEPROM.h"
 
 int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives); //return subject ID if -1 wrong name, -2 subject limit.
 int8 GE_move(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ);
@@ -23,6 +24,9 @@ void GE_updatePos(struct GameEngine * this);
 void GE_shootMove(struct GameEngine * this);
 uint8 GE_isDead(struct GameEngine * this, uint8 ID);
 uint8 hitCheck(struct graph_object * p1, struct graph_object * p2);
+void GE_endGame(struct GameEngine * this);
+void GE_nextLevel(struct GameEngine * this);
+int8 GE_lifeLeft(struct GameEngine * this, uint8 ID);
 
 int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives) //return subject ID if -1 wrong name, -2 subject limit.
 {
@@ -331,19 +335,128 @@ int8 GE_tick(struct GameEngine * this)
     return 1;
 }
 
+void GE_endGame(struct GameEngine * this)
+{
+    static const uint8 CYCODE HighScore[4] = {0};
+    cystatus status;
+    uint8 newHighScore[4];
+    uint32 HighScore_ = (*(volatile uint8 *)&HighScore[0]);
+    HighScore_ += ((*(volatile uint8 *)&HighScore[1])<<8);
+    HighScore_ += ((*(volatile uint8 *)&HighScore[2]) << 16);
+    HighScore_ += ((*(volatile uint8 *)&HighScore[3]) << 24);
+    
+    
+    struct Color col, bgcol;
+    
+    uint8 i, EEPROM_status;
+    
+    
+    for(i = 0; i < subjectLimit; i++)
+    {
+        this->factory_->delete(this->factory_, this->subjects_[i]);
+    }
+    
+    for(i = 0; i < shootsInAirLimit; i++)
+    {
+        this->factory_->delete(this->factory_, this->shoots_[i]);
+    }
+    
+    TFT_clear_screen(0,0,0);
+    
+    
+   
+    if(HighScore_ <= this->points)
+    {
+        HighScore_ = this->points;
+        
+        newHighScore[0] = (this->points & 0xff);
+        newHighScore[1] = ((this->points>>8) & 0xff);
+        newHighScore[2] = ((this->points>>16) & 0xff);
+        newHighScore[3] = ((this->points>>24) & 0xff);
+        
+        status = EEPROM_1_Write(newHighScore, HighScore, 4);
+        if(status != CYRET_SUCCESS)
+            while(1);
+    }
+    
+    col.R = 255;
+    col.G = 255;
+    col.B = 0;
+    
+    
+    bgcol.R = 0;
+    bgcol.G = 0;
+    bgcol.B = 0;
+    
+    init_NumberGFX(&this->finalScore, this->points, 5, 180, 150, &col, &bgcol);
+    
+    init_NumberGFX(&this->HighScore, HighScore_, 5, 150, 150, &col, &bgcol);
+    
+    CyDelay(5000);    
+    this->finalScore.delete(&this->finalScore);
+    this->finalScore.delete(&this->HighScore);
+    //TFT_clear_screen(0,0,0);
+    
+}
 
-
-void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory)
+void GE_nextLevel(struct GameEngine * this)
 {
     uint8 i;
-    this->factory_ = factory;
+    struct Color col, bgcol;
     
+    for(i = 0; i < subjectLimit; i++)
+    {
+        this->factory_->delete(this->factory_, this->subjects_[i]);
+    }
+    
+    for(i = 0; i < shootsInAirLimit; i++)
+    {
+        this->factory_->delete(this->factory_, this->shoots_[i]);
+    }
+    
+    TFT_clear_screen(0,0,0);
+    
+    col.R = 255;
+    col.G = 255;
+    col.B = 0;
+    
+    
+    bgcol.R = 0;
+    bgcol.G = 0;
+    bgcol.B = 0;
+    init_NumberGFX(&this->finalScore, this->points, 5, 180, 150, &col, &bgcol);
+    CyDelay(2000);  
+    this->finalScore.delete(&this->finalScore);
+}
+
+int8 GE_lifeLeft(struct GameEngine * this, uint8 ID)
+{
+    if(this->subjects_[ID] == NULL)
+        return -1;
+    
+    return this->subjects_[ID]->lives_;
+}
+
+
+void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory, char nextLevel)
+{
+    uint8 i;
+    
+    this->factory_ = factory;
+    this->endGame = GE_endGame;
+    this->lifeLeft = GE_lifeLeft;
+    this->nextLevel = GE_nextLevel;
     this->getPos = GE_getPos;
     this->move = GE_move;
     this->shoot = GE_shoot;
     this->spawn = GE_spawn;
     this->tick = GE_tick;
     this->isDead = GE_isDead;
+    if(nextLevel == 0)
+    {
+        this->points = 0;
+    }
+    
     
     
     

@@ -19,7 +19,7 @@ void NumberGFX_delete(struct NumberGFX * this);
 void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct Color * col, struct Color * bgCol)
 {
     const uint8 Y_offset = number_0_Y;
-    uint8 i, decimal, factor;
+    uint16 i, decimal, factor;
     struct GFX_Pos pos;
     
     pos.pos_X_ = X;
@@ -28,14 +28,20 @@ void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uin
     pos.size_Y_ = number_0_Y;
     
     this->delete = NumberGFX_delete;
-    
-    if(Number == 0)
+    this->length_ = Ncharater;
+    if(Ncharater == 0)
     {
         this->length_ = 0;
         this->GFX_number_objects_ = NULL;
     }
     
-    this->GFX_number_objects_ = calloc(Number, sizeof(struct graph_object));
+    
+    
+    this->GFX_number_objects_ = calloc(Ncharater, sizeof(struct graph_object));
+    
+    if(this->GFX_number_objects_ == NULL)
+        return;
+    
     
     factor = 1;
     

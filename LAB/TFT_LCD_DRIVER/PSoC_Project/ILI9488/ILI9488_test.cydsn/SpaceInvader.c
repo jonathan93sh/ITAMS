@@ -20,6 +20,7 @@
 
 #define COLSIZE 4
 #define ROWSIZE 4
+#define HERO_LIFE 5
 
 struct spaceInvaders_dataBase
 {
@@ -45,9 +46,9 @@ struct Player_dataBase
     uint8 reloadCountDown;
 };
 
-int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBase * db);
+int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBase * db, uint16 level);
 int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_dataBase * db);
-int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db);
+int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db, uint8 lifes);
 int8 Player_algoritme(struct GameEngine * engine, struct Player_dataBase * db, int16 Ypos, uint8 fire);
 int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 PlayerStatus);
 
@@ -56,6 +57,9 @@ void spaceInavader_start()
     int16 YposAVG[8] = {0};
     int16 YposAVGSUM;
     uint8 YposAVG_ptr = 0, SUM_i;
+    int8 status;
+    uint8 HeroLifes = HERO_LIFE;
+    uint16 level = 0;
     
     srand(322);
     uint8 i,i2, statusSI, statusP;
@@ -88,66 +92,60 @@ void spaceInavader_start()
         Bgcol[i].B = 0;
     }
     
-    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
-    
-    GameEngine_init(&engine, &factory);
-    
-    spaceInvaders_init(&engine, &spaceInvaders_db);
-    
-    Player_init(&engine, &player_db);
-    
     Touch_init();
     
     Timer_1_Start();
-    
     while(1)
     {
-        readTouch_better(&Y_controller,&X_controller, &press, &trig);
-     
-        YposAVG[YposAVG_ptr] = Y_controller;
-        YposAVG_ptr = (YposAVG_ptr + 1) % 8;
-        
-        YposAVGSUM = 0;
-        
-        for(SUM_i = 0; SUM_i < 8; SUM_i++)
-            YposAVGSUM += YposAVG[SUM_i];
-            
-        YposAVGSUM >>= 3;  
-        
-        
-        //sim
-        /*
-        if(rand() % 100 > 50)
+    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
+    
+    GameEngine_init(&engine, &factory, (level == 0? 0u : 1u));
+    
+    spaceInvaders_init(&engine, &spaceInvaders_db, level);
+    
+    Player_init(&engine, &player_db, HeroLifes);
+    
+    
+    
+        do
         {
-            shoot_sim = 1;
+            readTouch_better(&Y_controller,&X_controller, &press, &trig);
+         
+            YposAVG[YposAVG_ptr] = Y_controller;
+            YposAVG_ptr = (YposAVG_ptr + 1) % 8;
+            
+            YposAVGSUM = 0;
+            
+            for(SUM_i = 0; SUM_i < 8; SUM_i++)
+                YposAVGSUM += YposAVG[SUM_i];
+                
+            YposAVGSUM >>= 3;  
+            
+            statusP = Player_algoritme(&engine, &player_db,YposAVGSUM, trig);
+            statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
+            status = gameStatus(&engine, statusSI, statusP);
+            
+            //CyDelay(16);
+            engine.tick(&engine);
+            while(TickControl_Read() == 0);
+            
+        }while(status == NORMALSTATE);
+        
+        if(status == WON)
+        {
+            HeroLifes = engine.lifeLeft(&engine, player_db.PlayerID);
+            level++;
+            engine.nextLevel(&engine);
         }
         else
         {
-            shoot_sim = 0;
-        }
-        if(count_sim == 0)
-            Y_sim_controller_delta = (rand() % 11) - 5;
-        
-        count_sim = (count_sim + 1) % 20;
+            engine.endGame(&engine);
+            HeroLifes = HERO_LIFE;
+            level = 0;
             
-        Y_sim_controller = Y_sim_controller + Y_sim_controller_delta;
-        
-        if(Y_sim_controller < 0)
-            Y_sim_controller = 0;
-        else if(Y_sim_controller > player_db.Y_max)
-            Y_sim_controller = player_db.Y_max;
-        */
-        //end
-        
-        
-        statusP = Player_algoritme(&engine, &player_db,YposAVGSUM, trig);
-        statusSI = spaceInvaders_algoritme(&engine, &spaceInvaders_db);
-        gameStatus(&engine, statusSI, statusP);
-        //CyDelay(16);
-        engine.tick(&engine);
-        while(TickControl_Read() == 0);
+        }
+
     }
-    
 }
 
 
@@ -180,7 +178,7 @@ void spaceInavader_test()
     
     SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
-    GameEngine_init(&engine, &factory);
+    GameEngine_init(&engine, &factory, 0);
     
     heroID = engine.spawn(&engine, "Hero", Player, 0, 450, yPos, 3);
     for(i = 0; i < 4; i++)
@@ -230,7 +228,7 @@ void spaceInavader_test()
 
 
 
-int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBase * db)
+int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBase * db, uint16 level)
 {
     const uint8 colSize = COLSIZE;
     const uint8 rowSize = ROWSIZE;
@@ -242,7 +240,7 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     {
         for(i2 = 0; i2 < rowSize; i2++)
         {
-            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 10, 50 + i*40, 20 + i2*50, 1);
+            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 10, 50 + i*40, 20 + i2*50, 1 + (level>>1));
         }
     }
     
@@ -353,7 +351,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
             if(engine->getPos(engine, db->invaderIDs[i][i2]).X >= db->X_win_line)
                 return GAMEOVER;
             
-            if(rand() % 1000 > 990)
+            if(rand() % 1000 > 998)
             {
                 engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 3);
             }
@@ -397,7 +395,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
     return NORMALSTATE;
 }
 
-int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db)
+int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db, uint8 lifes)
 {
     const int16 X_pos = 450;
     const int16 Y_min = 0+1;
@@ -405,7 +403,7 @@ int8 Player_init(struct GameEngine * engine, struct Player_dataBase * db)
     
     const int16 Y_start = (320/2) - (39/2);
 
-    db->PlayerID = engine->spawn(engine, "Hero", Player, 0, X_pos, Y_start, 3);
+    db->PlayerID = engine->spawn(engine, "Hero", Player, 0, X_pos, Y_start, lifes);
     
     db->reloadCountDown = 0;
     db->X_lock = X_pos;
@@ -459,8 +457,10 @@ int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 Playe
     switch(spaceInvadersStatus)
     {
         case GAMEOVER:
+        return GAMEOVER;
         case WON:
-        while(1);
+        return WON;
+        
      case NORMALSTATE:   
         default:
         break;
@@ -469,8 +469,9 @@ int8 gameStatus(struct GameEngine * engine, int8 spaceInvadersStatus, int8 Playe
     switch(PlayerStatus)
     {
         case GAMEOVER:
+        return GAMEOVER;
         case WON:
-        while(1);
+        return WON;
      case NORMALSTATE:   
         default:
         break;

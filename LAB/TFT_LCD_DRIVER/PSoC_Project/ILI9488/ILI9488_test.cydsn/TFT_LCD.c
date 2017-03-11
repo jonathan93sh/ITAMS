@@ -159,14 +159,15 @@ void TFT_init()
 {
     uint8 status[5] = {0};
     unsigned i;
-    uint8 testData[300] = {0};
+    //uint8 testData[300] = {0};
     
-    
+    /*
     
     for(i = 0; i < 300; i++)
     {
          testData[i] = (uint8)i;  
     }
+    */
     
     DDR_DATA_Write(0x00);
     LCD_RST_Write(1);

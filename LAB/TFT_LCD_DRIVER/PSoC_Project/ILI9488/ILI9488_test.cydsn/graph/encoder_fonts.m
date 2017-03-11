@@ -29,17 +29,19 @@ for name=nameList
 
     name = char(name');
     
-    image = imread(char(strcat(name, '.tif')));
+    image = (imread(char(strcat(name, '.tif'))));
 
-
+    
 
 
     image = image(:,:,1);
-
+    
+    image = flip(image,2);
+    
     image(image~=0) = 1; 
     image = ~image;
 
-    image = nneighbor(image, 2);
+    %image = nneighbor(image, 2);
 
     imshow(double(image))
     %

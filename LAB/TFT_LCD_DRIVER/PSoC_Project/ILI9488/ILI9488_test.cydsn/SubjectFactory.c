@@ -58,6 +58,9 @@ struct GameSubject * SF_creat(struct SubjectFactory * this, char * name, int16 X
 
 void SF_delete(struct SubjectFactory * this, struct GameSubject * object)
 {
+    if(object == NULL)
+        return;
+    
     object->graph_.delete(&object->graph_);
     
     free(object);

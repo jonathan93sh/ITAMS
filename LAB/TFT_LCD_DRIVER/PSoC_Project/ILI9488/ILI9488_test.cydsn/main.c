@@ -14,7 +14,7 @@
 #include "GFX.h"
 #include "graph/graph.h"
 #include "SpaceInvader.h"
-//#include "touch.h"
+#include "touch.h"
 
 uint8 test_[] = {5, 5, 5, 5, 5, 5, 1, 2, 3, 100, 23, 0, 23,34,20,100,12,32,34, 0, 0};
 

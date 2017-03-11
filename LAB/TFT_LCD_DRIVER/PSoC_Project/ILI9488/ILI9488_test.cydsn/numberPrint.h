@@ -9,6 +9,9 @@
  *
  * ========================================
 */
+
+#ifndef NUMBERPRINT_H_
+    #define NUMBERPRINT_H_
 #include <project.h>
 #include "GFX.h"
 
@@ -21,6 +24,6 @@ struct NumberGFX
 
 void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct Color * col, struct Color * bgCol);
 
-
+#endif
 
 /* [] END OF FILE */
