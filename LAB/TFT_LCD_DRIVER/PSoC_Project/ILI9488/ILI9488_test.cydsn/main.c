@@ -12,16 +12,15 @@
 #include "project.h"
 #include "TFT_LCD.h"
 #include "GFX.h"
-#include "graph/graph.h"
 #include "SpaceInvader.h"
 #include "touch.h"
-
+/*
 uint8 test_[] = {5, 5, 5, 5, 5, 5, 1, 2, 3, 100, 23, 0, 23,34,20,100,12,32,34, 0, 0};
 
 uint8 space[] = {
 192, 1, 0, 7, 128, 3, 0, 14, 0, 7, 0, 28, 0, 112, 0, 7, 0, 224, 0, 14, 0, 192, 1, 28, 0, 240, 255, 255, 1, 224, 255, 255, 3, 192, 255, 255, 7, 240, 227, 63, 126, 224, 199, 127, 252, 192, 143, 255, 248, 241, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 31, 255, 255, 31, 63, 254, 255, 63, 126, 252, 255, 127, 252, 56, 0, 224, 248, 113, 0, 192, 241, 227, 0, 128, 227, 0, 126, 252, 0, 0, 252, 248, 1, 0, 248, 241, 3, 0, 0
 };
-
+*/
 
 
 int main(void)
@@ -69,6 +68,8 @@ int main(void)
     
     Touch_init();
         
+    Timer_1_Start();
+    
     spaceInavader_start();
     /*
     struct Coordinates niceCoords;
@@ -125,6 +126,7 @@ int main(void)
 
         /* Place your application code here. */
     //}
+    return 1;
 }
 
 /* [] END OF FILE */

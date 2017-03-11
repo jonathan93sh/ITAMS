@@ -1,28 +1,24 @@
-%% encoder_startScreen
-%%
-clk = 48 * 10^6;
-
-T_tick = 1/60;
-
-count = clk*T_tick
-
-%%
+function [ ] = GFXencoder( FILE_NAME, nameList, prefix, postfix )
+%GFXENCODER Summary of this function goes here
+%   Detailed explanation goes here
 clear
 close all;
 clc
-FILE_NAME = 'graph_startScreen.h';
-nameList = {'invader_front_big', 'space', 'tap_to_play', 'invaders'};
+%FILE_NAME = 'graph_startScreen';
+%nameList = {'invader_front_big', 'space', 'tap_to_play', 'invaders'};
 
-fileID=fopen(FILE_NAME,'w');
+fileID=fopen(strcat(FILE_NAME, '.h','w'));
 
 fprintf(fileID,'#include <project.h>\n\n');
-fprintf(fileID,'#ifndef \n\n');
-fprintf(fileID,'#include <project.h>\n\n');
+fprintf(fileID,'#ifndef %s_H_\n',upper(FILE_NAME));
+fprintf(fileID,'#define %s_H_\n',upper(FILE_NAME));
 for name=nameList
 
     image = imread(char(strcat(name, '.tif')));
     image = image(:,:,1);
-
+    
+    image = flip(image,2);
+    
     image(image~=0) = 1; 
     image = ~image;
 
@@ -48,13 +44,13 @@ for name=nameList
     charName = char(name);
     % LUT to header file
 
-    fprintf(fileID,'#define %s_SIZE_FRONT %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
+    fprintf(fileID,'#define %s_SIZE %d\n#define %s_X %d\n#define %s_Y %d\n\n', charName,length(bitArray), charName, x_length, charName, y_length);
 
     %fprintf(fileID,'#define LUT_SIZE %d\n#define LUT_LSB %d\n#define LUT_SHIFT %d\n\n'); %,round(array_size), round(array_size_RPM),round(array_size_RPM_shift));
     
-    fprintf(fileID,'static char %s_GRAPH_FRONT_NAME[] = "%s";\n\n', charName, charName); 
+    fprintf(fileID,'%s char %s %s_GRAPH_NAME[] = "%s";\n\n',prefix, postfix, charName, charName); 
     
-    fprintf(fileID,'static uint8 %s_GRAPH_FRONT[%d] = {\n', charName, length(bitArray));
+    fprintf(fileID,'%s uint8 %s %s_GRAPH[%d] = {\n',prefix,postfix, charName, length(bitArray));
 
     fprintf(fileID,'%d', uint8(bitArray(1)));
     for i=2:length(bitArray)
@@ -63,15 +59,6 @@ for name=nameList
 
     fprintf(fileID,'\n};\n\n');
 
-    % fprintf(fileID,'static const uint8 CONST_LUT[LUT_SIZE] = {\n');
-    % 
-    % fprintf(fileID,'%d', uint8(power_const_LUT(1)));
-    % for i=2:length(power_const_LUT)
-    %     fprintf(fileID,', %d', uint8(power_const_LUT(i)));
-    % end
-
-    %fprintf(fileID,'\n};');
-
 end
 
 length_ = length(nameList);
@@ -79,10 +66,10 @@ length_ = length(nameList);
 
 
 
-fprintf(fileID,'static uint8 GRAPH_FRONT_length = %d;\n\n', length_);
+fprintf(fileID,'%s uint8 %s %s_GRAPH_length = %d;\n\n',prefix,postfix, FILE_NAME, length_);
 
 
-fprintf(fileID,'static uint8 * GRAPHS_FRONT[] = {\n');
+fprintf(fileID,'%s uint8 %s * GRAPHS_FRONT[] = {\n',prefix, postfix);
 first = 1;
 for name=nameList
     charName = char(name);
@@ -97,7 +84,7 @@ end
 fprintf(fileID,'\n};\n\n');
 
 
-fprintf(fileID,'static char * GRAPH_FRONT_NAMES[] = {\n');
+fprintf(fileID,'%s char %s * GRAPH_FRONT_NAMES[] = {\n', prefix, postfix);
 first = 1;
 for name=nameList
     charName = char(name);
@@ -111,7 +98,7 @@ end
 
 fprintf(fileID,'\n};\n\n');
 
-fprintf(fileID,'static uint16 GRAPH__FRONT_SIZEXS[] = {\n');
+fprintf(fileID,'%s uint16 %s GRAPH__FRONT_SIZEXS[] = {\n', prefix, postfix);
 first = 1;
 for name=nameList
     charName = char(name);
@@ -125,7 +112,7 @@ end
 
 fprintf(fileID,'\n};\n\n');
 
-fprintf(fileID,'static uint16 GRAPH_FRONT_SIZEYS[] = {\n');
+fprintf(fileID,'%s uint16 %s GRAPH_FRONT_SIZEYS[] = {\n', prefix, postfix);
 first = 1;
 for name=nameList
     charName = char(name);
@@ -138,30 +125,9 @@ for name=nameList
 end
 
 fprintf(fileID,'\n};\n\n');
-
+fprintf(fileID,'#endif\n');
 fclose(fileID);
 
 
-%%
-% [x_length, y_length] = size(image)
-% 
-% count = 0;
-% last=0;
-% 
-% bitpos = 1;
-% bitArray = zeros(1,x_length*y_length );
-% 
-% for x=1:x_length-1
-%     for y=1:y_length-1
-%         if(image(x,y) == last)
-%             count = count +1;
-%         else
-%             last = image(x,y);
-%             count = count +1;
-%             bitArray(bitpos) = count;
-%             bitpos = bitpos + 1;
-%             count = 0;
-%         end
-%             
-%     end
-% end
+end
+

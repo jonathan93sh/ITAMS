@@ -26,7 +26,7 @@ void GFX_print(struct graph_object * this);
 void GFX_remove(struct graph_object * this, char lastPos);
 void GFX_rmove_shadow(struct graph_object * this);
 
-void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, uint8 * graph_tex)
+void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, const uint8 * graph_tex)
 {
 	this->pos_ = pos;
     this->last_pos_ = pos;
@@ -190,7 +190,7 @@ void GFX_print(struct graph_object * this)
 {
     
     uint32 bitPos, size;
-    uint8 * Graph = this->graph_tex_;
+    const uint8 * Graph = this->graph_tex_;
     TFT_setWindow(this->pos_.pos_X_, 
         this->pos_.pos_X_ + this->pos_.size_X_-1, 
         this->pos_.pos_Y_, 

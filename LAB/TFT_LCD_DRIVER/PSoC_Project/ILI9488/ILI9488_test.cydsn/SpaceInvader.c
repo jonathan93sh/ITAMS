@@ -11,7 +11,8 @@
 */
 #include <stdlib.h>
 #include "gameEngine.h"
-#include "graph/graph.h"
+#include "graph/graph_objects.h"
+#include "StartScreen.h"
 #include "touch.h"
 
 #define NORMALSTATE 0
@@ -73,14 +74,10 @@ void spaceInavader_start()
     
     struct Color col[5];
     struct Color Bgcol[5];
+    struct StartScreen sScreen;
     struct SubjectFactory factory;
     struct GameEngine engine;
-    int delta = 5;
-    int yPos = 320/2;
-    int heroID;
-    struct coord pos;
     
-    int Invaders_col1[4][4];
     
     for(i = 0; i < 5; i++)
     {
@@ -92,19 +89,36 @@ void spaceInavader_start()
         Bgcol[i].B = 0;
     }
     
-    Touch_init();
+    //Touch_init();
     
-    Timer_1_Start();
+    SubjectFactory_init(&factory, graph_objects_GRAPHS, graph_objects_GRAPH_SIZEXS, graph_objects_GRAPH_SIZEYS, graph_objects_GRAPH_NAMES, col, Bgcol, graph_objects_GRAPH_length);
+    
+    readTouch_better(&Y_controller,&X_controller, &press, &trig); //dummy read
+    
     while(1)
     {
-    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
-    GameEngine_init(&engine, &factory, (level == 0? 0u : 1u));
-    
-    spaceInvaders_init(&engine, &spaceInvaders_db, level);
-    
-    Player_init(&engine, &player_db, HeroLifes);
-    
+        if((level == 0? 1u : 0u))
+        {
+            init_StartScreen(&sScreen);
+            
+            do
+            {
+                readTouch_better(&Y_controller,&X_controller, &press, &trig);
+            }while(trig == 0);
+            
+            sScreen.delete(&sScreen);
+        }
+        
+        
+        GameEngine_init(&engine, &factory, (level == 0? 0u : 1u));
+        
+        spaceInvaders_init(&engine, &spaceInvaders_db, level);
+        
+        Player_init(&engine, &player_db, HeroLifes);
+        
+        
+        
     
     
         do
@@ -151,8 +165,8 @@ void spaceInavader_start()
 
 void spaceInavader_test()
 {
-    
-    
+    while(1);
+    /*
     srand(321);
     unsigned i,i2;
     struct Color col[5];
@@ -176,7 +190,7 @@ void spaceInavader_test()
         Bgcol[i].B = 0;
     }
     
-    SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
+    //SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
     GameEngine_init(&engine, &factory, 0);
     
@@ -224,6 +238,7 @@ void spaceInavader_test()
         //CyDelay(16);
         engine.tick(&engine);
     }
+    */
 }
 
 
@@ -328,7 +343,7 @@ void spaceInvaders_LastOne(struct GameEngine * engine, struct spaceInvaders_data
 
 int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_dataBase * db)
 {
-    uint8 alife, isdeadTmp, i, i2, hasWon;
+    uint8 alife, isdeadTmp, i, i2;
     uint8 lastRowIndex = 0, lastColIndex = 0;
     uint8 alife_row[ROWSIZE] = {0};
     
@@ -351,7 +366,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
             if(engine->getPos(engine, db->invaderIDs[i][i2]).X >= db->X_win_line)
                 return GAMEOVER;
             
-            if(rand() % 1000 > 998)
+            if(rand() % 1000 > 995)
             {
                 engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 3);
             }

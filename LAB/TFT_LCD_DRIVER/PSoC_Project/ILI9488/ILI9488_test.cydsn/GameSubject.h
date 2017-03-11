@@ -18,7 +18,7 @@
 
 struct GameSubject;
     
-void GameSubject_init(struct GameSubject * this, uint8 * graph_tex, uint16 sizeX, uint16 sizeY, struct Color color, struct Color BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID);
+void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct Color color, struct Color BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID);
 
 struct GameSubject
 {

@@ -126,7 +126,7 @@ void TFT_setPageAddress(uint16 start, uint16 end)
 void TFT_test()
 {
     unsigned char R = 0, G = 2, B = 1;	   
-    uint8 tmp;
+    
     unsigned long i;
     while(1)
     {
@@ -158,16 +158,6 @@ void TFT_test()
 void TFT_init()
 {
     uint8 status[5] = {0};
-    unsigned i;
-    //uint8 testData[300] = {0};
-    
-    /*
-    
-    for(i = 0; i < 300; i++)
-    {
-         testData[i] = (uint8)i;  
-    }
-    */
     
     DDR_DATA_Write(0x00);
     LCD_RST_Write(1);
@@ -190,35 +180,7 @@ void TFT_init()
     TFT_write_data(TFT_MEMORY_ACCESS_CONTROL, status, 0);
     status[0] = 0b101;
     TFT_write_data(TFT_INTERFACE_PIXEL_FORMAT, status, 1);
-    
-    
-    /*
-	//TFT_write_data(TFT_PARRTIAL_MODE_ON, NULL, 0);
-	uint8 tmp = (0b110<<TFT_DPI)|(0b110<<TFT_DBI); // RGB = 18bit, MCU = 18bit
-	//TFT_write_data(TFT_INTERFACE_PIXEL_FORMAT, &tmp, 1);
-	
-    
-    //TFT_read_data(TFT_READ_PIXEL_FORMAT, status, 1);
-    //TFT_write_data(TFT_ALL_PIXEL_ON, NULL, 0);
-    if(status[0] != tmp&0b101)
-    {
-        while(1);   
-    }
-    
-    
-    TFT_read_data(TFT_DISPLAY_STATUS, status,5);
-    
-    TFT_write_data(TFT_MEMORY_WRITE, testData, 300);
-    
-    TFT_write_data(TFT_DISPLAY_ON, NULL, 0);
-    while(1);
-    for(i = 0; i < 512; i++)
-    {
-        TFT_write_data(TFT_MEMORY_WRITE_CONTINUE, testData, 300);    
-    }
-    
-    while(1);
-*/
+
 }
     
 /**
@@ -253,8 +215,8 @@ void TFT_start_print()
 
 void TFT_write_print(uint8 R, uint8 G, uint8 B, unsigned N)
 {
-    uint8 MSB = (R<<3)|(G>>3);
-    uint8 LSB = (G<<5)|(B);
+    uint8 MSB = (R<<3)|((G>>3)&0b111);
+    uint8 LSB = (G<<5)|(B&0b11111);
     unsigned i;
     
     for(i = 0; i < N; i++)

@@ -18,15 +18,15 @@
 
 struct SubjectFactory;
 
-void SubjectFactory_init(struct SubjectFactory * this, uint8 ** graph_texs, uint16 * sizeXs, uint16 * sizeYs, char ** names, struct Color * colors, struct Color * Bgcolors, size_t length);
+void SubjectFactory_init(struct SubjectFactory * this, const uint8 ** graph_texs, const uint16 * sizeXs, const uint16 * sizeYs, const char ** names, struct Color * colors, struct Color * Bgcolors, const size_t length);
 
 
 struct SubjectFactory
 {
-    uint8 ** graph_texs_;
-    uint16 * sizeXs_; 
-    uint16 * sizeYs_; 
-    char ** names_;
+    const uint8 ** graph_texs_;
+    const uint16 * sizeXs_; 
+    const uint16 * sizeYs_; 
+    const char ** names_;
     struct Color * colors_; 
     struct Color * Bgcolors_;
     size_t length_;

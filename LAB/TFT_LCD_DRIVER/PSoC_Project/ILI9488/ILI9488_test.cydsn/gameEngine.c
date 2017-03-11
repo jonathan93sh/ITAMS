@@ -348,7 +348,7 @@ void GE_endGame(struct GameEngine * this)
     
     struct Color col, bgcol;
     
-    uint8 i, EEPROM_status;
+    uint8 i;
     
     
     for(i = 0; i < subjectLimit; i++)
@@ -470,6 +470,10 @@ void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory, 
     {
         this->shoots_[i] = NULL;
     }
+    
+    
+    
+    
 }
 
 /* [] END OF FILE */

@@ -10,7 +10,7 @@
  * ========================================
 */
 #include "numberPrint.h"
-#include "graph/graph_numFont.h"
+#include "graph/graph_num_fonts.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -50,7 +50,7 @@ void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uin
         decimal = (Number % (factor*10)) / factor;
         factor *= 10;
         
-        GFX_init(&this->GFX_number_objects_[i], pos, *col, *bgCol, NUM_GRAPHS[ decimal ]);
+        GFX_init(&this->GFX_number_objects_[i], pos, *col, *bgCol, graph_num_fonts_GRAPHS[ decimal ]);
         
         pos.pos_Y_+=Y_offset;
     }

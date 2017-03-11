@@ -18,7 +18,7 @@
 struct GameSubject * SF_creat(struct SubjectFactory * this, char * name, int16 X, int16 Y, int8 lives, int killpoints, int ID, int8 teamID);
 void SF_delete(struct SubjectFactory * this, struct GameSubject * object);
 
-void SubjectFactory_init(struct SubjectFactory * this, uint8 ** graph_texs, uint16 * sizeXs, uint16 * sizeYs, char ** names, struct Color * colors, struct Color * Bgcolors, size_t length)
+void SubjectFactory_init(struct SubjectFactory * this, const uint8 ** graph_texs, const uint16 * sizeXs, const uint16 * sizeYs, const char ** names, struct Color * colors, struct Color * Bgcolors, const size_t length)
 {
     this->graph_texs_ = graph_texs;
     this->sizeXs_ = sizeXs;

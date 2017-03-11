@@ -27,7 +27,7 @@ struct graph_object
     struct Color BgColor_;
     struct GFX_Pos pos_;
     struct GFX_Pos last_pos_;
-	uint8 * graph_tex_;
+	const uint8 * graph_tex_;
 	
 	void (*setPos)(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
     void (*refresh)(struct graph_object * this);
@@ -38,6 +38,6 @@ struct graph_object
     
 };
 
-void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, uint8 * graph_tex);
+void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, const uint8 * graph_tex);
 #endif
 
