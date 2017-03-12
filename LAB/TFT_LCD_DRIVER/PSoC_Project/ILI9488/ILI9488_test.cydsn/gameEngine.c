@@ -12,7 +12,6 @@
 
 
 #include "gameEngine.h"
-#include "EEPROM.h"
 
 int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoints, int16 X, int16 Y, int8 lives); //return subject ID if -1 wrong name, -2 subject limit.
 int8 GE_move(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ);

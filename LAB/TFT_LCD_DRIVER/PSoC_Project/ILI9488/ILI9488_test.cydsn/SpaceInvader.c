@@ -32,7 +32,8 @@ struct spaceInvaders_dataBase
     uint8 nextCmd;
     uint8 step;
     uint8 count;
-    
+    uint16 level;
+    uint16 chanceForShoot;
     int8 lastSteps;
     uint8 lastdir;
     int16 X_win_line;
@@ -255,7 +256,7 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     {
         for(i2 = 0; i2 < rowSize; i2++)
         {
-            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 10, 50 + i*40, 20 + i2*50, 1 + (level>>1));
+            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 5 + (5*level), 50 + i*40, 20 + i2*50, 1 + (level>>2)); // life => level 0-3 one life 4-7 two life ...
         }
     }
     
@@ -268,6 +269,8 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     db->rowIndex = 0;
     db->lastSteps = -1;
     db->lastdir = 0;
+    db->level = level;
+    db->chanceForShoot = 992 + ((60/(1+(level>>1)))/10);
     return NORMALSTATE;
 }
 
@@ -366,7 +369,7 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
             if(engine->getPos(engine, db->invaderIDs[i][i2]).X >= db->X_win_line)
                 return GAMEOVER;
             
-            if(rand() % 1000 > 995)
+            if(rand() % 1000 > db->chanceForShoot)
             {
                 engine->shoot(engine, db->invaderIDs[i][i2], DOWN, "invader_shoot", 3);
             }
@@ -397,11 +400,12 @@ int8 spaceInvaders_algoritme(struct GameEngine * engine, struct spaceInvaders_da
             do
             {
                 db->rowIndex = (db->rowIndex + 1) % db->colSize;  
+                if(db->rowIndex == 0)
+                {
+                    db->step = (db->step + 1) % 30;   
+                }
             }while(alife_row[db->rowIndex] == 0);
-            if(db->rowIndex == 0)
-            {
-                db->step = (db->step + 1) % 30;   
-            }
+            
         }
     }
     
