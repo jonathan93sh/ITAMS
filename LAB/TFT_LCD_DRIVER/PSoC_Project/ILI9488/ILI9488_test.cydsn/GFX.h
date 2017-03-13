@@ -6,38 +6,38 @@
 #include "TFT_LCD.h"
 
     
-struct Color
+struct GFXColor
 {
     uint8 R;
     uint8 G;
     uint8 B;
 };
 
-struct GFX_Pos
+struct GFXPos
 {
-	uint16 pos_X_;
-    uint16 pos_Y_;
-    uint16 size_X_;
-	uint16 size_Y_;
+	uint16 pos_X;
+    uint16 pos_Y;
+    uint16 size_X;
+	uint16 size_Y;
 };
     
-struct graph_object
+struct GFXObject
 {
-    struct Color color_;
-    struct Color BgColor_;
-    struct GFX_Pos pos_;
-    struct GFX_Pos last_pos_;
+    struct GFXColor color_;
+    struct GFXColor BgColor_;
+    struct GFXPos pos_;
+    struct GFXPos last_pos_;
 	const uint8 * graph_tex_;
 	
-	void (*setPos)(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
-    void (*refresh)(struct graph_object * this);
-	struct GFX_Pos (*getPos)(struct graph_object * this);
-    uint16 (*getX)(struct graph_object * this);
-    uint16 (*getY)(struct graph_object * this);
-    void (*delete)(struct graph_object * this);
+	void (*setPos)(struct GFXObject * this, uint16 pos_X, uint16 pos_Y);
+    void (*refresh)(struct GFXObject * this);
+	struct GFXPos (*getPos)(struct GFXObject * this);
+    uint16 (*getX)(struct GFXObject * this);
+    uint16 (*getY)(struct GFXObject * this);
+    void (*delete)(struct GFXObject * this);
     
 };
 
-void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, const uint8 * graph_tex);
+void GFXObject_init(struct GFXObject * this, struct GFXPos pos, struct GFXColor color, struct GFXColor Bgcolor, const uint8 * graph_tex);
 #endif
 

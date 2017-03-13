@@ -14,19 +14,19 @@
 enum color_enum {fg, bg};
 
 
-void GFX_setPos(struct graph_object * this, uint16 pos_X, uint16 pos_Y);
-void GFX_refresh(struct graph_object * this);
-struct GFX_Pos GFX_getPos(struct graph_object * this);
-uint16 GFX_getPos_X(struct graph_object * this);
-uint16 GFX_getPos_Y(struct graph_object * this);
-void GFX_delete(struct graph_object * this);
+void GFX_setPos(struct GFXObject * this, uint16 pos_X, uint16 pos_Y);
+void GFX_refresh(struct GFXObject * this);
+struct GFXPos GFX_getPos(struct GFXObject * this);
+uint16 GFX_getPos_X(struct GFXObject * this);
+uint16 GFX_getPos_Y(struct GFXObject * this);
+void GFX_delete(struct GFXObject * this);
 
 
-void GFX_print(struct graph_object * this);
-void GFX_remove(struct graph_object * this, char lastPos);
-void GFX_rmove_shadow(struct graph_object * this);
+void GFX_print(struct GFXObject * this);
+void GFX_remove(struct GFXObject * this, char lastPos);
+void GFX_rmove_shadow(struct GFXObject * this);
 
-void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color, struct Color Bgcolor, const uint8 * graph_tex)
+void GFXObject_init(struct GFXObject * this, struct GFXPos pos, struct GFXColor color, struct GFXColor Bgcolor, const uint8 * graph_tex)
 {
 	this->pos_ = pos;
     this->last_pos_ = pos;
@@ -44,58 +44,58 @@ void GFX_init(struct graph_object * this, struct GFX_Pos pos, struct Color color
     GFX_print(this);
 }
 
-void GFX_delete(struct graph_object * this)
+void GFX_delete(struct GFXObject * this)
 {
     GFX_remove(this, 0);
 }
 
-struct GFX_Pos GFX_getPos(struct graph_object * this)
+struct GFXPos GFX_getPos(struct GFXObject * this)
 {
     return this->pos_;
 }
 
-uint16 GFX_getPos_X(struct graph_object * this)
+uint16 GFX_getPos_X(struct GFXObject * this)
 {
-    return this->pos_.pos_X_;
+    return this->pos_.pos_X;
 }
 
-uint16 GFX_getPos_Y(struct graph_object * this)
+uint16 GFX_getPos_Y(struct GFXObject * this)
 {
-    return this->pos_.pos_Y_;   
+    return this->pos_.pos_Y;   
 }
 
 
-void GFX_setPos(struct graph_object * this, uint16 pos_X, uint16 pos_Y)
+void GFX_setPos(struct GFXObject * this, uint16 pos_X, uint16 pos_Y)
 {
     
     if(pos_X > SCREEN_SIZE_X || pos_Y > SCREEN_SIZE_Y)
         return;
     
     this->last_pos_ = this->pos_;
-	this->pos_.pos_X_ = pos_X;
-    this->pos_.pos_Y_ = pos_Y;
+	this->pos_.pos_X = pos_X;
+    this->pos_.pos_Y = pos_Y;
     GFX_print(this);
     GFX_rmove_shadow(this);
 }
 
-void GFX_refresh(struct graph_object * this)
+void GFX_refresh(struct GFXObject * this)
 {
     GFX_print(this);
 }
 
-void GFX_rmove_shadow(struct graph_object * this)
+void GFX_rmove_shadow(struct GFXObject * this)
 {
     uint16 xl,yl, x1l, y1l, x2l, y2l, x,y,x1,y1 ;
     int8 sector = -1; 
-    xl = this->last_pos_.pos_X_;
-    yl = this->last_pos_.pos_Y_;
-    x1l = xl + this->last_pos_.size_X_;
-    y1l = yl + this->last_pos_.size_Y_;
+    xl = this->last_pos_.pos_X;
+    yl = this->last_pos_.pos_Y;
+    x1l = xl + this->last_pos_.size_X;
+    y1l = yl + this->last_pos_.size_Y;
     
-    x = this->pos_.pos_X_;
-    y = this->pos_.pos_Y_;
-    x1 = x + this->pos_.size_X_;
-    y1 = y + this->pos_.size_Y_;
+    x = this->pos_.pos_X;
+    y = this->pos_.pos_Y;
+    x1 = x + this->pos_.size_X;
+    y1 = y + this->pos_.size_Y;
     
     y2l = yl;
     x2l = xl;
@@ -163,40 +163,40 @@ void GFX_rmove_shadow(struct graph_object * this)
     
 }
 
-void GFX_remove(struct graph_object * this, char lastPos)
+void GFX_remove(struct GFXObject * this, char lastPos)
 {
     
     if(lastPos)
     {
-        TFT_setWindow(this->last_pos_.pos_X_, 
-            this->last_pos_.pos_X_ + this->last_pos_.size_X_-1, 
-            this->last_pos_.pos_Y_, 
-            this->last_pos_.pos_Y_ + this->last_pos_.size_Y_-1);
+        TFT_setWindow(this->last_pos_.pos_X, 
+            this->last_pos_.pos_X + this->last_pos_.size_X-1, 
+            this->last_pos_.pos_Y, 
+            this->last_pos_.pos_Y + this->last_pos_.size_Y-1);
     }
     else
     {
-        TFT_setWindow(this->pos_.pos_X_, 
-            this->pos_.pos_X_ + this->pos_.size_X_-1, 
-            this->pos_.pos_Y_, 
-            this->pos_.pos_Y_ + this->pos_.size_Y_-1);
+        TFT_setWindow(this->pos_.pos_X, 
+            this->pos_.pos_X + this->pos_.size_X-1, 
+            this->pos_.pos_Y, 
+            this->pos_.pos_Y + this->pos_.size_Y-1);
     }
 
     TFT_start_print();
-    TFT_write_print(this->BgColor_.R, this->BgColor_.G, this->BgColor_.B, this->pos_.size_X_ * this->pos_.size_Y_); 
+    TFT_write_print(this->BgColor_.R, this->BgColor_.G, this->BgColor_.B, this->pos_.size_X * this->pos_.size_Y); 
     TFT_end_print();    
 }
 
-void GFX_print(struct graph_object * this)
+void GFX_print(struct GFXObject * this)
 {
     
     uint32 bitPos, size;
     const uint8 * Graph = this->graph_tex_;
-    TFT_setWindow(this->pos_.pos_X_, 
-        this->pos_.pos_X_ + this->pos_.size_X_-1, 
-        this->pos_.pos_Y_, 
-        this->pos_.pos_Y_ + this->pos_.size_Y_-1);
+    TFT_setWindow(this->pos_.pos_X, 
+        this->pos_.pos_X + this->pos_.size_X-1, 
+        this->pos_.pos_Y, 
+        this->pos_.pos_Y + this->pos_.size_Y-1);
     
-    size = this->pos_.size_X_ * this->pos_.size_Y_;
+    size = this->pos_.size_X * this->pos_.size_Y;
     
     TFT_start_print();
     
@@ -219,15 +219,15 @@ void GFX_print(struct graph_object * this)
 }
 
 /*
-void GFX_print(struct graph_object * this)
+void GFX_print(struct GFXObject * this)
 {
     uint8 color_value = bg;
     uint8 last_N = 1;
     uint8 * Graph = this->graph_tex_;
-    TFT_setWindow(this->pos_.pos_X_, 
-        this->pos_.pos_X_ + this->pos_.size_X_-1, 
-        this->pos_.pos_Y_, 
-        this->pos_.pos_Y_ + this->pos_.size_Y_-1);
+    TFT_setWindow(this->pos_.pos_X, 
+        this->pos_.pos_X + this->pos_.size_X-1, 
+        this->pos_.pos_Y, 
+        this->pos_.pos_Y + this->pos_.size_Y-1);
     
 
     TFT_start_print();

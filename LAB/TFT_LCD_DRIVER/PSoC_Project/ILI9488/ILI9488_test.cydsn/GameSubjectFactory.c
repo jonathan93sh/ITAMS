@@ -10,15 +10,15 @@
  * ========================================
 */
 
-#include "SubjectFactory.h"
+#include "GameSubjectFactory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 
-struct GameSubject * SF_creat(struct SubjectFactory * this, char * name, int16 X, int16 Y, int8 lives, int killpoints, int ID, int8 teamID);
-void SF_delete(struct SubjectFactory * this, struct GameSubject * object);
+struct GameSubject * SF_creat(struct GameSubjectFactory * this, char * name, int16 X, int16 Y, int8 lives, int killpoints, int ID, int8 teamID);
+void SF_delete(struct GameSubjectFactory * this, struct GameSubject * object);
 
-void SubjectFactory_init(struct SubjectFactory * this, const uint8 ** graph_texs, const uint16 * sizeXs, const uint16 * sizeYs, const char ** names, struct Color * colors, struct Color * Bgcolors, const size_t length)
+void GameSubjectFactory_init(struct GameSubjectFactory * this, const uint8 ** graph_texs, const uint16 * sizeXs, const uint16 * sizeYs, const char ** names, struct GFXColor * colors, struct GFXColor * Bgcolors, const size_t length)
 {
     this->graph_texs_ = graph_texs;
     this->sizeXs_ = sizeXs;
@@ -33,7 +33,7 @@ void SubjectFactory_init(struct SubjectFactory * this, const uint8 ** graph_texs
 }
 
 
-struct GameSubject * SF_creat(struct SubjectFactory * this, char * name, int16 X, int16 Y, int8 lives, int killpoints, int ID, int8 teamID)
+struct GameSubject * SF_creat(struct GameSubjectFactory * this, char * name, int16 X, int16 Y, int8 lives, int killpoints, int ID, int8 teamID)
 {
     uint8 i;
     struct GameSubject * newSubject = NULL;
@@ -56,7 +56,7 @@ struct GameSubject * SF_creat(struct SubjectFactory * this, char * name, int16 X
     return newSubject;
 }
 
-void SF_delete(struct SubjectFactory * this, struct GameSubject * object)
+void SF_delete(struct GameSubjectFactory * this, struct GameSubject * object)
 {
     if(object == NULL)
         return;

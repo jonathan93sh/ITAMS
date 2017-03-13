@@ -18,11 +18,11 @@
 
 struct GameSubject;
     
-void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct Color color, struct Color BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID);
+void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct GFXColor color, struct GFXColor BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID);
 
 struct GameSubject
 {
-    struct graph_object graph_;
+    struct GFXObject graph_;
     int8 lives_;
     int16 killPoints_;
     uint8 ID_;
@@ -30,7 +30,7 @@ struct GameSubject
     int16 X_;
     int16 Y_;
     //void (*move)(struct GameSubject * this, uint16 X, uint16 Y);
-    //void (*shoot)(struct GameSubject * this, struct graph_object * shell, enum Gdir dir);
+    //void (*shoot)(struct GameSubject * this, struct GFXObject * shell, enum Gdir dir);
     //void (*damage)(struct GameSubject * this, uint8 hitDamage);
     //void (*hit)(struct GameSubject * this, struct GameSubject * other);
 };

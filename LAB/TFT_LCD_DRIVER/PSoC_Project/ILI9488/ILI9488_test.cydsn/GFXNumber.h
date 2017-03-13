@@ -15,14 +15,14 @@
 #include <project.h>
 #include "GFX.h"
 
-struct NumberGFX
+struct GFXNumber
 {
-    struct graph_object * GFX_number_objects_;
+    struct GFXObject * GFX_number_objects_;
     uint8 length_;  
-    void (*delete)(struct NumberGFX * this);
+    void (*delete)(struct GFXNumber * this);
 };
 
-void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct Color * col, struct Color * bgCol);
+void init_NumberGFX(struct GFXNumber * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct GFXColor * col, struct GFXColor * bgCol);
 
 #endif
 

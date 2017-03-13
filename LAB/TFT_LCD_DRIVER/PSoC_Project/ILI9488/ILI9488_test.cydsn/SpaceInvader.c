@@ -19,8 +19,8 @@
 #define GAMEOVER -1
 #define WON 1
 
-#define COLSIZE 4
-#define ROWSIZE 4
+#define COLSIZE 6
+#define ROWSIZE 5
 #define HERO_LIFE 5
 
 struct spaceInvaders_dataBase
@@ -64,7 +64,7 @@ void spaceInavader_start()
     uint16 level = 0;
     
     srand(322);
-    uint8 i,i2, statusSI, statusP;
+    uint8 i, statusSI, statusP;
     
     uint16 Y_controller, X_controller;
     //int16 Y_sim_controller_delta = 0, count_sim = 0;
@@ -73,10 +73,10 @@ void spaceInavader_start()
     struct Player_dataBase player_db;
     struct spaceInvaders_dataBase spaceInvaders_db;
     
-    struct Color col[5];
-    struct Color Bgcol[5];
+    struct GFXColor col[5];
+    struct GFXColor Bgcol[5];
     struct StartScreen sScreen;
-    struct SubjectFactory factory;
+    struct GameSubjectFactory factory;
     struct GameEngine engine;
     
     
@@ -92,7 +92,7 @@ void spaceInavader_start()
     
     //Touch_init();
     
-    SubjectFactory_init(&factory, graph_objects_GRAPHS, graph_objects_GRAPH_SIZEXS, graph_objects_GRAPH_SIZEYS, graph_objects_GRAPH_NAMES, col, Bgcol, graph_objects_GRAPH_length);
+    GameSubjectFactory_init(&factory, graph_objects_GRAPHS, graph_objects_GRAPH_SIZEXS, graph_objects_GRAPH_SIZEYS, graph_objects_GRAPH_NAMES, col, Bgcol, graph_objects_GRAPH_length);
     
     readTouch_better(&Y_controller,&X_controller, &press, &trig); //dummy read
     
@@ -170,9 +170,9 @@ void spaceInavader_test()
     /*
     srand(321);
     unsigned i,i2;
-    struct Color col[5];
-    struct Color Bgcol[5];
-    struct SubjectFactory factory;
+    struct GFXColor col[5];
+    struct GFXColor Bgcol[5];
+    struct GameSubjectFactory factory;
     struct GameEngine engine;
     int delta = 5;
     int yPos = 320/2;
@@ -191,7 +191,7 @@ void spaceInavader_test()
         Bgcol[i].B = 0;
     }
     
-    //SubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
+    //GameSubjectFactory_init(&factory, GRAPHS, GRAPH_SIZEXS, GRAPH_SIZEYS, GRAPH_NAMES, col, Bgcol, GRAPH_length);
     
     GameEngine_init(&engine, &factory, 0);
     
@@ -256,7 +256,7 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     {
         for(i2 = 0; i2 < rowSize; i2++)
         {
-            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 5 + (5*level), 50 + i*40, 20 + i2*50, 1 + (level>>2)); // life => level 0-3 one life 4-7 two life ...
+            db->invaderIDs[i][i2] = (uint8)engine->spawn(engine, "space_invader", Enemies, 5 + (5*level), 10 + i*40, 10 + i2*50, 1 + (level>>2)); // life => level 0-3 one life 4-7 two life ...
         }
     }
     
@@ -282,7 +282,7 @@ void spaceInvaders_normal(struct GameEngine * engine, struct spaceInvaders_dataB
     {
         if(db->step < 10)
         {
-            engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, 10, 1);
+            engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, 7, 1);
             db->lastdir = 0;
         }
         else if(db->step < 15)
@@ -292,7 +292,7 @@ void spaceInvaders_normal(struct GameEngine * engine, struct spaceInvaders_dataB
         }
         else if(db->step < 25)
         {
-            engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, -10, 1);
+            engine->move(engine, db->invaderIDs[db->rowIndex][i], 0, -7, 1);
             db->lastdir = 1;
         }
         else if(db->step < 30)

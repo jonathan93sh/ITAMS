@@ -9,23 +9,23 @@
  *
  * ========================================
 */
-#include "numberPrint.h"
+#include "GFXNumber.h"
 #include "graph/graph_num_fonts.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-void NumberGFX_delete(struct NumberGFX * this);
+void NumberGFX_delete(struct GFXNumber * this);
 
-void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct Color * col, struct Color * bgCol)
+void init_NumberGFX(struct GFXNumber * this, uint16 Number, uint8 Ncharater, uint16 X, uint16 Y, struct GFXColor * col, struct GFXColor * bgCol)
 {
     const uint8 Y_offset = number_0_Y;
     uint16 i, decimal, factor;
-    struct GFX_Pos pos;
+    struct GFXPos pos;
     
-    pos.pos_X_ = X;
-    pos.pos_Y_ = Y;
-    pos.size_X_ = number_0_X;
-    pos.size_Y_ = number_0_Y;
+    pos.pos_X = X;
+    pos.pos_Y = Y;
+    pos.size_X = number_0_X;
+    pos.size_Y = number_0_Y;
     
     this->delete = NumberGFX_delete;
     this->length_ = Ncharater;
@@ -37,7 +37,7 @@ void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uin
     
     
     
-    this->GFX_number_objects_ = calloc(Ncharater, sizeof(struct graph_object));
+    this->GFX_number_objects_ = calloc(Ncharater, sizeof(struct GFXObject));
     
     if(this->GFX_number_objects_ == NULL)
         return;
@@ -50,14 +50,14 @@ void init_NumberGFX(struct NumberGFX * this, uint16 Number, uint8 Ncharater, uin
         decimal = (Number % (factor*10)) / factor;
         factor *= 10;
         
-        GFX_init(&this->GFX_number_objects_[i], pos, *col, *bgCol, graph_num_fonts_GRAPHS[ decimal ]);
+        GFXObject_init(&this->GFX_number_objects_[i], pos, *col, *bgCol, graph_num_fonts_GRAPHS[ decimal ]);
         
-        pos.pos_Y_+=Y_offset;
+        pos.pos_Y+=Y_offset;
     }
     
 }
 
-void NumberGFX_delete(struct NumberGFX * this)
+void NumberGFX_delete(struct GFXNumber * this)
 {
     uint8 i;
     

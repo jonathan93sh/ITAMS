@@ -1,10 +1,10 @@
 TODO
 
 GameEngine:
-fix point to point_ in GameEngine
+OK fix point to point_ in GameEngine 
 fix int16 spawn too int8 spawn
-fix uint8 isDead(uint8) too int8 isDead(uint8)
-fix int8 tick() too void tick() 
+OK fix uint8 isDead(uint8) too int8 isDead(uint8)
+OK fix int8 tick() too void tick() 
 
 GameSubject:
 add metodes.

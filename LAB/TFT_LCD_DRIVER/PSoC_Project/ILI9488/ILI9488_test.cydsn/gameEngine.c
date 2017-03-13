@@ -17,12 +17,12 @@ int16 GE_spawn(struct GameEngine * this, char * name, int8 teamID, int16 killpoi
 int8 GE_move(struct GameEngine * this, uint8 ID, int16 X, int16 Y, char relativ);
 struct coord GE_getPos(struct GameEngine * this, uint8 ID);
 int8 GE_shoot(struct GameEngine * this, uint8 ID, int8 dir, char * type, uint8 speed);
-int8 GE_tick(struct GameEngine * this);
+void GE_tick(struct GameEngine * this);
 void GE_checkHit(struct GameEngine * this);
 void GE_updatePos(struct GameEngine * this);
 void GE_shootMove(struct GameEngine * this);
-uint8 GE_isDead(struct GameEngine * this, uint8 ID);
-uint8 hitCheck(struct graph_object * p1, struct graph_object * p2);
+int8 GE_isDead(struct GameEngine * this, uint8 ID);
+uint8 hitCheck(struct GFXObject * p1, struct GFXObject * p2);
 void GE_endGame(struct GameEngine * this);
 void GE_nextLevel(struct GameEngine * this);
 int8 GE_lifeLeft(struct GameEngine * this, uint8 ID);
@@ -98,7 +98,7 @@ struct coord GE_getPos(struct GameEngine * this, uint8 ID)
     
 }
 
-uint8 GE_isDead(struct GameEngine * this, uint8 ID)
+int8 GE_isDead(struct GameEngine * this, uint8 ID)
 {
     if(this->subjects_[ID] == NULL)
         return 1;
@@ -133,22 +133,22 @@ int8 GE_shoot(struct GameEngine * this, uint8 ID, int8 dir, char * type, uint8 s
     
     c = GE_getPos(this, ID);
     
-    c.X += this->subjects_[ID]->graph_.pos_.size_X_ / 2;
-    c.Y += this->subjects_[ID]->graph_.pos_.size_Y_ / 2;
+    c.X += this->subjects_[ID]->graph_.pos_.size_X / 2;
+    c.Y += this->subjects_[ID]->graph_.pos_.size_Y / 2;
     
     switch(dir)
     {
         case UP:
-        c.X -= this->subjects_[ID]->graph_.pos_.size_X_ / 2;
+        c.X -= this->subjects_[ID]->graph_.pos_.size_X / 2;
         break;
         case DOWN:
-        c.X += this->subjects_[ID]->graph_.pos_.size_X_ / 2;
+        c.X += this->subjects_[ID]->graph_.pos_.size_X / 2;
         break;
         case LEFT:
-        c.Y += this->subjects_[ID]->graph_.pos_.size_Y_ / 2;
+        c.Y += this->subjects_[ID]->graph_.pos_.size_Y / 2;
         break;
         case RIGTH:
-        c.Y -= this->subjects_[ID]->graph_.pos_.size_Y_ / 2;
+        c.Y -= this->subjects_[ID]->graph_.pos_.size_Y / 2;
         break;
         default:
             return -2;
@@ -247,20 +247,20 @@ void GE_updatePos(struct GameEngine * this)
     }
 }
 
-uint8 hitCheck(struct graph_object * p1, struct graph_object * p2)
+uint8 hitCheck(struct GFXObject * p1, struct GFXObject * p2)
 {
     uint16 x11, x12, y11, y12, 
     x21, x22, y21, y22;
     
-    x11 = p1->pos_.pos_X_;
-    x12 = p1->pos_.pos_X_ + p1->pos_.size_X_;
-    y11 = p1->pos_.pos_Y_;
-    y12 = p1->pos_.pos_Y_ + p1->pos_.size_Y_;
+    x11 = p1->pos_.pos_X;
+    x12 = p1->pos_.pos_X + p1->pos_.size_X;
+    y11 = p1->pos_.pos_Y;
+    y12 = p1->pos_.pos_Y + p1->pos_.size_Y;
     
-    x21 = p2->pos_.pos_X_;
-    x22 = p2->pos_.pos_X_ + p2->pos_.size_X_;
-    y21 = p2->pos_.pos_Y_;
-    y22 = p2->pos_.pos_Y_ + p2->pos_.size_Y_;
+    x21 = p2->pos_.pos_X;
+    x22 = p2->pos_.pos_X + p2->pos_.size_X;
+    y21 = p2->pos_.pos_Y;
+    y22 = p2->pos_.pos_Y + p2->pos_.size_Y;
     
     if(y21 <= y12 && y12 <= y22)
     {
@@ -310,7 +310,7 @@ void GE_checkHit(struct GameEngine * this)
                                 
                                 if(this->subjects_[i2]->lives_ == 0)
                                 {
-                                    this->points +=  this->subjects_[i2]->killPoints_;
+                                    this->points_ +=  this->subjects_[i2]->killPoints_;
                                     this->factory_->delete( this->factory_, this->subjects_[i2]);
                                     this->subjects_[i2] = NULL;
                                 }
@@ -326,12 +326,11 @@ void GE_checkHit(struct GameEngine * this)
     
 }
 
-int8 GE_tick(struct GameEngine * this)
+void GE_tick(struct GameEngine * this)
 {
     GE_checkHit(this);
     GE_updatePos(this);
     GE_shootMove(this);
-    return 1;
 }
 
 void GE_endGame(struct GameEngine * this)
@@ -345,7 +344,7 @@ void GE_endGame(struct GameEngine * this)
     HighScore_ += ((*(volatile uint8 *)&HighScore[3]) << 24);
     
     
-    struct Color col, bgcol;
+    struct GFXColor col, bgcol;
     
     uint8 i;
     
@@ -364,14 +363,14 @@ void GE_endGame(struct GameEngine * this)
     
     
    
-    if(HighScore_ <= this->points)
+    if(HighScore_ <= this->points_)
     {
-        HighScore_ = this->points;
+        HighScore_ = this->points_;
         
-        newHighScore[0] = (this->points & 0xff);
-        newHighScore[1] = ((this->points>>8) & 0xff);
-        newHighScore[2] = ((this->points>>16) & 0xff);
-        newHighScore[3] = ((this->points>>24) & 0xff);
+        newHighScore[0] = (this->points_ & 0xff);
+        newHighScore[1] = ((this->points_>>8) & 0xff);
+        newHighScore[2] = ((this->points_>>16) & 0xff);
+        newHighScore[3] = ((this->points_>>24) & 0xff);
         
         status = EEPROM_1_Write(newHighScore, HighScore, 4);
         if(status != CYRET_SUCCESS)
@@ -387,13 +386,13 @@ void GE_endGame(struct GameEngine * this)
     bgcol.G = 0;
     bgcol.B = 0;
     
-    init_NumberGFX(&this->finalScore, this->points, 5, 180, 150, &col, &bgcol);
+    init_NumberGFX(&this->finalScore_, this->points_, 5, 180, 125, &col, &bgcol);
     
-    init_NumberGFX(&this->HighScore, HighScore_, 5, 150, 150, &col, &bgcol);
+    init_NumberGFX(&this->HighScore_, HighScore_, 5, 150, 125, &col, &bgcol);
     
     CyDelay(5000);    
-    this->finalScore.delete(&this->finalScore);
-    this->finalScore.delete(&this->HighScore);
+    this->finalScore_.delete(&this->finalScore_);
+    this->finalScore_.delete(&this->HighScore_);
     //TFT_clear_screen(0,0,0);
     
 }
@@ -401,7 +400,7 @@ void GE_endGame(struct GameEngine * this)
 void GE_nextLevel(struct GameEngine * this)
 {
     uint8 i;
-    struct Color col, bgcol;
+    struct GFXColor col, bgcol;
     
     for(i = 0; i < subjectLimit; i++)
     {
@@ -423,9 +422,9 @@ void GE_nextLevel(struct GameEngine * this)
     bgcol.R = 0;
     bgcol.G = 0;
     bgcol.B = 0;
-    init_NumberGFX(&this->finalScore, this->points, 5, 180, 150, &col, &bgcol);
+    init_NumberGFX(&this->finalScore_, this->points_, 5, 180, 150, &col, &bgcol);
     CyDelay(2000);  
-    this->finalScore.delete(&this->finalScore);
+    this->finalScore_.delete(&this->finalScore_);
 }
 
 int8 GE_lifeLeft(struct GameEngine * this, uint8 ID)
@@ -437,7 +436,7 @@ int8 GE_lifeLeft(struct GameEngine * this, uint8 ID)
 }
 
 
-void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory, char nextLevel)
+void GameEngine_init(struct GameEngine * this, struct GameSubjectFactory * factory, char nextLevel)
 {
     uint8 i;
     
@@ -453,7 +452,7 @@ void GameEngine_init(struct GameEngine * this, struct SubjectFactory * factory, 
     this->isDead = GE_isDead;
     if(nextLevel == 0)
     {
-        this->points = 0;
+        this->points_ = 0;
     }
     
     

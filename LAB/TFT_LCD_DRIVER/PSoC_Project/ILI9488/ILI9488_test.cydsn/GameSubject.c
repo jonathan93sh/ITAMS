@@ -12,17 +12,17 @@
 
 #include "GameSubject.h"
 
-void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct Color color, struct Color BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID)
+void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct GFXColor color, struct GFXColor BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID)
 {
     
-    struct GFX_Pos pos;
+    struct GFXPos pos;
     
-    pos.pos_X_ = X;
-    pos.pos_Y_ = Y;
-    pos.size_X_ = sizeX;
-    pos.size_Y_ = sizeY;
+    pos.pos_X = X;
+    pos.pos_Y = Y;
+    pos.size_X = sizeX;
+    pos.size_Y = sizeY;
     
-    GFX_init(&this->graph_, pos, color, BgColor, graph_tex);
+    GFXObject_init(&this->graph_, pos, color, BgColor, graph_tex);
     
     this->X_ = X;
     this->Y_ = Y;

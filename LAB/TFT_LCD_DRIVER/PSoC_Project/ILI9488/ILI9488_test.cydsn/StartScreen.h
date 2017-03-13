@@ -14,7 +14,7 @@
 
 struct StartScreen
 {
-    struct graph_object * GFX_;
+    struct GFXObject * GFX_;
     uint8 length_;
     void (*delete)(struct StartScreen * this);  
 };
