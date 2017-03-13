@@ -1,0 +1,44 @@
+v = 826
+h = 748
+
+
+XP = datapin 6 = D6
+
+XN = RS = A2
+YP = WR = A1
+
+
+YN = datapin 7 = D7
+
+
+
+read X
+
+XP = VCC = D6			? XN / YN
+XN = GND = A2 = RS		? XP
+YN = HiZ = D7			
+YP = read= A1 = WR		
+
+read Y 
+
+XP = HiZ
+XN = read
+YN = GND
+YP = VCC		? XP
+
+read pressure
+
+XP = vcc
+XN = read
+YN = gnd
+YP = read
+
+
+nopress XY (3188,3804)
+
+X_nopress = 3188
+X = 620 <-> 3379
+
+Y_nopress 3804
+Y = 	4082
+		4102
