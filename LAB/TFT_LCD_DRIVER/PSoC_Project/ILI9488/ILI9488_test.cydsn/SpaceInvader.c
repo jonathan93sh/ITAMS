@@ -270,7 +270,7 @@ int8 spaceInvaders_init(struct GameEngine * engine, struct spaceInvaders_dataBas
     db->lastSteps = -1;
     db->lastdir = 0;
     db->level = level;
-    db->chanceForShoot = 992 + ((60/(1+(level>>1)))/10);
+    db->chanceForShoot = 995 + ((30/(1+(level>>1)))/10);
     return NORMALSTATE;
 }
 
