@@ -10,6 +10,7 @@
  * ========================================
 */
 
+/** Denne funktion vil starte Space Invader spillet */
 void spaceInavader_start();
 
 

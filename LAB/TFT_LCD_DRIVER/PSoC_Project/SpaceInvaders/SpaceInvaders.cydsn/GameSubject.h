@@ -17,9 +17,13 @@
 #include "GFX.h"
 
 struct GameSubject;
-    
+/**
+ * Denne funktion bliver brugt for at initialiser et GameSubject.
+ */   
 void GameSubject_init(struct GameSubject * this, const uint8 * graph_tex, const uint16 sizeX, const uint16 sizeY, struct GFXColor color, struct GFXColor BgColor, uint16 X, uint16 Y, int8 lives, int16 killPoints,  uint8 ID, int8 TeamID);
-
+/**
+ * Denne struct indeholder en række informationer omkring et Subjekt. Som antallet af liv og position. Den indeholder og klassen(struct) GFXObject som er et grafisk objekt.
+ */
 struct GameSubject
 {
     struct GFXObject graph_;
